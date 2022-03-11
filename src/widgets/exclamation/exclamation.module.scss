@@ -1,0 +1,20 @@
+@import 'src/styles/variables/breakpoints';
+@import 'src/styles/variables/bg-effect';
+@import 'src/styles/variables/colors';
+
+.exclamation {
+  padding: 24px;
+  border-radius: 32px;
+  background-color: $blue_200;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+
+  @include breakpoint($md) {
+    padding: 32px;
+  }
+
+  @include breakpoint($xl2) {
+    padding: 40px;
+  }
+}

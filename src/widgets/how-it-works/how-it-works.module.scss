@@ -1,0 +1,243 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/breakpoints';
+
+.how_it_works {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin: 0 auto calc(64px - 8px);
+  @include breakpoint($md) {
+    margin-bottom: calc(80px - 8px);
+  }
+  @include breakpoint($xl2) {
+    row-gap: 12px;
+    max-width: 1064px;
+  }
+
+  h2 {
+    font-weight: 500;
+  }
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  &_item {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    height: 60px;
+    margin-bottom: 8px;
+    padding: 16px;
+    border: 1px solid $border3;
+    border-radius: 32px;
+    background-color: $white;
+    column-gap: 10px;
+    transition: 0.3s;
+    transform-origin: center center;
+
+    @include breakpoint($xs) {
+      height: 66px;
+      padding: 20px;
+      column-gap: 14px;
+    }
+    @include breakpoint($md) {
+      overflow: visible;
+      height: 64px;
+      padding: 12px;
+      column-gap: 32px;
+    }
+    @include breakpoint($xl2) {
+      height: 72px;
+      padding: 16px;
+      column-gap: 48px;
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  &_title {
+    font-size: 14px;
+    line-height: 20px;
+    @include breakpoint($md) {
+      font-size: 20px;
+      font-family: TTNorms, sans-serif;
+      line-height: 28px;
+    }
+    @include breakpoint($xl2) {
+      font-size: 24px;
+    }
+  }
+
+  &_item--border {
+    border: none;
+    transition: 0.3s;
+  }
+
+  &_item--active {
+    align-items: flex-start;
+    height: auto;
+    border: none;
+    background-color: $blue_200;
+    transition: 0.3s;
+    @include breakpoint($md) {
+      margin: 0;
+      padding: 24px;
+    }
+    @include breakpoint($lg) {
+      padding: 32px;
+    }
+    @include breakpoint($xl2) {
+      width: 1064px;
+    }
+
+    .list_title {
+      margin-top: 4px;
+      transition: 0.3s;
+    }
+
+    .envelope {
+      transform: translate(0, 1px);
+      @include breakpoint($xs) {
+        transform: translate(0, -19px);
+      }
+      @include breakpoint($md) {
+        transform: translate(0, 0);
+      }
+    }
+
+    .mountain {
+      transform: translate(0, 1px);
+      @include breakpoint($xs) {
+        transform: translate(0, -19px);
+      }
+      @include breakpoint($md) {
+        transform: translate(0, 0);
+      }
+    }
+  }
+
+  &_index {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: 1px solid $dark_100;
+    border-radius: 50%;
+    font-size: 14px;
+    line-height: 20px;
+    @include breakpoint($md) {
+      width: 40px;
+      height: 40px;
+      font-size: 20px;
+      line-height: 28px;
+    }
+  }
+
+  &_item_container {
+    &--open {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &_description {
+    display: block;
+    overflow: hidden;
+    height: 0;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    transition: 0.3s;
+    @include breakpoint($md) {
+      width: 60%;
+    }
+  }
+
+  &_description--active {
+    height: 100px;
+    margin-top: 8px;
+    transition: 0.3s;
+    @include breakpoint($lg) {
+      margin-top: 12px;
+    }
+    @include breakpoint($xl2) {
+      margin-top: 16px;
+    }
+  }
+
+  &_icon {
+    display: none;
+    width: 0;
+    height: 0;
+
+    img {
+      width: 100%;
+      height: 100%;
+
+      @include breakpoint($md) {
+        width: auto;
+        height: auto;
+      }
+    }
+  }
+
+  &_wrapper {
+    display: flex;
+    width: 100%;
+    resize: horizontal;
+  }
+
+  &_box {
+    width: 100%;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    text-align: start;
+    @include breakpoint($md) {
+      width: 100%;
+    }
+  }
+
+  &_icon--active {
+    display: flex;
+    align-items: flex-end;
+    float: right;
+    width: 100px;
+    height: 100px;
+    margin-top: 86px;
+    margin-left: 15px;
+    shape-outside: inset(calc(100% - 100px) 0 0);
+    @include breakpoint($xs) {
+      margin-top: 85px;
+    }
+
+    @include breakpoint($md) {
+      position: absolute;
+      top: -34px;
+      right: 24px;
+      width: 190px;
+      height: 190px;
+      margin: 0;
+    }
+    @include breakpoint($lg) {
+      top: -24px;
+    }
+    @include breakpoint($xl) {
+      right: 38px;
+    }
+    @include breakpoint($xl2) {
+      top: -33px;
+      right: 42px;
+      width: 200px;
+      height: 200px;
+    }
+  }
+}

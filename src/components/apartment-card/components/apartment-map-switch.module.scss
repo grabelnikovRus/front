@@ -1,0 +1,106 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/breakpoints';
+@import 'src/styles/variables/bg-effect';
+
+.switcher {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  border-radius: 24px;
+  transform: translateZ(0);
+  @include breakpoint($md) {
+    height: 360px;
+  }
+  @include breakpoint($lg) {
+    height: 398px;
+  }
+  @include breakpoint($xl2) {
+    height: 380px;
+  }
+
+  &_btn {
+    width: 100%;
+
+    @include breakpoint($md) {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      z-index: 999;
+      width: 209px;
+    }
+
+    @include breakpoint($lg) {
+      top: 16px;
+      right: 16px;
+    }
+  }
+}
+
+.panorama {
+  box-sizing: content-box;
+  height: 100%;
+  @include breakpoint($md) {
+    height: 360px;
+  }
+  @include breakpoint($lg) {
+    height: 398px;
+  }
+  @include breakpoint($xl2) {
+    height: 380px;
+  }
+}
+
+.modal {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: $white;
+
+  &_header {
+    display: flex;
+    padding: 8px 24px;
+
+    @include breakpoint($xs) {
+      padding: 16px 24px;
+    }
+  }
+
+  &_close {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    margin-left: 16px;
+    padding: 0;
+    border-radius: 50%;
+    background-color: $gray3;
+
+    span {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+    }
+
+    svg {
+      width: 24px;
+      height: 24px;
+
+      path {
+        stroke: $gray4;
+      }
+    }
+  }
+
+  &_content {
+    height: calc(100% - 74px - 90px);
+  }
+
+  &_address {
+    height: 90px;
+    padding: 16px 24px;
+    font-size: 14px;
+    font-family: Inter, sans-serif;
+    line-height: 20px;
+  }
+}

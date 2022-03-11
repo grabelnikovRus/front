@@ -1,0 +1,46 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "src",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "module": "esnext",
+    "moduleResolution": "node",
+    "noEmit": true,
+    "noFallthroughCasesInSwitch": true,
+    "paths": {
+      "@pages/*": [
+        "../pages/*"
+      ],
+      "@/*": [
+        "./*"
+      ],
+      "@components/*": [
+        "components/*"
+      ]
+    },
+    "noImplicitOverride": false,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "es6",
+    "incremental": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "src/api/apis/DefaultApi.ts",
+    "src/api/apis/*V1Api.ts"
+  ]
+}

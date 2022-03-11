@@ -1,0 +1,273 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/breakpoints';
+@import 'src/styles/variables/bg-effect';
+
+.pdf {
+  display: flex;
+  width: 100%;
+  max-width: 100%;
+  font-size: 12px;
+  line-height: 16px;
+
+  @media screen and (min-width: $lg) {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  @media screen and (min-width: $xl2) {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  &_inner {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+  }
+
+  &_nav_bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 52px;
+    padding: 10px 14px;
+    border-radius: 24px 24px 0 0;
+    background-color: $blue_300;
+    outline: none;
+
+    @media screen and (min-width: $xs) {
+      height: 56px;
+    }
+
+    @media screen and (min-width: $md) {
+      border-radius: 32px 32px 0 0;
+    }
+
+    @media screen and (min-width: $lg) {
+      height: 64px;
+      padding: 16px 20px;
+    }
+
+    @media screen and (min-width: $xl2) {
+      height: 80px;
+      padding: 16px 24px;
+      border-radius: 32px 32px 0 0;
+    }
+  }
+
+  svg {
+    color: $dark_100;
+  }
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  color: $dark_100;
+
+  &_item {
+    display: flex;
+    align-items: center;
+  }
+
+  &_btn {
+    width: 24px;
+    height: 24px;
+    border: none;
+    background-color: transparent;
+    color: $white;
+
+    @media screen and (min-width: $xl2) {
+      width: 32px;
+      height: 32px;
+    }
+
+    &___arrow_down {
+      transform: rotate(180deg);
+    }
+
+    &___download {
+      margin-right: 10px;
+
+      @media screen and (min-width: $xl2) {
+        margin-right: 24px;
+      }
+    }
+
+    &___scale_minus {
+      margin-right: 4px;
+
+      @media screen and (min-width: $sm) {
+        margin-right: 10px;
+      }
+
+      @media screen and (min-width: $md) {
+        margin-right: 0;
+      }
+    }
+
+    svg {
+      width: 100%;
+      height: 100%;
+      color: $white;
+    }
+  }
+
+  &_input {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+
+    @media screen and (min-width: $md) {
+      margin-right: 12px;
+    }
+
+    span {
+      width: auto;
+      width: 32px;
+      margin: 0 6px;
+
+      @media screen and (min-width: $sm) {
+        width: 40px;
+      }
+
+      @media screen and (min-width: $md) {
+        width: 52px;
+      }
+
+      @media screen and (min-width: $lg) {
+        width: 60px;
+        margin: 0 12px;
+      }
+    }
+
+    input {
+      height: 32px;
+      border: none;
+      border-radius: 14px;
+      background-color: $white;
+      color: $dark_100;
+
+      @media screen and (min-width: $xs) {
+        border-radius: 70px;
+      }
+
+      @media screen and (min-width: $lg) {
+        height: 36px;
+      }
+
+      @media screen and (min-width: $xl2) {
+        height: 48px;
+      }
+    }
+  }
+
+  &_zoom {
+    position: relative;
+    display: none;
+    margin: 0 20px;
+    margin-right: 35px;
+    font-family: TTNorms, sans-serif;
+    cursor: pointer;
+
+    @media screen and (min-width: $md) {
+      display: block;
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      right: -20px;
+      display: block;
+      width: 20px;
+      height: 20px;
+      background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M16 11.0787C16 11.0787 14 15.1003 12 15.1003C10 15.1003 8 11.0787 8 11.0787' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
+
+      @media screen and (min-width: $md) {
+        top: -5px;
+      }
+
+      @media screen and (min-width: $lg) {
+        top: -3px;
+      }
+
+      @media screen and (min-width: $xl2) {
+        top: -1px;
+      }
+    }
+
+    :global(.rpv-core__popover-body) {
+      border: 1px solid $blue_100;
+      background-color: $white;
+
+      li {
+        margin: 0 0 10px;
+        list-style: none;
+      }
+    }
+  }
+
+  &_pagination {
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+
+    &::before {
+      content: ' ';
+      width: 1px;
+      height: 100%;
+      background-color: $blue_100;
+    }
+
+    :global(.rpv-core__tooltip-body) {
+      border: 1px solid $border3;
+      color: $dark_100;
+    }
+  }
+
+  svg {
+    color: $dark_100;
+  }
+}
+
+.pdf_area {
+  position: relative;
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  box-sizing: border-box;
+  border-radius: 0 0 24px 24px;
+  background-color: $white;
+
+  @media screen and (min-width: $md) {
+    border-radius: 0 0 32px 32px;
+  }
+
+  &_thumbnails {
+    position: absolute;
+    left: 0;
+    z-index: 1;
+    overflow: auto;
+    overflow-x: hidden;
+    width: 0;
+    max-width: 150px;
+    height: 100%;
+    padding: 8px 0;
+    background-color: rgba($dark_400, 0.6);
+    opacity: 0;
+    transition: 0.3s;
+
+    &___open {
+      width: 150px;
+      opacity: 1;
+    }
+  }
+}
+
+.progress_bar {
+  width: 240px;
+}

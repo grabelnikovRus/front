@@ -1,0 +1,169 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/bg-effect';
+@import 'src/styles/variables/breakpoints';
+
+.info {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  &_title {
+    align-self: center;
+    margin-bottom: 32px;
+    font-size: 24px;
+    font-family: Inter, sans-serif;
+    line-height: 32px;
+    @include breakpoint($md) {
+      margin-bottom: 40px;
+      font-size: 32px;
+      line-height: 40px;
+    }
+  }
+
+  &_type {
+    margin-bottom: 16px;
+    font-size: 22px;
+    font-family: Inter, sans-serif;
+    line-height: 32px;
+    @include breakpoint($md) {
+      margin-bottom: 24px;
+    }
+  }
+
+  &_address {
+    margin-bottom: 16px;
+    font-size: 14px;
+    font-family: Inter, sans-serif;
+    line-height: 20px;
+    @include breakpoint($md) {
+      margin-bottom: 24px;
+      font-size: 16px;
+      line-height: 24px;
+    }
+  }
+
+  &_list {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+
+  &_item {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px 0;
+    border-bottom: 1px solid $border1;
+    font-size: 12px;
+    font-family: Inter, sans-serif;
+    line-height: 16px;
+    @include breakpoint($md) {
+      padding: 24px 0;
+      border-width: 1.5px;
+      font-size: 16px;
+      line-height: 24px;
+    }
+    @include breakpoint($xl2) {
+      padding: 32px 0;
+    }
+  }
+
+  &_item:last-child {
+    border: none;
+  }
+
+  &_value {
+    color: $dark_400;
+    font-weight: 700;
+  }
+}
+
+.features {
+  width: 100%;
+  margin-bottom: 32px;
+  @include breakpoint($md) {
+    margin-bottom: 48px;
+    padding: 32px;
+    border-radius: 24px;
+    background-color: $blue_300;
+  }
+
+  &_title {
+    margin-bottom: 16px;
+    font-size: 16px;
+    font-family: Inter, sans-serif;
+    line-height: 24px;
+  }
+
+  &_list {
+    display: flex;
+    flex-direction: column;
+    @include breakpoint($md) {
+      flex-flow: row wrap;
+    }
+  }
+
+  &_feature {
+    margin-bottom: 8px;
+    padding: 16px;
+    border: 1px solid $border1;
+    border-radius: 16px;
+    background-color: $white;
+    font-size: 12px;
+    font-family: Inter, sans-serif;
+    line-height: 16px;
+    @include breakpoint($md) {
+      width: auto;
+      margin-right: 4px;
+    }
+  }
+}
+
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  @include breakpoint($md) {
+    grid-template-columns: repeat(2, 214px);
+    align-self: center;
+  }
+
+  &_next {
+    height: 56px;
+    padding: 0;
+    font-weight: 900;
+  }
+
+  &_back {
+    height: 56px;
+    padding: 0;
+    background-color: $blue_200;
+    color: $blue_100;
+    font-weight: 900;
+    @include breakpoint($md) {
+      border: 2px solid $border1;
+      background-color: transparent;
+      color: $dark_100;
+    }
+
+    &:hover:not([disabled]) {
+      background-color: $blue_200;
+      @include breakpoint($md) {
+        background-color: transparent;
+      }
+    }
+
+    span {
+      display: flex;
+      align-items: center;
+    }
+
+    svg {
+      width: 24px;
+      height: 24px;
+      margin-right: 10px;
+
+      path {
+        stroke: $blue_100;
+      }
+    }
+  }
+}

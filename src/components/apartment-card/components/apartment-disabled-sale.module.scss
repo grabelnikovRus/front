@@ -1,0 +1,23 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/breakpoints';
+@import 'src/styles/variables/bg-effect';
+
+.sold {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 44px;
+  border-radius: 28px;
+  background-color: rgba($color: $red_100, $alpha: 10%);
+  color: $red_100;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  @include breakpoint($md) {
+    width: 218px;
+  }
+  @include breakpoint($xl2) {
+    width: 100%;
+  }
+}

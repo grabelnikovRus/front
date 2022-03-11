@@ -1,0 +1,55 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/breakpoints';
+@import 'src/styles/variables/bg-effect';
+
+.banner_apartment_snippet {
+  width: 100%;
+  border: 1px solid $blue_200;
+  border-radius: 24px;
+  background: $linear-gradient1;
+
+  &_btn {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    margin-left: 16px;
+    border-radius: 50%;
+    background: $blue_100;
+
+    @include breakpoint($xs) {
+      margin-left: 24px;
+    }
+  }
+
+  span {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    font-size: 12px;
+    line-height: 16px;
+    text-align: left;
+    white-space: break-spaces;
+
+    @include breakpoint($xs) {
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    @include breakpoint($md) {
+      padding: 16px 24px;
+      font-size: 16px;
+      line-height: 24px;
+    }
+  }
+
+  svg {
+    width: 24px;
+    height: 24px;
+    color: $white;
+  }
+}

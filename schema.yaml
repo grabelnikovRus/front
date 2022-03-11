@@ -1,0 +1,5098 @@
+openapi: 3.0.3
+info:
+  title: SITE API
+  version: "1.0"
+  description: API сайта ПИК Брокер
+  x-logo:
+    url: "https://pik-broker.ru/images/logo.svg"
+
+servers:
+  - url: "http://localhost:{port}/api-react"
+    description: localhost
+    variables:
+      port:
+        default: '8030'
+  - url: "https://back.kvarta.ru/api-react"
+    description: Production (live)
+  - url: "https://demo-back.kvarta.ru/api-react"
+    description: Demo
+  - url: "https://back-rc.kvarta.ru/api-react"
+    description: Rc
+  - url: "https://back-dev.kvarta.ru/api-react"
+    description: Dev
+  - url: https://back-{branch}.kvarta.ru/api-react
+    description: Dev feature branch
+    variables:
+      branch:
+        default: develop
+        description: Git branch name
+  - url: '{server}/api-react'
+    description: Custom
+    variables:
+      server:
+        default: 'https://demo-back.kvarta.ru'
+
+paths:
+  /batch-v1:
+    post:
+      operationId: batch
+      deprecated: true
+      tags: [batch]
+      summary: Массовый вызов методов API
+      responses:
+        200:
+          $ref: '#/components/responses/batch'
+        400:
+          $ref: '#/components/responses/batch'
+      requestBody:
+        $ref: '#/components/requestBodies/batch'
+
+  /batch-v2:
+      post:
+          operationId: batchV2
+          tags: [ batch ]
+          summary: Массовый вызов методов API V2
+          responses:
+              200:
+                  $ref: '#/components/responses/batch'
+              400:
+                  $ref: '#/components/responses/400'
+          requestBody:
+              $ref: '#/components/requestBodies/batch'
+
+  /contacts-v1:
+    get:
+      operationId: get-contacts
+      tags: [contact]
+      summary: Получение контактов
+      responses:
+        200:
+          $ref: '#/components/responses/get-contacts'
+
+  /apartments-count-v1:
+      post:
+          operationId: count-apartments
+          tags: [ apartment ]
+          summary: Подсчёт количества квартир
+          requestBody:
+              $ref: '#/components/requestBodies/apartment-count'
+          responses:
+              200:
+                  $ref: '#/components/responses/count-apartments'
+              400:
+                  $ref: '#/components/responses/400'
+
+  /apartments-search-v1:
+      post:
+          operationId: search-apartments-v1
+          tags: [ apartment ]
+          summary: Поиск квартир
+          parameters:
+              -   in:   query
+                  required: true
+                  name: page
+                  schema:
+                      type: integer
+              -   in:   query
+                  required: true
+                  name: perPage
+                  schema:
+                      type: integer
+              -   in:   query
+                  name: sortBy
+                  schema:
+                      $ref: '#/components/schemas/sortBy'
+              -   in:   query
+                  name: sortOrder
+                  schema:
+                      $ref: '#/components/schemas/sortOrder'
+              -   name: promo
+                  in: query
+                  schema:
+                      $ref: '#/components/schemas/promo'
+          requestBody:
+              $ref: '#/components/requestBodies/apartment-search-v1'
+          responses:
+              200:
+                  $ref: '#/components/responses/search-apartments-v1'
+              400:
+                  $ref: '#/components/responses/400'
+
+  /apartments-similar-v1/{id}:
+      get:
+          tags: [ apartment ]
+          summary: Поиск похожих квартир в радиусе 3км
+          parameters:
+              -   name:        id
+                  in:          path
+                  required:    true
+                  description: "**Apartment amoId**. *Example: `2172797`*."
+                  schema:
+                      type: integer
+              -   name:        limit
+                  in:          query
+                  required:    true
+                  example: 5
+                  schema:
+                      type: integer
+              -   name: promo
+                  in: query
+                  schema:
+                      $ref: '#/components/schemas/promo'
+          responses:
+              200:
+                  $ref: '#/components/responses/search-apartments-v1'
+              404:
+                  $ref: '#/components/responses/404'
+
+  /apartments-v2/{id}:
+    get:
+      operationId: get-apartment
+      tags: [apartment]
+      summary: Получение квартиры по amoId без нормализации null к {}, добавился 404 ответ
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: "**Apartment amoId**. *Example: `2172797`*."
+          schema:
+            type: integer
+        -   name: promo
+            in: query
+            schema:
+                $ref: '#/components/schemas/promo'
+      responses:
+        200:
+          $ref: '#/components/responses/get-apartment'
+        400:
+          $ref: '#/components/responses/400'
+        404:
+          $ref: '#/components/responses/404'
+
+  /apartments-v2/{id}/meta:
+    get:
+      operationId: get-apartment-meta
+      tags: [apartment]
+      summary: Получение мета-данных квартиры, добавился 404 ответ
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: "**Apartment ID**. *Example: `2172797`*."
+          schema:
+            type: integer
+      responses:
+        200:
+          $ref: '#/components/responses/get-apartment-meta'
+        404:
+          $ref: '#/components/responses/404'
+
+  /apartments-v2/{id}/loan:
+    get:
+      operationId: get-apartment-loan
+      tags: [apartment]
+      summary: Расчет платежа по ипотеке
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: "**Apartment ID**. *Example: `2172797`*."
+          schema:
+            type: integer
+        - name: amount
+          in: query
+          required: true
+          description: Сумма первоначального взноса по ипотеке
+          schema:
+            type: integer
+        - name: duration
+          in: query
+          required: true
+          description: Срок ипотеки в годах
+          schema:
+            type: integer
+        -   name: promo
+            in: query
+            schema:
+                $ref: '#/components/schemas/promo'
+      responses:
+        200:
+          $ref: '#/components/responses/get-apartment-loan'
+        400:
+          $ref: '#/components/responses/400'
+        404:
+          $ref: '#/components/responses/404'
+
+  /apartments-map-v1:
+      post:
+          operationId: apartments-map
+          tags: [ apartment-map ]
+          summary: Поиск квартир на карте (формат ObjectManager)
+          requestBody:
+              $ref: '#/components/requestBodies/apartments-map-v2'
+          responses:
+              200:
+                  $ref: '#/components/responses/apartments-map-v2'
+              400:
+                  $ref: '#/components/responses/400'
+
+  /bounding-box-v1:
+      post:
+          operationId: bounding-box
+          tags: [ apartment-map ]
+          summary: Возвращает bounding box по фильтру
+          requestBody:
+              $ref: '#/components/requestBodies/bounding-box'
+          responses:
+              200:
+                  $ref: '#/components/responses/bounding-box'
+              400:
+                  $ref: '#/components/responses/400'
+
+  /settings-v1/catalog:
+    get:
+      operationId: get-catalog-settings
+      deprecated: true
+      tags: [setting]
+      summary: Получение настроек и значений для фильтров каталога
+      responses:
+        200:
+          $ref: '#/components/responses/get-catalog-settings'
+
+  /catalog-settings-v1:
+    get:
+      operationId: get-catalog-settings-new
+      tags: [setting]
+      summary: Получение настроек и значений для фильтров каталога
+      responses:
+        200:
+          $ref: '#/components/responses/get-catalog-settings-new'
+
+  /settings-v1/userpanel:
+    get:
+      operationId: get-userpanel-settings
+      tags: [setting]
+      summary: Получение настроек для формы входа
+      responses:
+        200:
+          $ref: '#/components/responses/get-userpanel-settings'
+
+  /pages-v2/{slug}:
+    get:
+      operationId: get-page
+      tags: [page]
+      summary: Получение информации о странице и её виджетах, добавился 404 ответ
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          description: "**Page slug or alias**. *Example: `tradeinPage`, `tradein`*."
+          schema:
+            type: string
+      responses:
+        200:
+          $ref: '#/components/responses/get-page'
+        404:
+          $ref: '#/components/responses/404'
+
+  /pages-v1:
+    get:
+      operationId: get-pages
+      tags: [page]
+      summary: Получение списка страниц сайта
+      responses:
+        200:
+          $ref: '#/components/responses/get-pages'
+
+  /widgets-v1:
+    get:
+      operationId: get-widgets
+      tags: [widget]
+      summary: Получение списка глобальных виджетов
+      responses:
+        200:
+          $ref: '#/components/responses/get-widgets'
+
+  /menus-v1:
+    get:
+      operationId: get-menu
+      summary: Получение дерева списков активных меню
+      tags: [menu]
+      responses:
+        200:
+          $ref: '#/components/responses/get-menu'
+
+  /complaints-v1:
+    post:
+      operationId: create-complaint
+      tags: [complaint]
+      summary: Отправка жалобы
+      requestBody:
+        $ref: '#/components/requestBodies/complaints'
+      responses:
+        200:
+          $ref: '#/components/responses/create-complaint'
+        400:
+            $ref: '#/components/responses/400'
+
+  /complaints-v1/{id}/verify:
+    post:
+      operationId: verify-complaint
+      tags: [complaint]
+      summary: Проверка номера телефона при создании жалобы
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: "Complaint id"
+          schema:
+            type: integer
+      requestBody:
+        $ref: '#/components/requestBodies/complaints-verify'
+      responses:
+        200:
+          $ref: '#/components/responses/verify-complaint'
+        400:
+          $ref: '#/components/responses/verify-complaint'
+
+  /userpanel-v1/signup:
+    post:
+      operationId: sign-up
+      tags: [userpanel]
+      summary: Регистрация пользователя в ЛК
+      requestBody:
+        $ref: '#/components/requestBodies/userpanel-sign-up'
+      responses:
+        200:
+          $ref: '#/components/responses/sign-up'
+        400:
+            $ref: '#/components/responses/400'
+        422:
+            $ref: '#/components/responses/lk-422'
+        503:
+            $ref: '#/components/responses/lk-503'
+
+  /userpanel-v1/enter-with-check-list:
+    post:
+      operationId: enter-with-check-list
+      tags: [userpanel]
+      summary: Вход пользователя в ЛК с передачей чек-листа сделки
+      description: В случае, если пользователь уже зарегистрирован, происходит вход. Иначе - регистрация
+      requestBody:
+        $ref: '#/components/requestBodies/userpanel-enter-with-check-list'
+      responses:
+        200:
+          $ref: '#/components/responses/sign-up'
+        400:
+            $ref: '#/components/responses/400'
+        422:
+            $ref: '#/components/responses/lk-422'
+        503:
+            $ref: '#/components/responses/lk-503'
+
+  /userpanel-v1/signin:
+    post:
+      operationId: sign-in
+      tags: [userpanel]
+      summary: Вход зарегистрированного пользователя в ЛК
+      requestBody:
+        $ref: '#/components/requestBodies/userpanel-sign-in'
+      responses:
+        200:
+          $ref: '#/components/responses/sign-up'
+        400:
+          $ref: '#/components/responses/400'
+        422:
+            $ref: '#/components/responses/lk-422'
+        503:
+            $ref: '#/components/responses/lk-503'
+
+  /userpanel-v1/login:
+    post:
+      operationId: log-in
+      tags: [userpanel]
+      summary: Аутентификация пользователя по коду из смс
+      requestBody:
+        $ref: '#/components/requestBodies/userpanel-log-in'
+      responses:
+        200:
+          $ref: '#/components/responses/log-in'
+        400:
+            $ref: '#/components/responses/400'
+        422:
+            $ref: '#/components/responses/lk-422'
+        503:
+            $ref: '#/components/responses/lk-503'
+
+  /userpanel-v1/profile:
+    get:
+      operationId: get-profile
+      tags: [userpanel]
+      summary: Информация о профиле пользователя
+      description: 'Токен авторизации, полученный в `/login`, должен быть передан в заголовке `Authorization: Bearer {token}`'
+      security:
+        - userpanelBearerAuth: []
+      responses:
+        200:
+          $ref: '#/components/responses/get-profile'
+        503:
+            $ref: '#/components/responses/lk-503'
+
+  /lead-v2/create:
+    post:
+      operationId: create-lead
+      tags: [lead]
+      summary: Сохранение заявки из каталога
+      requestBody:
+        $ref: '#/components/requestBodies/lead-create'
+      responses:
+        200:
+          $ref: '#/components/responses/create-lead'
+        400:
+          $ref: '#/components/responses/400'
+
+  /lead-v2/{id}/verify:
+      post:
+          operationId: verify-lead
+          tags: [ lead ]
+          summary: Проверка номера телефона в заявке из каталога
+          parameters:
+              -   name: id
+                  in: path
+                  required: true
+                  description: "Order id"
+                  schema:
+                      type: integer
+          requestBody:
+              $ref: '#/components/requestBodies/complaints-verify'
+          responses:
+              200:
+                  $ref: '#/components/responses/verify-complaint'
+              400:
+                  $ref: '#/components/responses/verify-complaint'
+
+  /coords-checker-v1:
+      get:
+          operationId: check-coords
+          summary: Проверка вхождения координат в зону выкупа
+          parameters:
+              -   name: longitude
+                  description: Долгота
+                  in: query
+                  required: true
+                  schema:
+                      type: number
+                      example: 37.664908
+              -   name: latitude
+                  description: Широта
+                  in: query
+                  required: true
+                  schema:
+                      type: number
+                      example: 55.946258
+          responses:
+              200:
+                  $ref: '#/components/responses/coords-checker'
+              400:
+                  $ref: '#/components/responses/400'
+              503:
+                  $ref: '#/components/responses/503'
+
+  /infrastructure-v1:
+      get:
+          operationId: get-infrastructure
+          tags: [ infrastructure ]
+          summary: Справочник инфраструктур
+          responses:
+              200:
+                  $ref: '#/components/responses/infrastructure'
+
+components:
+  securitySchemes:
+    userpanelBearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    empty-body:
+      type: object
+      properties:
+        response:
+          type: object
+          properties:
+            body:
+              type: object
+              nullable: true
+            errors:
+              $ref: '#/components/schemas/errors'
+          required: [ body, errors ]
+      required: [ response ]
+    errors:
+      type: array
+      items:
+        type: object
+        properties:
+          message: { type: string }
+          field: { type: string, nullable: true }
+          code: { type: integer }
+        additionalProperties: false
+    uuid:
+      type: string
+      format: uuid
+    address:
+      description: Адрес
+      type: object
+      properties:
+        formatted:
+          description: Отформатированная строка адреса
+          type: string
+          example: г. Санкт-Петербург, Петроградский район, Проспект Славы 52, корпус 1
+        point:
+          type: object
+          properties:
+            latitude:
+              description: Широта
+              type: number
+              example: 59.864837
+            longitude:
+              description: Долгота
+              type: number
+              example: 30.410218
+          required: [latitude, longitude]
+          additionalProperties: false
+      required: [formatted, point]
+      additionalProperties: false
+    image-group:
+      type: object
+      nullable: true
+      properties:
+        uuid:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+      required: [ uuid, name, slug ]
+      additionalProperties: false
+    apartment-reference:
+      type: object
+      nullable: true
+      properties:
+        uuid:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+          nullable: true
+        altTitle:
+          type: string
+          nullable: true
+      required: [uuid, name, slug, altTitle]
+      additionalProperties: false
+    subway-station:
+      properties:
+        uuid:
+          type: string
+        displayName:
+          type: string
+        subwayLine:
+          $ref: "#/components/schemas/subway-line"
+      required: [uuid, displayName, subwayLine]
+      additionalProperties: false
+    subway-line:
+      properties:
+        uuid:
+          type: string
+        name:
+          type: string
+        color:
+          type: string
+      required: [uuid, name, color]
+      additionalProperties: false
+    sortBy:
+      type: string
+      enum:
+        - createdAt
+        - priceRub
+        - fullArea
+    sortOrder:
+      type: string
+      enum:
+        - asc
+        - desc
+    promo:
+        type: string
+        description: Промо акция для расчёта скидки и ипотеки
+        enum:
+            - default
+            - ex_max
+    apartment:
+      type: object
+      additionalProperties: false
+      required: [ uuid, amoId, address, subwayStations, videos, images, roominess, balconiesCount, loggiasCount, combinedWcsCount, separateWcsCount, floorNumber, fullArea, livingArea, kitchensArea, balconiesAndLoggiasArea, bedroomsArea, bathroomsArea, wcsArea, hallwaysArea, priceRub, buildingSeries, buildingConstructionYear, buildingConstructionYearComment, buildingFloorCount, buildingCeilingHeight, buildingPassengerElevatorsCount, buildingFreightElevatorsCount, isBuildingHasGarbageChute, buildingPorchsCount, buildingType, buildingParkingType, buildingDeveloper, housingComplex, housingComplexBuilding, saleTypes, housingType, decorationType, heatingType, roomType, stoveType, windowViewType, contactPhoneNumber, isRedevelopment, loanRate, discountRate ]
+      properties:
+        uuid:
+          description: Уникальный идентификатор UUID версии 4
+          type: string
+          example: 22ccc351-7de3-4833-b48c-a184865128be
+        amoId:
+          description: Идентификатор в АМО. На сайте будет использоваться как артикул
+          type: integer
+          example: 482
+        address:
+          $ref: "#/components/schemas/address"
+        subwayStations:
+          description: Станции метро
+          type: array
+          items:
+            type: object
+            properties:
+              travelTimeToStation:
+                description: Целое число минут, необходимое чтобы добраться до соответствующей станции метро способом travel
+                type: integer
+              travel:
+                $ref: "#/components/schemas/apartment-reference"
+              station:
+                $ref: "#/components/schemas/subway-station"
+            required: [ travelTimeToStation, travel, station ]
+            additionalProperties: false
+        videos:
+          type: array
+          items:
+            type: object
+            properties:
+              source:
+                type: string
+              id:
+                type: string
+            required: [ source, id ]
+        images:
+          type: array
+          items:
+            type: object
+            properties:
+              uuid:
+                type: string
+              title:
+                type: string
+              alt:
+                type: string
+              isMain:
+                type: boolean
+              isPlan:
+                type: boolean
+              fileUrl:
+                type: string
+              imageGroup:
+                $ref: "#/components/schemas/image-group"
+            required: [ uuid, title, alt, isMain, isPlan, fileUrl, imageGroup ]
+            additionalProperties: false
+        roominess:
+          type: object
+          properties:
+            isStudio:
+              description: Является-ли квартира студией
+              type: boolean
+              example: false
+            count:
+              description: Количество комнат в квартире. Учитывается только если isStudio == false
+              type: integer
+              nullable: true
+              example: 3
+            area:
+              type: array
+              nullable: true
+              items:
+                description: Площадь комнаты, кв. дм.
+                type: integer
+              example: [ 1800, 2500, 2050 ]
+        balconiesCount:
+          description: Количество балконов в квартире
+          type: integer
+        loggiasCount:
+          description: Количество лоджий в квартире
+          type: integer
+          nullable: true
+        combinedWcsCount:
+          description: Количество совмещенных санузлов
+          type: integer
+        separateWcsCount:
+          description: Количество раздельных санузлов
+          type: integer
+        floorNumber:
+          description: Этаж квартиры
+          type: integer
+        fullArea:
+          description: Полная площадь квартиры в квадратных дециметрах
+          type: integer
+          example: 8820
+        livingArea:
+          description: Жилая площадь квартиры в квадратных дециметрах
+          type: integer
+          nullable: true
+          example: 4280
+        kitchensArea:
+          description: Площадь кухни квартиры в квадратных дециметрах
+          type: integer
+          nullable: true
+          example: 1390
+        balconiesAndLoggiasArea:
+          description: Суммарная площадь балконов и лоджий квартиры в квадратных дециметрах
+          type: integer
+          nullable: true
+        bedroomsArea:
+          description: Суммарная площадь спален квартиры в квадратных дециметрах
+          type: integer
+          nullable: true
+        bathroomsArea:
+          description: Суммарная площадь ванных комнат квартиры в квадратных дециметрах
+          type: integer
+          nullable: true
+        wcsArea:
+          description: Суммарная площадь туалетов квартиры в квадратных дециметрах
+          type: integer
+          nullable: true
+        hallwaysArea:
+          description: Суммарная площадь прихожих квартиры в квадратных дециметрах
+          type: integer
+          nullable: true
+        priceRub:
+          description: Стоимость квартиры в рублях без копеек
+          type: integer
+          example: 6000000
+        buildingSeries:
+          description: Серия здания
+          type: string
+          nullable: true
+          example: Сады Придонья
+        buildingConstructionYear:
+          description: Год постройки здания
+          type: integer
+          example: 2026
+        buildingConstructionYearComment:
+          description: Коментарий к году постройки здания
+          example: Завершение строительства II квартал 2026г
+          type: string
+          nullable: true
+        buildingFloorCount:
+          description: Количество этажей в здании
+          type: integer
+          example: 10
+        buildingCeilingHeight:
+          description: Высота потолков в здании в сантиметрах
+          type: integer
+          nullable: true
+          example: 310
+        buildingPassengerElevatorsCount:
+          description: Количество пассажирских лифтов в здании
+          type: integer
+          nullable: true
+        buildingFreightElevatorsCount:
+          description: Количество грузовых лифтов в здании
+          type: integer
+          nullable: true
+        isBuildingHasGarbageChute:
+          description: Наличие мусоропровода в здании
+          type: boolean
+          nullable: true
+        buildingPorchsCount:
+          description: Количество подъездов в здании
+          type: integer
+          nullable: true
+        buildingType:
+#          description: Тип стен здания
+          $ref: "#/components/schemas/apartment-reference"
+        buildingParkingType:
+#          description: Тип парковки здания
+          $ref: "#/components/schemas/apartment-reference"
+        buildingDeveloper:
+#          description: Застройщик
+          $ref: "#/components/schemas/apartment-reference"
+        housingComplex:
+#          description: Объект ЖК
+          $ref: "#/components/schemas/apartment-reference"
+        housingComplexBuilding:
+#          description: Объект корпуса ЖК
+          $ref: "#/components/schemas/apartment-reference"
+        saleTypes:
+          description: Типы продажи
+          type: array
+          minItems: 1
+          items:
+            $ref: "#/components/schemas/apartment-reference"
+        housingType:
+#          description: Объект типа квартиры (Первичка / Вторичка)
+          $ref: "#/components/schemas/apartment-reference"
+        decorationType:
+#          description: Объект типа отделки квартиры (Уровень и наличие ремонта)
+          $ref: "#/components/schemas/apartment-reference"
+        heatingType:
+#          description: Объект типа отопления квартиры (Центральное, индивидуальное, паровое, буржуйка)
+          $ref: "#/components/schemas/apartment-reference"
+        roomType:
+#          description: Объект типа комнат квартиры (Изолированные / Смежные)
+          $ref: "#/components/schemas/apartment-reference"
+        stoveType:
+#          description: Объект типа кухонной плиты квартиры (Газовая / Электрическая)
+          $ref: "#/components/schemas/apartment-reference"
+        windowViewType:
+#          description: Объект типа вида из окон квартиры (Во двор / на улицу / На обе стороны)
+          $ref: "#/components/schemas/apartment-reference"
+        contactPhoneNumber:
+          description: Номер телефона для обращений по квартире
+          type: string
+          example: '+74951234567'
+        isRedevelopment:
+          description: Наличие перепланировки
+          type: boolean
+          nullable: true
+        loanRate:
+          description: Ставка по ипотеке по базовым параметрам
+          type: number
+          nullable: true
+          example: 0.075
+        discountRate:
+          description: Скидка на квартиру
+          type: number
+          nullable: true
+          example: 0.075
+        statusLabel:
+          description: "Статус квартиры: listed = актуальна, unlisted = продана"
+          type: string
+          enum:
+              - listed
+              - unlisted
+
+    apartment-amo-history:
+        type: object
+        properties:
+            amoHistory:
+                type: object
+                nullable: true
+                description: Описание полей в https://docs.google.com/spreadsheets/d/1YpR5cWan1DRIx0F1i1Th2v8yQ1OZLsrAnAWKVPUa4Y4/edit#gid=0
+                properties:
+                    673559:
+                        type: string
+                        nullable: true
+                    684643:
+                        type: string
+                        nullable: true
+                    780121:
+                        type: string
+                        nullable: true
+                    hirLcQku:
+                        type: string
+                        nullable: true
+                    764683:
+                        type: string
+                        nullable: true
+                    764685:
+                        type: string
+                        nullable: true
+                    5UeIEF5P:
+                        type: string
+                        nullable: true
+                    Jsit07Wz:
+                        type: string
+                        nullable: true
+                    764691:
+                        type: string
+                        nullable: true
+                    TDz9B66r:
+                        type: string
+                        nullable: true
+                    764687:
+                        type: string
+                        nullable: true
+                    764689:
+                        type: string
+                        nullable: true
+                    771347:
+                        type: string
+                        nullable: true
+                    V7HBbI69:
+                        type: string
+                        nullable: true
+                    VAPlbzfg:
+                        type: string
+                        nullable: true
+                    bhkSH53F:
+                        type: string
+                        nullable: true
+                    YgtTtzFX:
+                        type: string
+                        nullable: true
+                    JtTOnZvX:
+                        type: string
+                        nullable: true
+                    1TW2TwPo:
+                        type: string
+                        nullable: true
+                    Aoc2d5Lp:
+                        type: string
+                        nullable: true
+                    45rHJX7F:
+                        type: string
+                        nullable: true
+                    JVZ4UuLd:
+                        type: string
+                        nullable: true
+                    pUdSQBIg:
+                        type: string
+                        nullable: true
+                    YjGKPguD:
+                        type: string
+                        nullable: true
+                    l8s9cBSr:
+                        type: string
+                        nullable: true
+                    780231:
+                        description: Дата снятия обременения
+                        type: string
+                        nullable: true
+                    ddu_link:
+                        description: ДДУ / Договор долевого участия
+                        type: string
+                        nullable: true
+                    dupt_pb_link:
+                        description: ДУПТ ПБ / Договор уступки права требования ПИК-Брокер
+                        type: string
+                        nullable: true
+                    avz_pb_link:
+                        description: АВЗ ПБ / Акт взаиморасчетов ПИК-Брокер
+                        type: string
+                        nullable: true
+                    pp_link:
+                        description: ПП ПБ / Платежное поручение ПИК-Брокер
+                        type: string
+                        nullable: true
+                    escrow_link:
+                        description: Договор счета эскроу
+                        type: string
+                        nullable: true
+                    pp_ods_link:
+                        description: Платежное поручение о зачислении денежных средств на эскроу
+                        type: string
+                        nullable: true
+                    credit_link:
+                        description: Справка о погашении кредита
+                        type: string
+                        nullable: true
+                    egrn_link:
+                        description: Выписка из ЕГРН / Свидетельство о праве собственности клиента
+                        type: string
+                        nullable: true
+                    title_document_link:
+                        description: Правоустанавливающий документ
+                        type: string
+                        nullable: true
+                    egrn_pb_link:
+                        description: ЕГРН ПБ / Единый государственный реестр недвижимости ПИК-Брокер
+                        type: string
+                        nullable: true
+                    dkp_pb_link:
+                        description: ДКП ПБ / Договор купли продажи ПИК-Брокер
+                        type: string
+                        nullable: true
+                    app_pb_link:
+                        description: АПП ПБ / Акт приема-передачи ПИК-Брокер
+                        type: string
+                        nullable: true
+                    vdk_link:
+                        description: Чистая ВДК / Выписка из домовой книги
+                        type: string
+                        nullable: true
+                    agreement_link:
+                        description: Согласие супруга / нотариальное заявление об отсутствии брака/ брачный договор
+                        type: string
+                        nullable: true
+                    legal_opinion:
+                        description: Юридическое заключение
+                        type: string
+                        nullable: true
+                additionalProperties: false
+        required: [amoHistory]
+
+    apartment-with-amo-history:
+        anyOf:
+            -   $ref: '#/components/schemas/apartment'
+            -   $ref: '#/components/schemas/apartment-amo-history'
+
+    apartments-filter:
+      allOf:
+        - $ref: '#/components/schemas/apartments-filters'
+        - $ref: '#/components/schemas/apartments-sorts'
+    apartments-filters:
+      properties:
+        address:
+          type: string
+          example: "address 1, address 2"
+          deprecated: true
+          description: Адрес. Ищет плохо, вместо адреса стоит лучше использовать toponym
+        city:
+          type: string
+          nullable: true
+        toponym:
+            description: Топоним. Формат Яндекс гео. Если передать топоним, то фильтр Адрес игнорируется
+            type: array
+            minItems: 1
+            items:
+                type: object
+                properties:
+                    kind:
+                        type: string
+                    name:
+                        type: string
+                required: [ kind, name ]
+        roominess:
+          type: array
+          items: { type: string }
+        priceRubMin:
+          type: integer
+        priceRubMax:
+          type: integer
+        fullAreaMin:
+          type: integer
+        fullAreaMax:
+          type: integer
+        kitchensAreaMin:
+          type: integer
+        kitchensAreaMax:
+          type: integer
+        livingAreaMin:
+          type: integer
+        livingAreaMax:
+          type: integer
+        buildingFloorCountMin:
+          type: integer
+        buildingFloorCountMax:
+          type: integer
+        floorNumberMin:
+          type: integer
+        floorNumberMax:
+          type: integer
+        buildingCeilingHeight:
+          type: array
+          items:
+            type: string
+            enum:
+              - 'no-matter'
+              - '>=250'
+              - '>=270'
+              - '>=300'
+              - '>=350'
+              - '>=400'
+        housingTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/uuid'
+        saleTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/uuid'
+        decorationTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/uuid'
+        buildingTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/uuid'
+        windowViewTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/uuid'
+        buildingParkingTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/uuid'
+        wcsType:
+          type: array
+          items:
+            type: string
+            enum:
+              - 'no-matter'
+              - 'combined'
+              - 'separate'
+        elevatorType:
+          type: array
+          items:
+            type: string
+            enum:
+              - 'no-matter'
+              - 'any'
+              - 'freight'
+        balconyType:
+          type: array
+          items:
+            type: string
+            enum:
+              - 'no-matter'
+              - 'loggia'
+              - 'balcony'
+        buildingGarbageChute:
+          type: array
+          items:
+            type: string
+            enum:
+              - 'no-matter'
+              - 'yes'
+              - 'no'
+        apartments:
+          description: Фильтр по id квартир
+          type: array
+          minItems: 1
+          items:
+            description: Amo id квартиры
+            type: integer
+        loanRateMin:
+          type: number
+        loanRateMax:
+          type: number
+        boundingBox:
+            type: object
+            properties:
+                lowLeftLong:
+                    type: number
+                lowLeftLat:
+                    type: number
+                upRightLong:
+                    type: number
+                upRightLat:
+                    type: number
+            required: [ lowLeftLong, lowLeftLat, upRightLong, upRightLat ]
+    apartments-sorts:
+      type: object
+      properties:
+        page:
+          type: integer
+        sortBy:
+          $ref: '#/components/schemas/sortBy'
+        sortOrder:
+          $ref: '#/components/schemas/sortOrder'
+
+    source:
+        description: Сайт-источник запроса
+        type: string
+        nullable: false
+        enum:
+            - kvarta.ru
+            - pik-broker.ru
+
+    catalog-text:
+      type: object
+      properties:
+        title:
+          type: string
+        type:
+          type: string
+          enum: ['text']
+        required:
+          type: boolean
+        default:
+          type: string
+          nullable: true
+        minlength:
+          type: number
+        maxlength:
+          type: number
+        pattern:
+          type: string
+        regexp:
+          type: string
+          nullable: true
+        messages:
+          $ref: '#/components/schemas/validation-messages'
+      required: [type, required, default, minlength, maxlength, pattern, regexp]
+      additionalProperties: false
+
+    catalog-text-new:
+      type: object
+      properties:
+        title:
+          type: string
+        placeholder:
+          type: string
+          nullable: true
+        type:
+          type: string
+          enum: ['text']
+        initial:
+          type: string
+          nullable: true
+        validation:
+          $ref: '#/components/schemas/validation'
+      required: [title, placeholder, type, initial, validation]
+      additionalProperties: false
+
+    catalog-number:
+      type: object
+      properties:
+        title:
+          type: string
+        type:
+          type: string
+          enum: ['number']
+        required:
+          type: boolean
+        default:
+          type: number
+          nullable: true
+        min:
+          type: number
+        max:
+          type: number
+        messages:
+          $ref: '#/components/schemas/validation-messages'
+      required: [type, required, default, min, max]
+      additionalProperties: false
+
+    catalog-number-new:
+      type: object
+      properties:
+        title:
+          type: string
+        placeholder:
+          type: string
+          nullable: true
+        type:
+          type: string
+          enum: ['number']
+        initial:
+          type: number
+          nullable: true
+        validation:
+          $ref: '#/components/schemas/validation'
+      required: [title, placeholder, type, initial, validation]
+      additionalProperties: false
+
+    catalog-select:
+      type: object
+      properties:
+        title:
+          type: string
+        type:
+          type: string
+          enum: [ 'radio', 'checkbox', 'select' ]
+        required:
+          type: boolean
+        multiple:
+          type: boolean
+        default:
+          type: array
+          nullable: true
+          items:
+            type: string
+        options:
+          type: array
+          items:
+            type: object
+            properties:
+              value:
+                type: string
+                nullable: true
+              caption:
+                type: string
+              slug:
+                type: string
+                nullable: true
+            required: [value, caption, slug]
+            additionalProperties: false
+        messages:
+          $ref: '#/components/schemas/validation-messages'
+
+    catalog-select-new:
+      type: object
+      properties:
+        title:
+          type: string
+        type:
+          type: string
+          enum: [ 'radio', 'checkbox', 'select' ]
+        multiple:
+          type: boolean
+          default: false
+        initial:
+          type: array
+          nullable: true
+          items:
+            type: string
+        options:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+            required: [id, name]
+            additionalProperties: false
+        validation:
+          $ref: '#/components/schemas/validation'
+      required: [title, type, initial, options, validation]
+      additionalProperties: false
+
+    catalog-checkbox-group:
+      type: object
+      properties:
+        title:
+          type: string
+        type:
+          type: string
+          enum: [ 'checkbox-group', 'select' ]
+        strategy:
+          type: string
+          enum: ['any', 'only-one', 'by-default']
+          description: |
+            - any - например "Количество комнат" - можно выбирать несколько в любых комбинациях
+            - only-one - например "Мусоропровод" - можно выбрать только один
+            - by-default - например "Высота потолков" - по-умолчанию выбран вариант initial,
+              при выборе другого варианта - выбор с initial убирается,
+              при выборе выборе варианта initial выбор с других вариантов снимается
+        layout:
+          type: string
+          nullable: true
+          enum: ['row', 'main', 'wrap', 'column']
+          description: |
+            row - чекбосы в одну строку, каждый чекбокс занимает равную долю ширины
+            main - чекбоксы в одну строку, первый чекбокс растягивается на всю ширину
+            wrap - чекбоксы не растягиваются на всю строку, возможен перенос на новую строку
+            column - чекбоксы в колонку, каждый растянут на всю ширину, с иконками
+        initial:
+          type: array
+          nullable: true
+          items:
+            type: string
+        options:
+          type: array
+          items:
+            type: object
+            properties:
+              value:
+                type: string
+                nullable: true
+              caption:
+                type: string
+              icon:
+                type: string
+                nullable: true
+            required: [value, caption, icon]
+            additionalProperties: false
+        validation:
+          $ref: '#/components/schemas/validation'
+      required: [title, type, strategy, initial, options, validation]
+      additionalProperties: false
+
+    catalog-checkbox:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: ['checkbox']
+        initial:
+          type: boolean
+          nullable: true
+        validation:
+          $ref: '#/components/schemas/validation'
+      required: [type, initial, validation]
+      additionalProperties: false
+
+    page-info-short:
+      type: object
+      properties:
+        main:
+          type: boolean
+        active:
+          type: boolean
+        alias:
+          type: string
+        slug:
+          type: string
+        meta_title:
+          type: string
+        meta_description:
+          type: string
+        og_title:
+          type: string
+        og_description:
+          type: string
+        display_name:
+          type: string
+      required: [main, active, alias, slug, meta_title, meta_description, og_title, og_description, display_name]
+    page-info:
+      type: object
+      properties:
+        alias:
+          type: string
+        slug:
+          type: string
+        meta_title:
+          type: string
+        meta_description:
+          type: string
+        og_title:
+          type: string
+        og_description:
+          type: string
+        display_name:
+          type: string
+      additionalProperties: false
+      required: [alias, slug, meta_title, meta_description, og_title, og_description, display_name]
+    widget:
+      type: object
+      properties:
+        name:
+          type: string
+        fields:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/widget-fields'
+        data:
+          type: object
+          nullable: true
+        restrict:
+          type: object
+          properties:
+            filter:
+              type: integer
+              enum: [ 1, 2, 3 ]
+              description: >
+                Sort order:
+                 * `1` - As default, allow global widget for all pages
+                 * `2` - Allow global widget only for listed pages slugs
+                 * `3` - Disallow global widget for listed pages slugs
+            pages:
+              type: array
+              items:
+                type: string
+          nullable: true
+      additionalProperties: false
+      required: [name, fields]
+    widget-fields:
+      oneOf:
+        - $ref: '#/components/schemas/widget-field-image'
+        - $ref: '#/components/schemas/widget-field-pdf'
+        - $ref: '#/components/schemas/widget-field-options-multiple'
+        - $ref: '#/components/schemas/widget-field-text'
+        - $ref: '#/components/schemas/widget-field-stack'
+      discriminator:
+        propertyName: widgetType
+        mapping:
+          image: '#/components/schemas/widget-field-image'
+          pdf: '#/components/schemas/widget-field-pdf'
+          options-multiple: '#/components/schemas/widget-field-options-multiple'
+          text: '#/components/schemas/widget-field-text'
+          stack: '#/components/schemas/widget-field-stack'
+    widget-fields-stack:
+      oneOf:
+        - $ref: '#/components/schemas/widget-field-image'
+        - $ref: '#/components/schemas/widget-field-pdf'
+        - $ref: '#/components/schemas/widget-field-options-multiple'
+        - $ref: '#/components/schemas/widget-field-text'
+      discriminator:
+        propertyName: widgetType
+        mapping:
+          image: '#/components/schemas/widget-field-image'
+          pdf: '#/components/schemas/widget-field-pdf'
+          options-multiple: '#/components/schemas/widget-field-options-multiple'
+          text: '#/components/schemas/widget-field-text'
+    widget-field-image:
+      type: object
+      properties:
+        widgetType:
+          type: string
+        alt:
+          type: string
+        title:
+          type: string
+        src:
+          type: string
+      additionalProperties: false
+      required: [widgetType, alt, title, src]
+    widget-field-pdf:
+      type: object
+      properties:
+        widgetType:
+          type: string
+        title:
+          type: string
+        src:
+          type: string
+      additionalProperties: false
+      required: [widgetType, title, src]
+    widget-field-options-multiple:
+      type: object
+      properties:
+        widgetType:
+          type: string
+        options:
+          type: array
+          items:
+            type: object
+            properties:
+              value:
+                type: string
+              caption:
+                type: string
+              icon:
+                type: string
+            additionalProperties: false
+            required: [value, caption, icon]
+      additionalProperties: false
+      required: [ widgetType, options ]
+    widget-field-stack:
+      type: object
+      properties:
+        widgetType:
+          type: string
+        stack:
+          type: array
+          items:
+            type: object
+            additionalProperties:
+              $ref: '#/components/schemas/widget-fields-stack'
+      additionalProperties: false
+      required: [ widgetType, stack ]
+    widget-field-text:
+      type: object
+      properties:
+        widgetType:
+          type: string
+        value:
+          type: string
+      additionalProperties: false
+      required: [ widgetType, value ]
+    menu-item-badge:
+      type: object
+      nullable: true
+      properties:
+        text:
+          type: string
+        background:
+          type: string
+          nullable: true
+        color:
+          type: string
+          nullable: true
+
+    menu-item:
+      type: object
+      properties:
+        attr:
+          type: object
+          nullable: true
+          properties:
+            rel:
+              type: string
+              nullable: true
+            target:
+              type: string
+              nullable: true
+        title:
+          type: string
+        subtitle:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        slug:
+          type: string
+        background:
+          type: string
+          nullable: true
+        foreground:
+          type: string
+          nullable: true
+        href:
+          type: string
+        suffix:
+          $ref: '#/components/schemas/menu-item-badge'
+        prefix:
+          $ref: '#/components/schemas/menu-item-badge'
+        images:
+          type: object
+          nullable: true
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/menu-sub-item'
+      additionalProperties: false
+      required: [ attr, title, subtitle, slug, background, foreground, href, suffix, prefix, images, description, items ]
+
+    menu-sub-item:
+      type: object
+      properties:
+        attr:
+          type: object
+          nullable: true
+          properties:
+            rel:
+              type: string
+              nullable: true
+            target:
+              type: string
+              nullable: true
+        title:
+          type: string
+        subtitle:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        slug:
+          type: string
+        background:
+          type: string
+          nullable: true
+        foreground:
+          type: string
+          nullable: true
+        href:
+          type: string
+        suffix:
+          $ref: '#/components/schemas/menu-item-badge'
+        prefix:
+          $ref: '#/components/schemas/menu-item-badge'
+        images:
+          type: object
+          nullable: true
+        items:
+          type: array
+          items:
+            type: object
+      additionalProperties: false
+      required: [ attr, title, subtitle, slug, background, foreground, href, suffix, prefix, images, description, items ]
+
+    validation-messages:
+      type: object
+      properties:
+        maxlength:
+          type: string
+        minlength:
+          type: string
+        pattern:
+          type: string
+        required:
+          type: string
+        max:
+          type: string
+        min:
+          type: string
+
+    validation-string:
+      type: object
+      properties:
+        value:
+          type: string
+        message:
+          type: string
+      additionalProperties: false
+      required: [value, message]
+
+    validation-number:
+      type: object
+      properties:
+        value:
+          type: number
+        message:
+          type: string
+      additionalProperties: false
+      required: [value, message]
+
+    validation-string-or-number:
+        type: object
+        oneOf:
+            - $ref: '#/components/schemas/validation-number'
+            - $ref: '#/components/schemas/validation-string'
+
+    validation-field:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+      additionalProperties: false
+      required: [value, message]
+
+    validation:
+      type: object
+      properties:
+        required:
+            type: string
+        pattern:
+          $ref: '#/components/schemas/validation-string'
+        minLength:
+          $ref: '#/components/schemas/validation-number'
+        maxLength:
+          $ref: '#/components/schemas/validation-number'
+        equalTo:
+          $ref: '#/components/schemas/validation-string-or-number'
+        notEqualTo:
+          $ref: '#/components/schemas/validation-string-or-number'
+        greaterThan:
+          $ref: '#/components/schemas/validation-number'
+        greaterThanOrEqual:
+          $ref: '#/components/schemas/validation-number'
+        lessThan:
+          $ref: '#/components/schemas/validation-number'
+        lessThanOrEqual:
+          $ref: '#/components/schemas/validation-number'
+        equalToField:
+          $ref: '#/components/schemas/validation-field'
+        notEqualToField:
+          $ref: '#/components/schemas/validation-field'
+        greaterThanField:
+          $ref: '#/components/schemas/validation-field'
+        greaterOrEqualThanField:
+          $ref: '#/components/schemas/validation-field'
+        lessThanField:
+          $ref: '#/components/schemas/validation-field'
+        lessThanOrEqualToField:
+          $ref: '#/components/schemas/validation-field'
+      additionalProperties: false
+
+    # requests
+    batch-request:
+      type: object
+      properties:
+        batch:
+          type: array
+          items:
+            type: object
+            properties:
+              method:
+                type: string
+              path:
+                type: string
+              body:
+                type: object
+              params:
+                type: object
+            required: [ method, path ]
+    apartment-count-request:
+        type: object
+        properties:
+            filter:
+                $ref: '#/components/schemas/apartments-filters'
+        required:
+            - filter
+    apartment-search-request-v1:
+        type: object
+        properties:
+            filter:
+                $ref: '#/components/schemas/apartments-filters'
+        required:
+            - filter
+    bounding-box-request:
+        type: object
+        properties:
+            filter:
+                $ref: '#/components/schemas/apartments-filters'
+        required:
+            - filter
+    apartment-map-request:
+      type: object
+      properties:
+        filter:
+          $ref: '#/components/schemas/apartments-filter'
+        boundingBox:
+          type: object
+          properties:
+            lowLeftLong:
+              type: number
+            lowLeftLat:
+              type: number
+            upRightLong:
+              type: number
+            upRightLat:
+              type: number
+          required: [lowLeftLong, lowLeftLat, upRightLong, upRightLat]
+      required: [boundingBox]
+      additionalProperties: false
+    apartment-map-request-v2:
+        type: object
+        properties:
+            filter:
+                $ref: '#/components/schemas/apartments-filters'
+        required: [ filter ]
+    complaint-create-request:
+      type: object
+      properties:
+        author_name:
+          type: string
+        author_phone:
+          type: string
+        theme:
+          type: number
+        content:
+          type: string
+        source:
+            $ref: '#/components/schemas/source'
+      required: [ author_name, author_phone, theme, content, source ]
+    complaint-verify-request:
+      type: object
+      properties:
+        sms_code:
+          type: string
+      required: [ sms_code ]
+    userpanel-sign-up-request:
+      type: object
+      properties:
+        phone:
+          type: string
+          minLength: 11
+          maxLength: 11
+        name:
+          type: string
+        ga_id:
+          type: string
+          nullable: true
+        recaptchaToken:
+          type: string
+          nullable: true
+        source:
+            $ref: '#/components/schemas/source'
+        allow_marketing:
+            type: boolean
+      required: [ phone, name, recaptchaToken, source ]
+      additionalProperties: false
+    userpanel-sign-in-request:
+      type: object
+      properties:
+        phone:
+          type: string
+          minLength: 11
+          maxLength: 11
+        ga_id:
+          type: string
+          nullable: true
+        recaptchaToken:
+            type: string
+            nullable: true
+        source:
+            $ref: '#/components/schemas/source'
+      required: [ phone, recaptchaToken, source ]
+      additionalProperties: false
+    userpanel-log-in-request:
+      type: object
+      properties:
+        phone:
+          type: string
+        sms_code:
+          type: string
+        source:
+            $ref: '#/components/schemas/source'
+        recaptchaToken:
+            type: string
+            nullable: true
+      required: [ phone, sms_code, source, recaptchaToken ]
+      additionalProperties: false
+    userpanel-enter-with-check-list-request:
+      type: object
+      properties:
+        phone:
+          description: Номер телефона
+          type: string
+          minLength: 11
+          maxLength: 11
+        name:
+          description: Имя
+          type: string
+        ga_id:
+          type: string
+          nullable: true
+        address:
+          description: Адрес дома
+          type: string
+        area:
+          description: Площадь квартиры, кв. м.
+          type: number
+        floor:
+          description: Этаж
+          type: integer
+        room_type:
+          description: Комнатность
+          type: integer
+          enum: [ 0, 1, 2, 3 ]
+        price:
+          description: Цена в рублях
+          type: integer
+        renovationType:
+          description: Тип ремонта
+          type: string
+          enum:
+              - none
+              - cosmetic
+              - fresh
+        needExchange:
+          description: Если установить в false, то в ЛК выключится подбор
+          type: boolean
+        recaptchaToken:
+            type: string
+            nullable: true
+        isMortgage:
+            type: boolean
+        objectType:
+            type: string
+        isInOperation:
+            type: boolean
+        peculiarities:
+            type: array
+            items:
+                type: string
+        releaseYear:
+            type: number
+        releaseQuarter:
+            type: number
+        developer:
+            type: string
+        source:
+            $ref: '#/components/schemas/source'
+        allow_marketing:
+            type: boolean
+        isTransferAcceptanceCertificate:
+            description: АПП подписан
+            type: boolean
+            nullable: true
+        renovationYear:
+            description: Год последнего ремонта
+            type: integer
+            nullable: true
+        isOwnership:
+            description: Право собственности получено
+            type: boolean
+            nullable: true
+      required:
+          - phone
+          - name
+          - address
+          - area
+          - floor
+          - room_type
+          - price
+          - renovationType
+          - recaptchaToken
+          - isMortgage
+          - source
+          - isTransferAcceptanceCertificate
+          - renovationYear
+          - isOwnership
+      additionalProperties: false
+    create-lead-request:
+      type: object
+      properties:
+        form_type:
+          type: string
+        phone:
+          type: string
+        name:
+          type: string
+        apartment_id:
+          type: string
+          nullable: true
+        ga_id:
+          type: string
+          nullable: true
+        source:
+            $ref: '#/components/schemas/source'
+        allow_marketing:
+            type: boolean
+      required: [ form_type, phone, source ]
+
+    contacts:
+      description: Сущности контактов
+      type: object
+      properties:
+        initial_city_id: { type: integer, nullable: true }
+        cities:
+          type: array
+          items:
+            $ref: '#/components/schemas/city'
+      required: [ cities, initial_city_id ]
+      additionalProperties: false
+    city:
+      type: object
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        subtitle: { type: string, nullable: true }
+        latitude: { type: number, nullable: true }
+        longitude: { type: number, nullable: true }
+        bbox1_latitude: { type: number, nullable: true }
+        bbox1_longitude: { type: number, nullable: true }
+        bbox2_latitude: { type: number, nullable: true }
+        bbox2_longitude: { type: number, nullable: true }
+        initial_office_id: { type: integer, nullable: true }
+        offices:
+          type: array
+          items:
+            type: object
+            properties:
+              id: { type: integer }
+              address: { type: string }
+              latitude: { type: number, nullable: true }
+              longitude: { type: number, nullable: true }
+              office_work_time: { type: string, nullable: true }
+              call_center_work_time: { type: string, nullable: true }
+              initial_phone_id: { type: integer, nullable: true }
+              phones:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id: { type: integer }
+                    number: { type: string }
+      additionalProperties: false
+      required: [ id, name, subtitle, latitude, longitude, bbox1_latitude, bbox1_longitude, bbox2_latitude, bbox2_longitude, initial_office_id, offices ]
+    catalog-settings:
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/catalog-text'
+        balconyType:
+          $ref: '#/components/schemas/catalog-select'
+        buildingCeilingHeight:
+          $ref: '#/components/schemas/catalog-select'
+        buildingFloorCountMax:
+          $ref: '#/components/schemas/catalog-number'
+        buildingGarbageChute:
+          $ref: '#/components/schemas/catalog-select'
+        buildingFloorCountMin:
+          $ref: '#/components/schemas/catalog-number'
+        buildingParkingTypes:
+          $ref: '#/components/schemas/catalog-select'
+        buildingTypes:
+          $ref: '#/components/schemas/catalog-select'
+        decorationTypes:
+          $ref: '#/components/schemas/catalog-select'
+        elevatorType:
+          $ref: '#/components/schemas/catalog-select'
+        floorNumberMax:
+          $ref: '#/components/schemas/catalog-number'
+        floorNumberMin:
+          $ref: '#/components/schemas/catalog-number'
+        fullAreaMax:
+          $ref: '#/components/schemas/catalog-number'
+        fullAreaMin:
+          $ref: '#/components/schemas/catalog-number'
+        housingTypes:
+          $ref: '#/components/schemas/catalog-select'
+        kitchensAreaMax:
+          $ref: '#/components/schemas/catalog-number'
+        kitchensAreaMin:
+          $ref: '#/components/schemas/catalog-number'
+        livingAreaMax:
+          $ref: '#/components/schemas/catalog-number'
+        livingAreaMin:
+          $ref: '#/components/schemas/catalog-number'
+        priceRubMax:
+          $ref: '#/components/schemas/catalog-number'
+        priceRubMin:
+          $ref: '#/components/schemas/catalog-number'
+        roominess:
+          $ref: '#/components/schemas/catalog-select'
+        saleTypes:
+          $ref: '#/components/schemas/catalog-select'
+        wcsType:
+          $ref: '#/components/schemas/catalog-select'
+        windowViewTypes:
+          $ref: '#/components/schemas/catalog-select'
+        loanRateMax:
+          $ref: '#/components/schemas/catalog-number'
+        loanRateMin:
+          $ref: '#/components/schemas/catalog-number'
+      additionalProperties: false
+      required:
+        - address
+        - balconyType
+        - buildingCeilingHeight
+        - buildingFloorCountMax
+        - buildingFloorCountMin
+        - buildingGarbageChute
+        - buildingParkingTypes
+        - buildingTypes
+        - decorationTypes
+        - elevatorType
+        - floorNumberMax
+        - floorNumberMin
+        - fullAreaMax
+        - fullAreaMin
+        - housingTypes
+        - kitchensAreaMax
+        - kitchensAreaMin
+        - livingAreaMax
+        - livingAreaMin
+        - priceRubMax
+        - priceRubMin
+        - roominess
+        - saleTypes
+        - wcsType
+        - windowViewTypes
+        - loanRateMin
+        - loanRateMax
+
+    catalog-settings-new:
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/catalog-text-new'
+        balconyType:
+          $ref: '#/components/schemas/catalog-checkbox-group'
+        buildingCeilingHeight:
+          $ref: '#/components/schemas/catalog-checkbox-group'
+        buildingFloorCountMax:
+          $ref: '#/components/schemas/catalog-number-new'
+        buildingGarbageChute:
+          $ref: '#/components/schemas/catalog-checkbox-group'
+        buildingFloorCountMin:
+          $ref: '#/components/schemas/catalog-number-new'
+        buildingParkingTypes:
+          $ref: '#/components/schemas/catalog-checkbox-group'
+        buildingTypes:
+          $ref: '#/components/schemas/catalog-checkbox-group'
+        decorationTypes:
+          $ref: '#/components/schemas/catalog-checkbox-group'
+        elevatorType:
+          $ref: '#/components/schemas/catalog-checkbox-group'
+        floorNumberMax:
+          $ref: '#/components/schemas/catalog-number-new'
+        floorNumberMin:
+          $ref: '#/components/schemas/catalog-number-new'
+        fullAreaMax:
+          $ref: '#/components/schemas/catalog-number-new'
+        fullAreaMin:
+          $ref: '#/components/schemas/catalog-number-new'
+        housingTypes:
+          $ref: '#/components/schemas/catalog-checkbox-group'
+        kitchensAreaMax:
+          $ref: '#/components/schemas/catalog-number-new'
+        kitchensAreaMin:
+          $ref: '#/components/schemas/catalog-number-new'
+        livingAreaMax:
+          $ref: '#/components/schemas/catalog-number-new'
+        livingAreaMin:
+          $ref: '#/components/schemas/catalog-number-new'
+        priceRubMax:
+          $ref: '#/components/schemas/catalog-number-new'
+        priceRubMin:
+          $ref: '#/components/schemas/catalog-number-new'
+        roominess:
+          $ref: '#/components/schemas/catalog-checkbox-group'
+        saleTypes:
+          $ref: '#/components/schemas/catalog-checkbox-group'
+        wcsType:
+          $ref: '#/components/schemas/catalog-checkbox-group'
+        windowViewTypes:
+          $ref: '#/components/schemas/catalog-checkbox-group'
+        loanRateMax:
+          $ref: '#/components/schemas/catalog-number-new'
+        loanRateMin:
+          $ref: '#/components/schemas/catalog-number-new'
+      additionalProperties: false
+      required:
+        - address
+        - balconyType
+        - buildingCeilingHeight
+        - buildingFloorCountMax
+        - buildingFloorCountMin
+        - buildingGarbageChute
+        - buildingParkingTypes
+        - buildingTypes
+        - decorationTypes
+        - elevatorType
+        - floorNumberMax
+        - floorNumberMin
+        - fullAreaMax
+        - fullAreaMin
+        - housingTypes
+        - kitchensAreaMax
+        - kitchensAreaMin
+        - livingAreaMax
+        - livingAreaMin
+        - priceRubMax
+        - priceRubMin
+        - roominess
+        - saleTypes
+        - wcsType
+        - windowViewTypes
+        - loanRateMin
+        - loanRateMax
+
+    # responses
+    batch-response:
+      type: object
+      properties:
+        response:
+          type: object
+          properties:
+            body:
+              type: object
+              nullable: true
+              properties:
+                batch:
+                  type: array
+                  items:
+                    properties:
+                      status: { type: integer }
+                      body: { type: object }
+                      errors:
+                        $ref: '#/components/schemas/errors'
+                    required: [ status, body, errors ]
+    get-contacts-response:
+      type: object
+      properties:
+        response:
+          type: object
+          properties:
+            body:
+              $ref: '#/components/schemas/contacts'
+            errors:
+              $ref: '#/components/schemas/errors'
+          required: [ body, errors ]
+      required: [ response ]
+    search-apartments-response-v1:
+      type: object
+      properties:
+        response:
+          type: object
+          properties:
+            body:
+              type: object
+              properties:
+                count:
+                  type: integer
+                countPages:
+                  type: integer
+                apartments:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/apartment'
+              required: [ countPages, apartments ]
+            errors:
+              $ref: '#/components/schemas/errors'
+          required: [ body, errors ]
+      required: [ response ]
+    count-apartments-response:
+        type: object
+        properties:
+            response:
+                type: object
+                properties:
+                    body:
+                        type: object
+                        properties:
+                            count:
+                                type: integer
+                                minimum: 0
+                        required: [ count ]
+                    errors:
+                        $ref: '#/components/schemas/errors'
+                required: [ body, errors ]
+        required: [ response ]
+
+    apartments-map-response-v2:
+      type: object
+      properties:
+        response:
+          type: object
+          properties:
+            body:
+              type: object
+              properties:
+                ObjectManager:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                      enum: [FeatureCollection]
+                    features:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          type:
+                            type: string
+                            enum: [Feature]
+                          id:
+                            type: number
+                          geometry:
+                            type: object
+                            properties:
+                              type:
+                                type: string
+                                enum: [Point]
+                              coordinates:
+                                type: array
+                                items:
+                                  type: number
+                                minItems: 2
+                                maxItems: 2
+                          properties:
+                            type: object
+                            properties:
+                              pin:
+                                type: object
+                                properties:
+                                  minPrice:
+                                    type: number
+                                  apartments:
+                                    type: array
+                                    items:
+                                      type: number
+                                    minItems: 1
+              additionalProperties: false
+            errors:
+              $ref: '#/components/schemas/errors'
+          required: [ body, errors ]
+      required: [ response ]
+
+    get-apartment-response:
+      type: object
+      properties:
+        response:
+          type: object
+          properties:
+            body:
+                $ref: '#/components/schemas/apartment-with-amo-history'
+            errors:
+              $ref: '#/components/schemas/errors'
+          required: [ body, errors ]
+      required: [ response ]
+    get-apartment-meta-response:
+      type: object
+      properties:
+        response:
+          type: object
+          properties:
+            body:
+              type: object
+              nullable: true
+              properties:
+                meta_title: { type: string }
+                meta_description: { type: string }
+                og_type: { type: string }
+                og_locale: { type: string }
+                og_site_name: { type: string }
+                og_title: { type: string }
+                og_description: { type: string }
+                og_url: { type: string }
+                og_image_url: { type: string, nullable: true }
+              required: [meta_title, meta_description, og_type, og_locale, og_site_name, og_title, og_description, og_url, og_image_url]
+            errors:
+              $ref: '#/components/schemas/errors'
+          required: [body, errors]
+      required: [response]
+    get-apartment-loan-response:
+      type: object
+      properties:
+        response:
+          type: object
+          properties:
+            body:
+              type: object
+              nullable: true
+              properties:
+                id:
+                  description: id банка, который даёт rate
+                  type: string
+                  enum:
+                    - vtb
+                    - alfa
+                payment:
+                  description: Сумма платежа по кредиту
+                  type: integer
+                rate:
+                  description: Текущая ставка
+                  type: number
+                nextId:
+                  description: id банка, который даёт nextRate
+                  type: string
+                  nullable: true
+                  enum:
+                    - vtb
+                    - alfa
+                nextRate:
+                  description: Ставка в следующем периоде
+                  type: number
+                  nullable: true
+                timeout:
+                  description: Количество дней до слещующего периода
+                  type: integer
+                  nullable: true
+              required: [id, payment, rate, nextId, nextRate, timeout]
+            errors:
+              $ref: '#/components/schemas/errors'
+          required: [body, errors]
+      required: [response]
+    get-catalog-settings-response:
+      type: object
+      properties:
+        response:
+          type: object
+          properties:
+            body:
+              $ref: '#/components/schemas/catalog-settings'
+            errors:
+              $ref: '#/components/schemas/errors'
+          required: [ body, errors ]
+          additionalProperties: false
+    get-catalog-settings-response-new:
+      type: object
+      properties:
+        response:
+          type: object
+          properties:
+            body:
+              $ref: '#/components/schemas/catalog-settings-new'
+            errors:
+              $ref: '#/components/schemas/errors'
+          required: [ body, errors ]
+          additionalProperties: false
+      required: [ response ]
+      additionalProperties: false
+    get-userpanel-settings-response:
+      type: object
+      properties:
+        response:
+          type: object
+          properties:
+            body:
+              type: object
+              properties:
+                name:
+                  $ref: '#/components/schemas/catalog-text'
+                phone:
+                  $ref: '#/components/schemas/catalog-text'
+              additionalProperties: false
+              required:
+                - name
+                - phone
+            errors:
+              $ref: '#/components/schemas/errors'
+          required: [body, errors]
+          additionalProperties: false
+    get-page-response:
+      type: object
+      properties:
+        response:
+          type: object
+          properties:
+            body:
+              type: object
+              nullable: true
+              properties:
+                page:
+                  $ref: '#/components/schemas/page-info'
+                widgets:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/widget'
+              additionalProperties: false
+              required: [page, widgets]
+            errors:
+              $ref: '#/components/schemas/errors'
+          required: [body, errors]
+    get-pages-response:
+      type: object
+      properties:
+        response:
+          type: object
+          properties:
+            body:
+              type: object
+              properties:
+                pages:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/page-info-short'
+            errors:
+              $ref: '#/components/schemas/errors'
+          required: [body, errors]
+    get-widgets-response:
+      type: object
+      properties:
+        response:
+          type: object
+          properties:
+            body:
+              type: object
+              properties:
+                widgets:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/widget'
+            errors:
+              $ref: '#/components/schemas/errors'
+          required: [body, errors]
+    get-menu-response:
+      type: object
+      properties:
+        response:
+          type: object
+          properties:
+            body:
+              type: object
+              additionalProperties:
+                type: array
+                nullable: true
+                items:
+                  $ref: '#/components/schemas/menu-item'
+            errors:
+              $ref: '#/components/schemas/errors'
+          required: [body, errors]
+    create-complaint-response:
+      type: object
+      properties:
+        response:
+          type: object
+          properties:
+            body:
+              type: object
+              nullable: true
+              properties:
+                id:
+                  type: integer
+              required: [ id ]
+            errors:
+              $ref: '#/components/schemas/errors'
+          required: [ body, errors ]
+    verify-complaint-response:
+      type: object
+      properties:
+        response:
+          type: object
+          properties:
+            body:
+              type: object
+              nullable: true
+            errors:
+              $ref: '#/components/schemas/errors'
+          required: [body, errors]
+    infrastructure-response:
+        type: object
+        properties:
+            response:
+                type: object
+                properties:
+                    body:
+                        type: object
+                        properties:
+                            infrastructure:
+                                type: array
+                                items:
+                                    type: object
+                                    properties:
+                                        name:
+                                            type: string
+                                        query:
+                                            type: string
+                                        slug:
+                                            type: string
+                                    required: [ name, query, slug ]
+                        required: [ infrastructure ]
+                    errors:
+                        $ref: '#/components/schemas/errors'
+                required: [ body, errors ]
+    coords-checker-response:
+        type: object
+        properties:
+            response:
+                type: object
+                properties:
+                    body:
+                        type: object
+                        properties:
+                            typeOfZone:
+                                description: >
+                                    Тип зоны выкупа:
+                                        - *notBuyoutZone*: объект находится в зоне не подлежащей выкупу
+                                        - *lowPriceZone*: объект находится в зоне пониженной оценки
+                                        - *buyOutZone*: объект находится в зоне выкупа
+                                type: string
+                                enum:
+                                    - notBuyoutZone
+                                    - lowPriceZone
+                                    - buyOutZone
+                        required: [ typeOfZone ]
+                        additionalProperties: false
+                    errors:
+                        $ref: '#/components/schemas/errors'
+                required: [ body, errors ]
+        required: [ response ]
+    sign-up-response:
+      type: object
+      properties:
+        response:
+          type: object
+          properties:
+            body:
+              type: object
+              nullable: true
+              properties:
+                status:
+                  type: boolean
+              required: [status]
+            errors:
+              $ref: '#/components/schemas/errors'
+    log-in-response:
+      type: object
+      properties:
+        response:
+          type: object
+          properties:
+            body:
+              type: object
+              nullable: true
+              properties:
+                status: { type: boolean }
+                token: { type: string }
+                refreshToken: { type: string }
+                user_id: { type: integer }
+              required: [status]
+            errors:
+              $ref: '#/components/schemas/errors'
+          required: [body, errors]
+    get-profile-response:
+      type: object
+      properties:
+        response:
+          type: object
+          properties:
+            body:
+              type: object
+              nullable: true
+              properties:
+                name: { type: string }
+                email: { type: string, nullable: true }
+                phone:
+                    type: string
+                    nullable: true
+                countActiveDeals: { type: number }
+            errors:
+              $ref: '#/components/schemas/errors'
+          required: [body, errors]
+    create-lead-response:
+      type: object
+      properties:
+        response:
+          type: object
+          properties:
+            body:
+              type: object
+              nullable: true
+              properties:
+                id: { type: integer }
+                result: { type: boolean }
+                uuid: { type: string }
+                uuid_main: { type: string }
+                message: { type: string }
+              additionalProperties: false
+              required: [ result, uuid, uuid_main, message ]
+            errors:
+              $ref: '#/components/schemas/errors'
+          required: [ body, errors ]
+
+    point:
+        type: object
+        properties:
+            longitude: { type: number }
+            latitude: { type: number }
+        required:
+            - longitude
+            - latitude
+
+    bounding-box-response:
+        type: object
+        properties:
+            response:
+                type: object
+                properties:
+                    body:
+                        type: object
+                        properties:
+                            boundingBox:
+                                type: object
+                                properties:
+                                    bottomLeft:
+                                        $ref: '#/components/schemas/point'
+                                    bottomRight:
+                                        $ref: '#/components/schemas/point'
+                                    topRight:
+                                        $ref: '#/components/schemas/point'
+                                    topLeft:
+                                        $ref: '#/components/schemas/point'
+                                    distance:
+                                        type: number
+                                required: [ bottomLeft, bottomRight, topRight, topLeft, distance ]
+                        required: [ boundingBox ]
+                    errors:
+                        $ref: '#/components/schemas/errors'
+                required: [ body, errors ]
+        required: [ response ]
+
+  requestBodies:
+    batch:
+      description: Массив запросов
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/batch-request'
+          example:
+            batch:
+              - method: 'GET'
+                path: '/api-react/pages-v1'
+              - method: 'POST'
+                path: '/api-react/apartments-count-v1'
+                body:
+                  filter:
+                    page: 1
+                    roominess: '0'
+                    fullAreaMin: 2800
+                    fullAreaMax: 3800
+                    buildingCeilingHeight: ">=300"
+                    housingTypes: [ '024268c5-c499-45c1-b32d-284a212f93e5' ]
+    apartment-search-v1:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/apartment-search-request-v1'
+          examples:
+            full:
+              $ref: '#/components/examples/apartments-filters-v1'
+    apartment-count:
+        required: true
+        content:
+            application/json:
+                schema:
+                    $ref: '#/components/schemas/apartment-count-request'
+                examples:
+                    full:
+                        $ref: '#/components/examples/apartments-filters'
+    apartments-map-v2:
+        required: true
+        content:
+            application/json:
+                schema:
+                    $ref: '#/components/schemas/apartment-map-request-v2'
+                example:
+                    $ref: '#/components/examples/apartments-map-request-v2'
+    bounding-box:
+        required: false
+        content:
+            application/json:
+                schema:
+                    $ref: '#/components/schemas/bounding-box-request'
+                example:
+                    $ref: '#/components/examples/bounding-box-request'
+    complaints:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/complaint-create-request'
+          example:
+            author_name: Developer
+            author_phone: +7 (777) 777-77-77
+            theme: 1
+            content: Long reed...
+            source: kvarta.ru
+    complaints-verify:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/complaint-verify-request'
+          example:
+            sms_code: '1234'
+    userpanel-sign-up:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/userpanel-sign-up-request'
+          example:
+            name: "Developer"
+            phone: "79871112233"
+            source: pik-broker.ru
+    userpanel-sign-in:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/userpanel-sign-in-request'
+          example:
+            phone: "79871112233"
+            source: kvarta.ru
+    userpanel-enter-with-check-list:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/userpanel-enter-with-check-list-request'
+          example:
+            phone: "79833071234"
+            name: "Иван Иванович"
+            ga_id: "GA1.2.1555033085.1615564249"
+            address: "ул. Московская, д. 1, кв. 55"
+            area: 43
+            floor: 9
+            room_type: 1
+            price: 2500000
+            renovation: true
+            source: pik-broker.ru
+    userpanel-log-in:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/userpanel-log-in-request'
+          example:
+            phone: "79871112233"
+            sms_code: "1234"
+            source: kvarta.ru
+    lead-create:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/create-lead-request'
+          example:
+            form_type: "apartment_review"
+            phone: "+79998881234"
+            name: "Иванов Иван"
+            source: kvarta.ru
+  responses:
+    batch:
+      description: Массив ответов
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/batch-response'
+    get-contacts:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/get-contacts-response'
+          example:
+            response:
+              body:
+                initial_city_id: 15
+                cities:
+                  - id: 15
+                    name: Москва
+                    subtitle: ''
+                    latitude: 55.755773
+                    longitude: 37.617761
+                    bbox1_latitude: 56.030469
+                    bbox1_longitude: 36.67416
+                    bbox2_latitude: 55.07298
+                    bbox2_longitude: 38.047451
+                    initial_office_id: 4
+                    offices:
+                      - id: 7
+                        initial_phone_id: 5
+                        latitude: 55.747791
+                        longitude: 37.538316
+                        address: г. Москва, Пресненская наб., 8, стр. 1<br/>Этаж 23, оф. 233
+                        office_work_time: 10:00 - 19:00, ПН-ПТ
+                        call_center_work_time: '09:00 - 21:00, ПН-ВС'
+                        phones:
+                          - id: 5
+                            number: 8 800 300 20 10
+                      - id: 8
+                        initial_phone_id: 5
+                        latitude: 26.2746
+                        longitude: 123.0374
+                        address: Address-BYi7OFT7sY
+                        office_work_time: WorkTime-e0segC
+                        call_center_work_time: CallcenterWorkTime-tbEsJ
+                        phones:
+                          - id: 5
+                            number: 8 800 300 20 10
+                      - id: 9
+                        initial_phone_id: 5
+                        latitude: -89.0179
+                        longitude: -133.0343
+                        address: Address-q5hv4WfH
+                        office_work_time: WorkTime-tvxSV5
+                        call_center_work_time: CallcenterWorkTime-NfISCa
+                        phones:
+                          - id: 5
+                            number: 8 800 300 20 10
+                      - id: 10
+                        initial_phone_id: 5
+                        latitude: 63.7845
+                        longitude: 96.5717
+                        address: Address-M2Ys2pfj
+                        office_work_time: WorkTime-8r6M1yT
+                        call_center_work_time: CallcenterWorkTime-L7i7GqH
+                        phones:
+                          - id: 34
+                            number: '2238042031'
+                          - id: 33
+                            number: '9121847886'
+                          - id: 32
+                            number: '4471455549'
+                          - id: 31
+                            number: '4619532243'
+                          - id: 30
+                            number: '1479920554'
+                          - id: 29
+                            number: '9633353607'
+                          - id: 28
+                            number: '4541483202'
+                          - id: 27
+                            number: '9454965390'
+                          - id: 26
+                            number: '3156108028'
+                          - id: 25
+                            number: '9995295252'
+                          - id: 24
+                            number: '4892360884'
+                          - id: 23
+                            number: '7978884029'
+                          - id: 22
+                            number: '1081436180'
+                          - id: 21
+                            number: '4236204666'
+                          - id: 20
+                            number: '8971495793'
+                          - id: 19
+                            number: '8889671473'
+                          - id: 18
+                            number: '4986903565'
+                          - id: 17
+                            number: '5411509271'
+                          - id: 16
+                            number: '6739660617'
+                          - id: 15
+                            number: '9961398972'
+                          - id: 14
+                            number: '6752018852'
+                          - id: 13
+                            number: '5123216127'
+                          - id: 12
+                            number: '1511433361'
+                          - id: 11
+                            number: '6907542632'
+                          - id: 10
+                            number: '6622750101'
+                          - id: 9
+                            number: '8189908363'
+                          - id: 5
+                            number: 8 800 300 20 10
+                      - id: 4
+                        initial_phone_id: 5
+                        latitude: 55.747277
+                        longitude: 37.539113
+                        address: г. Москва, Пресненская наб., 8, стр. 1 башня "Москва", Этаж 2, оф.
+                          6
+                        office_work_time: 10:00 - 19:00, ПН-ПТ
+                        call_center_work_time: '09:00 - 21:00, ПН-ВС'
+                        phones:
+                          - id: 5
+                            number: 8 800 300 20 10
+                          - id: 5
+                            number: 8 800 300 20 10
+                  - id: 50
+                    name: Одинцово
+                    subtitle: ''
+                    latitude: 55.679133
+                    longitude: 37.263654
+                    bbox1_latitude: 55.715045
+                    bbox1_longitude: 37.193253
+                    bbox2_latitude: 55.646182
+                    bbox2_longitude: 37.360451
+                    initial_office_id: 4
+                    offices:
+                      - id: 4
+                        initial_phone_id: 5
+                        latitude: 55.747277
+                        longitude: 37.539113
+                        address: г. Москва, Пресненская наб., 8, стр. 1 башня "Москва", Этаж 2, оф.
+                          6
+                        office_work_time: 10:00 - 19:00, ПН-ПТ
+                        call_center_work_time: '09:00 - 21:00, ПН-ВС'
+                        phones:
+                          - id: 5
+                            number: 8 800 300 20 10
+                          - id: 5
+                            number: 8 800 300 20 10
+              errors: [ ]
+      description: Массив контактов
+    search-apartments-v1:
+      description: Массив квартир
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/search-apartments-response-v1'
+          example:
+            response:
+              body:
+                countPages: 12
+                apartments:
+                  - uuid: 08d517ad-a00d-4bf6-8ea4-17db2a39a025
+                    contactPhoneNumber: '+79875554322'
+                    balconiesCount: 0
+                    loggiasCount: null
+                    combinedWcsCount: 1
+                    separateWcsCount: 0
+                    roomType:
+                      uuid: 24d8ff44-9e4b-439c-93e2-e628904e0044
+                      name: Изолированная
+                      slug: izolirovannaa
+                      altTitle: Изолированная Альт
+                    stoveType:
+                      uuid: c144b729-ac58-4b6f-b77c-c7792b2f3bf4
+                      name: Газ
+                      slug: gaz
+                      altTitle: Газ Альт
+                    housingType:
+                      uuid: 024268c5-c499-45c1-b32d-284a212f93e5
+                      name: Первичка
+                      slug: pervicka
+                      altTitle: Первичка Альт
+                    decorationType:
+                      uuid: acf012c8-3d26-4202-9910-df627aff4d2a
+                      name: Без ремонта
+                      slug: bez-remonta
+                      altTitle: Без ремонта Альт
+                    windowViewType:
+                      uuid: cec3f7b3-035e-40e0-abf9-8a512d98e4ab
+                      name: На улицу
+                      slug: na-ulicu
+                      altTitle: На улицу Альт
+                    heatingType:
+                      uuid: 4169b3b6-dfbd-451e-a6f4-8378f4a5662f
+                      name: Газ
+                      slug: gaz
+                      altTitle: Газ Альт
+                    housingComplex:
+                      uuid: 68046e72-c846-4895-8b5e-b3d5ebc257b7
+                      name: ЖК Синий лебедь
+                      slug: sinij-lebed
+                      altTitle: ЖК Синий лебедь
+                    housingComplexBuilding: null
+                    floorNumber: 1
+                    fullArea: 24000
+                    livingArea: 20000
+                    kitchensArea: 2400
+                    balconiesAndLoggiasArea: 2000
+                    bedroomsArea: 3000
+                    bathroomsArea: 12500
+                    wcsArea: 1500
+                    hallwaysArea: 2500
+                    amoId: 153769
+                    saleTypes:
+                      - uuid: 3aa1e114-53ad-47ce-a046-b416e8e89718
+                        name: Свободная
+                        slug: svobodnaja
+                        altTitle: Свободная
+                    priceRub: 4500000
+                    buildingType:
+                      uuid: 1950f24f-1205-4e3c-b6bf-55e429cb4b9e
+                      name: Кирпичный
+                      slug: kirpicnyj
+                      altTitle: Кирпичный альт
+                    buildingSeries: null
+                    buildingConstructionYear: 2010
+                    buildingConstructionYearComment: null
+                    buildingFloorCount: 1
+                    buildingCeilingHeight: 200
+                    buildingPassengerElevatorsCount: 0
+                    buildingFreightElevatorsCount: 0
+                    isBuildingHasGarbageChute: true
+                    buildingParkingType:
+                      uuid: a996ac6c-be70-4b31-81a8-13da834d42d6
+                      name: Наземная
+                      slug: nazemnaa
+                      altTitle: Наземная Альт
+                    buildingDeveloper:
+                      uuid: 9fbcba8c-01a6-4629-9d0f-037b686f8dca
+                      name: PIK
+                      slug: pik
+                      altTitle: ПИК Альт
+                    buildingPorchsCount: null
+                    subwayStations:
+                      - station:
+                          displayName: Политехническая
+                          subwayLine:
+                            name: Кировско-Выборгская
+                            color: '#D6083B'
+                            uuid: 27d8b121-b9d4-409d-b030-5757ec4c917a
+                          uuid: a3a35a2a-7ab7-4621-9500-546418eaf78d
+                        travel:
+                          uuid: f11960ae-637d-492e-beb1-38e655206853
+                          name: Пешком
+                          slug: peskom
+                          altTitle: Пешком Альт
+                        travelTimeToStation: 10
+                    images:
+                      - uuid: 2e59cdc4-7ed9-4c4f-a9fb-01714a67fcf6
+                        title: title
+                        alt: alt
+                        isMain: true
+                        isPlan: false
+                        imageGroup:
+                          name: Комнаты
+                          slug: rooms
+                          uuid: 370b19e5-7ba3-46e6-804b-acb23b5946ff
+                        fileUrl: >-
+                          /upload/images/0c/48/cb/cc/0c48cbcc76d2d3909c02179efceefc48_pik_image.jpeg
+                      - uuid: 42106361-02b3-4012-be45-0004965f3d39
+                        title: title
+                        alt: alt
+                        isMain: false
+                        isPlan: false
+                        imageGroup:
+                          name: Комнаты
+                          slug: rooms
+                          uuid: 370b19e5-7ba3-46e6-804b-acb23b5946ff
+                        fileUrl: >-
+                          /upload/images/2a/0a/56/e4/2a0a56e4d38e7a441c3b839f9ee9ea86_pik_image.jpeg
+                      - uuid: 953daa41-c5e6-4339-9236-39bfffd42904
+                        title: title
+                        alt: alt
+                        isMain: false
+                        isPlan: true
+                        imageGroup:
+                          name: Планировка
+                          slug: plan
+                          uuid: c144b729-ac58-4b6f-b77c-c7792b2f3bf4
+                        fileUrl: >-
+                          /upload/images/0b/80/90/b0/0b8090b0e48f52a24c020703f1138a8e_pik_image.jpeg
+                      - uuid: c668d744-bf77-40d9-8967-398fce3eef75
+                        title: title
+                        alt: alt
+                        isMain: false
+                        isPlan: false
+                        imageGroup:
+                          name: Двор
+                          slug: courtyard
+                          uuid: 554e318a-f9bc-4f84-92a7-ee17cf3612bd
+                        fileUrl: >-
+                          /upload/images/e5/ec/9d/e0/e5ec9de00d6219c7e05be8513384e6fb_pik_image.jpeg
+                      - uuid: 671a9816-1909-4463-8d06-9a44b2d75e52
+                        title: title
+                        alt: alt
+                        isMain: false
+                        isPlan: false
+                        imageGroup:
+                          name: Подъезд
+                          slug: entrance
+                          uuid: 8c76e483-b256-489e-afd8-6b058f47bb8b
+                        fileUrl: >-
+                          /upload/images/af/52/14/7b/af52147b0a68ab210a82016c429a0ae4_pik_image.jpeg
+                      - uuid: af59c373-c885-4b09-9b4f-108338c26ad8
+                        title: title
+                        alt: alt
+                        isMain: false
+                        isPlan: false
+                        imageGroup:
+                          name: Коридор
+                          slug: hallway
+                          uuid: 0cb05b20-52ba-41e6-bc70-2b17a1ea8f9c
+                        fileUrl: >-
+                          /upload/images/98/c5/46/0a/98c5460a6cff2d2e92f193c555e33883_pik_image.jpeg
+                      - uuid: 6eaeac13-7b3c-40bd-a089-017a0443dd42
+                        title: title
+                        alt: alt
+                        isMain: false
+                        isPlan: false
+                        imageGroup:
+                          name: Кухня
+                          slug: kitchen
+                          uuid: 906dcac0-fc59-4dc4-bb0c-1aed12bac305
+                        fileUrl: >-
+                          /upload/images/a6/8f/f2/f0/a68ff2f0c12bd00ca321563f2289018a_pik_image.jpeg
+                      - uuid: 95ae2867-a178-42f7-82bf-e610b97148a4
+                        title: title
+                        alt: alt
+                        isMain: false
+                        isPlan: false
+                        imageGroup:
+                          name: Кухня
+                          slug: kitchen
+                          uuid: 906dcac0-fc59-4dc4-bb0c-1aed12bac305
+                        fileUrl: >-
+                          /upload/images/8c/ca/25/b7/8cca25b7c236027869f6c354d23a1255_pik_image.jpeg
+                    isRedevelopment: null
+                    address:
+                      formatted: 'Санкт-Петербург, 21-я Васильевского острова линия 16к8'
+                      point:
+                        latitude: 30.259301
+                        longitude: 59.937328
+                    videos:
+                      - id: LmZqccw60F8
+                        source: youtube
+                      - id: 3M3R0mt52RM
+                        source: youtube
+                      - id: _0b7slM_qMc
+                        source: youtube
+                    roominess:
+                      isStudio: true
+                      count: null
+                      area: [ ]
+              errors: [ ]
+    count-apartments:
+        description: Количество квартир
+        content:
+            application/json:
+                schema:
+                    $ref: '#/components/schemas/count-apartments-response'
+                example:
+                    response:
+                        body:
+                            count: 111
+                        errors: [ ]
+
+    apartments-map-v2:
+      description: Массив пинов
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/apartments-map-response-v2'
+          example:
+            response:
+              body:
+                ObjectManager:
+                  type: FeatureCollection
+                  features:
+                    - type: Feature
+                      id: 153786
+                      geometry:
+                        type: Point,
+                        coordinates:
+                            - 37.581173
+                            - 55.77953
+                      properties:
+                        pin:
+                          minPrice: 6125000,
+                          apartments:
+                              - 153786
+
+    get-apartment:
+      description: Квартира
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/get-apartment-response'
+          example:
+            response:
+              body:
+                uuid: 6fbe176d-f75b-4bca-9cef-16339a42a33f
+                contactPhoneNumber: '+79875554323'
+                balconiesCount: 0
+                loggiasCount: null
+                combinedWcsCount: 0
+                separateWcsCount: 1
+                roomType:
+                  uuid: 24d8ff44-9e4b-439c-93e2-e628904e0044
+                  name: Изолированная
+                  slug: izolirovannaa
+                  altTitle: Изолированная Альт
+                stoveType:
+                  uuid: c144b729-ac58-4b6f-b77c-c7792b2f3bf4
+                  name: Газ
+                  slug: gaz
+                  altTitle: Газ Альт
+                housingType:
+                  uuid: 024268c5-c499-45c1-b32d-284a212f93e5
+                  name: Первичка
+                  slug: pervicka
+                  altTitle: Первичка Альт
+                decorationType:
+                  uuid: dfb4cf47-e121-4b4c-8c05-10b523ee28dc
+                  name: Косметический
+                  slug: kosmeticeskij
+                  altTitle: Косметический Альт
+                windowViewType:
+                  uuid: 70d699ae-2f0f-49a8-aca2-614aa2c8b270
+                  name: Во двор
+                  slug: vo-dvor
+                  altTitle: Во двор Альт
+                heatingType:
+                  uuid: 4169b3b6-dfbd-451e-a6f4-8378f4a5662f
+                  name: Газ
+                  slug: gaz
+                  altTitle: Газ Альт
+                housingComplex:
+                  uuid: 7955e6b1-3f99-4f1f-acbd-41aba7e1c72c
+                  name: ЖК Дальневосточный
+                  slug: dalnevostocnyj
+                  altTitle: ЖК Дальневосточный
+                housingComplexBuilding: null
+                floorNumber: 1
+                fullArea: 4301
+                livingArea: 2500
+                kitchensArea: 1000
+                balconiesAndLoggiasArea: 101
+                bedroomsArea: 2500
+                bathroomsArea: 600
+                wcsArea: 100
+                hallwaysArea: 0
+                amoId: 153800
+                saleTypes:
+                  - uuid: 3aa1e114-53ad-47ce-a046-b416e8e89718
+                    name: Свободная
+                    slug: svobodnaja
+                    altTitle: Свободная
+                priceRub: 6475000
+                buildingType:
+                  uuid: 4056adab-65e4-40ef-877c-a1a318d8a955
+                  name: Монолитный
+                  slug: monolitnyj
+                  altTitle: Монолитный альт
+                buildingSeries: null
+                buildingConstructionYear: 2011
+                buildingConstructionYearComment: null
+                buildingFloorCount: 2
+                buildingCeilingHeight: 250
+                buildingPassengerElevatorsCount: 2
+                buildingFreightElevatorsCount: 0
+                isBuildingHasGarbageChute: true
+                buildingParkingType:
+                  uuid: fa38f76f-ed06-4499-a087-68ccbff6207f
+                  name: Многоуровневая
+                  slug: mnogourovnevaa
+                  altTitle: Многоуровневая Альт
+                buildingDeveloper:
+                  uuid: 9fbcba8c-01a6-4629-9d0f-037b686f8dca
+                  name: PIK
+                  slug: pik
+                  altTitle: ПИК Альт
+                buildingPorchsCount: null
+                subwayStations:
+                  - station:
+                      displayName: Выборгская
+                      subwayLine:
+                        name: Кировско-Выборгская
+                        color: '#D6083B'
+                        uuid: 27d8b121-b9d4-409d-b030-5757ec4c917a
+                      uuid: b33f54e3-12ed-4687-89de-08f6ab54822f
+                    travel:
+                      uuid: f11960ae-637d-492e-beb1-38e655206853
+                      name: Пешком
+                      slug: peskom
+                      altTitle: Пешком Альт
+                    travelTimeToStation: 10
+                images:
+                  - uuid: 5344ee41-0139-4e4b-9768-07947ade184c
+                    title: title
+                    alt: alt
+                    isMain: true
+                    isPlan: false
+                    imageGroup:
+                      name: Комнаты
+                      slug: rooms
+                      uuid: 370b19e5-7ba3-46e6-804b-acb23b5946ff
+                    fileUrl: >-
+                      /upload/images/af/4d/a1/f0/af4da1f01ef3f3a87f93445bb8dcf766_pik_image.jpeg
+                  - uuid: f0c5163d-a26e-4d88-95d5-999b9dfa10d0
+                    title: title
+                    alt: alt
+                    isMain: false
+                    isPlan: true
+                    imageGroup:
+                      name: Планировка
+                      slug: plan
+                      uuid: c144b729-ac58-4b6f-b77c-c7792b2f3bf4
+                    fileUrl: >-
+                      /upload/images/cb/d0/9c/65/cbd09c658ac459e7e7184500cec0afa8_pik_image.jpeg
+                  - uuid: f790af4e-8b18-412d-81a3-be96f0e58cd9
+                    title: title
+                    alt: alt
+                    isMain: false
+                    isPlan: false
+                    imageGroup:
+                      name: Коридор
+                      slug: hallway
+                      uuid: 0cb05b20-52ba-41e6-bc70-2b17a1ea8f9c
+                    fileUrl: >-
+                      /upload/images/aa/ba/c8/66/aabac8666a2f567da8c0e016c840953b_pik_image.jpeg
+                  - uuid: 93ddf74c-3240-4846-9809-66c903a067e9
+                    title: title
+                    alt: alt
+                    isMain: false
+                    isPlan: false
+                    imageGroup:
+                      name: Кухня
+                      slug: kitchen
+                      uuid: 906dcac0-fc59-4dc4-bb0c-1aed12bac305
+                    fileUrl: >-
+                      /upload/images/73/1d/f2/2b/731df22b9e49d5b02f8e766f915ee651_pik_image.jpeg
+                isRedevelopment: null
+                address:
+                  formatted: 'Москва, проспект 60-летия Октября 17'
+                  point:
+                    latitude: 37.579385
+                    longitude: 55.695053
+                videos:
+                  - id: LmZqccw60F8
+                    source: youtube
+                  - id: 3M3R0mt52RM
+                    source: youtube
+                  - id: _0b7slM_qMc
+                    source: youtube
+                roominess:
+                  isStudio: true
+                  count: 0
+                  area: [ ]
+                amoHistory:
+                  "673559": "2021-10-14 00:00:00"
+                  "684643": "ДКП"
+                  "780121": null
+                  "hirLcQku": null
+                  "764683": "ДКП"
+                  "764685": null
+                  "5UeIEF5P": null
+                  "Jsit07Wz": null
+                  "764691": "Нет"
+                  "TDz9B66r": null
+                  "764687": null
+                  "764689": "Нет"
+                  "771347": "Нет"
+                  "V7HBbI69": null
+                  "VAPlbzfg": null
+                  "bhkSH53F": null
+                  "YgtTtzFX": null
+                  "JtTOnZvX": null
+                  "1TW2TwPo": null
+                  "Aoc2d5Lp": null
+                  "45rHJX7F": null
+                  "JVZ4UuLd": null
+                  "pUdSQBIg": null
+                  "YjGKPguD": null
+                  "l8s9cBSr": null
+              errors: [ ]
+    400:
+        description: Переданы неправильные параметры запроса
+        content:
+            application/json:
+                schema:
+                    $ref: '#/components/schemas/empty-body'
+    404:
+      description: Запрашиваемый ресурс не найден
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/empty-body'
+    503:
+        description: Сервис временно недоступен
+        content:
+            application/json:
+                schema:
+                    $ref: '#/components/schemas/empty-body'
+    lk-422:
+        description: Капча не прошла проверку
+        content:
+            application/json:
+                schema:
+                    $ref: '#/components/schemas/empty-body'
+    lk-503:
+        description: ЛК временно недоступен
+        content:
+            application/json:
+                schema:
+                    $ref: '#/components/schemas/empty-body'
+    get-apartment-meta:
+      description: Мета-данные квартиры
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/get-apartment-meta-response'
+    get-apartment-loan:
+      description: Расчет по ипотеке для квартиры
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/get-apartment-loan-response'
+    get-catalog-settings:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/get-catalog-settings-response'
+          example:
+            response:
+              body:
+                address:
+                  title: Местоположение
+                  type: text
+                  required: false
+                  default:
+                  minlength: 3
+                  maxlength: 255
+                  pattern: "^[\\s,\\-.\\dЁА-яё]+$"
+                  regexp:
+                  messages:
+                    maxlength: Пожалуйста, укоротите этот текст до ${maxLength} символов или менее.
+                    minlength: Пожалуйста, используйте не менее ${minLength} символов.
+                    pattern: Пожалуйста, используйте требуемый формат.
+                    required: Пожалуйста, заполните это поле.
+                priceRubMin:
+                  title: Цена, от
+                  type: number
+                  required: false
+                  default:
+                  min: 0
+                  max: 25000000
+                  messages:
+                    max: Пожалуйста, выберите значение не более ${max}.
+                    min: Пожалуйста, выберите значение не менее ${min}.
+                    required: Пожалуйста, заполните это поле.
+                priceRubMax:
+                  title: Цена, до
+                  type: number
+                  required: false
+                  default:
+                  min: 0
+                  max: 25000000
+                  messages:
+                    max: Пожалуйста, выберите значение не более ${max}.
+                    min: Пожалуйста, выберите значение не менее ${min}.
+                    required: Пожалуйста, заполните это поле.
+                roominess:
+                  title: Количество комнат
+                  type: radio
+                  required: false
+                  default:
+                  multiple: false
+                  options:
+                    - value: '0'
+                      caption: Студия
+                    - value: '1'
+                      caption: '1'
+                    - value: '2'
+                      caption: '2'
+                    - value: '3'
+                      caption: '3'
+                fullAreaMin:
+                  title: Общая площадь, от
+                  type: number
+                  required: false
+                  default:
+                  min: 0
+                  max: 50000
+                  messages:
+                    max: Пожалуйста, выберите значение не более ${max}.
+                    min: Пожалуйста, выберите значение не менее ${min}.
+                    required: Пожалуйста, заполните это поле.
+                fullAreaMax:
+                  title: Общая площадь, до
+                  type: number
+                  required: false
+                  default:
+                  min: 0
+                  max: 50000
+                  messages:
+                    max: Пожалуйста, выберите значение не более ${max}.
+                    min: Пожалуйста, выберите значение не менее ${min}.
+                    required: Пожалуйста, заполните это поле.
+                housingTypes:
+                  title: Тип объекта
+                  type: radio
+                  multiple: false
+                  required: false
+                  default:
+                  options:
+                    - value: '024268c5-c499-45c1-b32d-284a212f93e5'
+                      caption: Первичка
+                      slug: pervicka
+                    - value: 1e8c006c-cbf0-4fcc-8725-6b4d319e3bee
+                      caption: Вторичка
+                      slug: vtoricka
+                saleTypes:
+                  title: Тип продажи
+                  type: radio
+                  multiple: false
+                  required: false
+                  default:
+                  options:
+                    - value: 3aa1e114-53ad-47ce-a046-b416e8e89718
+                      caption: Свободная
+                      slug: svobodnaja
+                    - value: dbf9db58-b838-4e61-8f55-45afab485974
+                      caption: Берём % на себя
+                      slug: take_percents_on_ourselves
+                    - value: 8e285810-56e2-4452-b945-b629de70bc59
+                      caption: Трейд-ин+
+                      slug: trade_in_plus
+                kitchensAreaMin:
+                  title: Площадь кухни, от
+                  type: number
+                  required: false
+                  default:
+                  min: 0
+                  max: 50000
+                  messages:
+                    max: Пожалуйста, выберите значение не более ${max}.
+                    min: Пожалуйста, выберите значение не менее ${min}.
+                    required: Пожалуйста, заполните это поле.
+                kitchensAreaMax:
+                  title: Площадь кухни, до
+                  type: number
+                  required: false
+                  default:
+                  min: 0
+                  max: 50000
+                  messages:
+                    max: Пожалуйста, выберите значение не более ${max}.
+                    min: Пожалуйста, выберите значение не менее ${min}.
+                    required: Пожалуйста, заполните это поле.
+                livingAreaMin:
+                  title: Жилая площадь, от
+                  type: number
+                  required: false
+                  default:
+                  min: 0
+                  max: 50000
+                  messages:
+                    max: Пожалуйста, выберите значение не более ${max}.
+                    min: Пожалуйста, выберите значение не менее ${min}.
+                    required: Пожалуйста, заполните это поле.
+                livingAreaMax:
+                  title: Жилая площадь, до
+                  type: number
+                  required: false
+                  default:
+                  min: 0
+                  max: 50000
+                  messages:
+                    max: Пожалуйста, выберите значение не более ${max}.
+                    min: Пожалуйста, выберите значение не менее ${min}.
+                    required: Пожалуйста, заполните это поле.
+                buildingFloorCountMin:
+                  title: Этажей в доме, от
+                  type: number
+                  required: false
+                  default:
+                  min: 0
+                  max: 500
+                  messages:
+                    max: Пожалуйста, выберите значение не более ${max}.
+                    min: Пожалуйста, выберите значение не менее ${min}.
+                    required: Пожалуйста, заполните это поле.
+                buildingFloorCountMax:
+                  title: Этажей в доме, до
+                  type: number
+                  required: false
+                  default:
+                  min: 0
+                  max: 500
+                  messages:
+                    max: Пожалуйста, выберите значение не более ${max}.
+                    min: Пожалуйста, выберите значение не менее ${min}.
+                    required: Пожалуйста, заполните это поле.
+                floorNumberMin:
+                  title: Этаж квартиры, от
+                  type: number
+                  required: false
+                  default:
+                  min: 0
+                  max: 500
+                  messages:
+                    max: Пожалуйста, выберите значение не более ${max}.
+                    min: Пожалуйста, выберите значение не менее ${min}.
+                    required: Пожалуйста, заполните это поле.
+                floorNumberMax:
+                  title: Этаж квартиры, до
+                  type: number
+                  required: false
+                  default:
+                  min: 0
+                  max: 500
+                  messages:
+                    max: Пожалуйста, выберите значение не более ${max}.
+                    min: Пожалуйста, выберите значение не менее ${min}.
+                    required: Пожалуйста, заполните это поле.
+                decorationTypes:
+                  title: Уровень ремонта
+                  type: radio
+                  multiple: false
+                  required: false
+                  default:
+                  options:
+                    - value:
+                      caption: Любой
+                      slug:
+                    - value: acf012c8-3d26-4202-9910-df627aff4d2a
+                      caption: Без ремонта
+                      slug: bez-remonta
+                    - value: dfb4cf47-e121-4b4c-8c05-10b523ee28dc
+                      caption: Косметический
+                      slug: kosmeticeskij
+                    - value: 86bedc34-b9bc-49ec-bc09-bd823257cc58
+                      caption: Евроремонт
+                      slug: evroremont
+                    - value: fd86906f-05b4-4e68-808f-30f4fb54226f
+                      caption: Дизайнерский ремонт
+                      slug: dizajnerskij-remont
+                wcsType:
+                  title: Санузел
+                  type: radio
+                  multiple: false
+                  required: false
+                  default:
+                  options:
+                    - value:
+                      caption: Неважно
+                      slug:
+                    - value: separate
+                      caption: Раздельный
+                      slug:
+                    - value: combined
+                      caption: Совмещённый
+                      slug:
+                buildingCeilingHeight:
+                  title: Высота потолков
+                  type: radio
+                  multiple: false
+                  required: false
+                  default:
+                  options:
+                    - value:
+                      caption: Не важно
+                      slug:
+                    - value: "<=250"
+                      caption: 2.5 м
+                      slug:
+                    - value: '260'
+                      caption: 2.6 м
+                      slug:
+                    - value: '270'
+                      caption: 2.7 м
+                      slug:
+                    - value: '280'
+                      caption: 2.8 м
+                      slug:
+                    - value: '290'
+                      caption: 2.9 м
+                      slug:
+                    - value: '300'
+                      caption: 3 м
+                      slug:
+                    - value: ">300"
+                      caption: 3 м +
+                      slug:
+                buildingTypes:
+                  title: Тип дома
+                  type: radio
+                  multiple: false
+                  required: false
+                  default:
+                  options:
+                    - value:
+                      caption: Неважно
+                      slug:
+                    - value: 1950f24f-1205-4e3c-b6bf-55e429cb4b9e
+                      caption: Кирпичный
+                      slug: kirpicnyj
+                    - value: 4056adab-65e4-40ef-877c-a1a318d8a955
+                      caption: Монолитный
+                      slug: monolitnyj
+                    - value: 2f777358-b1e2-4ddf-a4f3-35135f465d7a
+                      caption: Панельный
+                      slug: panelnyj
+                    - value: f402f7c0-93b6-4b45-b5d5-dfe2b21726a0
+                      caption: Блочный
+                      slug: blocnyj
+                    - value: ab5aab24-7197-4b68-a1f0-a43cb5a19387
+                      caption: Кирпично-монолитный
+                      slug: kirpicno-monolitnyj
+                    - value: 26327a32-920e-40c3-a508-c893095098b5
+                      caption: Сталинский
+                      slug: stalinskij
+                windowViewTypes:
+                  title: Вид из окна
+                  type: radio
+                  multiple: false
+                  required: false
+                  default:
+                  options:
+                    - value:
+                      caption: Не важно
+                      slug:
+                    - value: cec3f7b3-035e-40e0-abf9-8a512d98e4ab
+                      caption: На улицу
+                      slug: na-ulicu
+                    - value: 70d699ae-2f0f-49a8-aca2-614aa2c8b270
+                      caption: Во двор
+                      slug: vo-dvor
+                    - value: 90ecba8d-1773-433e-9b0d-6b466d45fab3
+                      caption: На обе стороны
+                      slug: na-obe-storony
+                elevatorType:
+                  title: Лифт
+                  type: radio
+                  multiple: false
+                  required: false
+                  default:
+                  options:
+                    - value:
+                      caption: Неважно
+                      slug:
+                    - value: any
+                      caption: Любой лифт
+                      slug:
+                    - value: freight
+                      caption: Грузовой
+                      slug:
+                balconyType:
+                  title: Балкон
+                  type: radio
+                  multiple: false
+                  required: false
+                  default:
+                  options:
+                    - value:
+                      caption: Не важно
+                      slug:
+                    - value: loggia
+                      caption: Лоджий
+                      slug:
+                    - value: balcony
+                      caption: Балкон
+                      slug:
+                buildingGarbageChute:
+                  title: Мусоропровод
+                  type: radio
+                  multiple: false
+                  required: false
+                  default:
+                  options:
+                    - value:
+                      caption: Не важно
+                      slug:
+                    - value: 'yes'
+                      caption: Есть
+                      slug:
+                    - value: 'no'
+                      caption: Нет
+                      slug:
+                buildingParkingTypes:
+                  title: Парковка
+                  type: radio
+                  multiple: false
+                  required: false
+                  default:
+                  options:
+                    - value:
+                      caption: Неважно
+                      slug:
+                    - value: a996ac6c-be70-4b31-81a8-13da834d42d6
+                      caption: Наземная
+                      slug: nazemnaa
+                    - value: fa38f76f-ed06-4499-a087-68ccbff6207f
+                      caption: Многоуровневая
+                      slug: mnogourovnevaa
+                    - value: deb9d9ba-915e-45b0-9e5f-27095cbe926c
+                      caption: Открытая
+                      slug: otkrytaa
+                    - value: 514cfc09-719b-44c5-9582-8b22b7524dfd
+                      caption: На крыше
+                      slug: na-kryse
+                    - value: 769e2c6a-14b2-4669-b456-a9737ee1032f
+                      caption: Подземная
+                      slug: podzemnaa
+              errors: [ ]
+      description: Объект описаний фильров и их возможных значений
+    get-catalog-settings-new:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/get-catalog-settings-response-new'
+      description: Объект описаний фильтров и их возможных значений
+    get-userpanel-settings:
+      description: Объект описаний фильтров и их возможных значений
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/get-userpanel-settings-response'
+          example:
+            response:
+              body:
+                name:
+                  title: Ваше имя
+                  type: text
+                  required: true
+                  default: null
+                  minlength: 1
+                  maxlength: 100
+                  pattern: "^[\\s\\-A-Za-zЁА-яё]+$"
+                  regexp: null
+                  messages:
+                    maxlength: Пожалуйста, укоротите этот текст до ${maxLength} символов или менее.
+                    minlength: Пожалуйста, используйте не менее ${minLength} символов.
+                    pattern: Пожалуйста, используйте требуемый формат.
+                    required: Пожалуйста, заполните это поле.
+                phone:
+                  title: Телефон
+                  type: text
+                  required: true
+                  default: null
+                  minlength: 17
+                  maxlength: 17
+                  pattern: "^\\+7\\(\\d{3}\\)\\s\\d{3}-\\d{2}-\\d{2}$"
+                  regexp: null
+                  messages:
+                    maxlength: Пожалуйста, укоротите этот текст до ${maxLength} символов или менее.
+                    minlength: Пожалуйста, используйте не менее ${minLength} символов.
+                    pattern: Пожалуйста, используйте требуемый формат.
+                    required: Пожалуйста, заполните это поле.
+              errors: []
+    get-page:
+      description: Получение информации о странице и её виджетах по slug страницы
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/get-page-response'
+          examples:
+            full:
+              $ref: '#/components/examples/page'
+            tradein:
+              $ref: '#/components/examples/page-tradein'
+    get-pages:
+      description: Список страниц сайта
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/get-pages-response'
+          examples:
+            full:
+              $ref: '#/components/examples/page-list'
+    get-widgets:
+      description: Список глобальных виджетов
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/get-widgets-response'
+          examples:
+            full:
+              $ref: '#/components/examples/widgets'
+    get-menu:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/get-menu-response'
+          example:
+            response:
+              body:
+                menu_desktop:
+                  - attr:
+                      rel:
+                      target:
+                    title: Продать
+                    subtitle:
+                    description:
+                    slug: header__buy
+                    background:
+                    foreground:
+                    href: ''
+                    suffix:
+                      text: text
+                      background:
+                      color:
+                    prefix:
+                      text: text
+                      background:
+                      color:
+                    images:
+                      mobile: "/upload/menu/83/b0/d6/84/83b0d6843b770de147c949aacdb7bffb_.svg"
+                    items:
+                      - attr:
+                        title: Выкуп
+                        subtitle:
+                        description:
+                        slug: header__buy__buyout
+                        background:
+                        foreground:
+                        href: "/sale"
+                        suffix:
+                        prefix:
+                        images:
+                          desktop_x1: "/upload/menu/21/66/73/91/21667391f3870705a59e58e254411b96__268_136.jpeg"
+                          desktop_x2: "/upload/menu/21/66/73/91/21667391f3870705a59e58e254411b96__536_272.jpeg"
+                        items:
+              errors: []
+      description: Объект описаний меню с вложенными подменю
+    create-complaint:
+      description: Результат отправки
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/create-complaint-response'
+          example:
+            response:
+              body: null
+              errors:
+                - code: 0
+                  message: 'Номер телефона должен быть в формате: +7(000) 000-00-00'
+                  field: "author_phone"
+    verify-complaint:
+      description: Результат проверки кода
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/verify-complaint-response'
+          example:
+            response:
+              body: null
+              errors:
+                - code: 0
+                  message: 'Введён неверный код'
+                  field: null
+    coords-checker:
+        description: Результат проверки координат
+        content:
+            application/json:
+                schema:
+                    $ref: '#/components/schemas/coords-checker-response'
+                example:
+                    response:
+                        body:
+                            typeOfZone: buyOutZone
+                        errors: []
+    infrastructure:
+        description: Справочник инфраструктур
+        content:
+            application/json:
+                schema:
+                    $ref: '#/components/schemas/infrastructure-response'
+                example:
+                    response:
+                        body:
+                            infrastructures:
+                                -   name: Тест
+                                    query: Тестовый запрос
+                                    slug: store
+                        errors: [ ]
+    sign-up:
+      description: Результат отправки
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/sign-up-response'
+          example:
+            response:
+              body:
+                status: true
+              errors: []
+    log-in:
+      description: Результат отправки
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/log-in-response'
+          example:
+            response:
+              body:
+                status: true
+                token: eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2MDYxNDI5MzAsImV4cCI6MTYwODczNDkzMCwicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoiNzk3NzgyNzAzMTcifQ.eGLjF9GrrFK6j_pDNMVsP23Or3clF2DgKu5SKELSuiDiCfgeLGcaDm8BrcUG9IubeX2zg2KNO4BOb13I8G3H7rnK2FrtGDQipLdw7J1lmYPA9w3CqllW06t_1cDc7Q6ucHnTY6UcXMcsX00rn_w4UPabs3ipZizqAimGnsdHc_AspjTJCmhVrhWwYW-L1MB148aLjnmTC9azll1ib-XQN8X3bngMlnrDjGPhMVYjocOSNs42AYnzApiRKfTo4RgMjkR2xsay0VqpmsplGRGe2ZfQqU2ANYuOLMtn0QAE7hhAMZctcat7bLg9BUIW3_Psq3sr1HaC0N-kIUkrMh7f8TIT0TeIOVs_IK3v3tlTwbP4QF-2lbh8O-vfD-rrR56mjsCUnwXYf_s5DwWUhxC3nsUM40IEH8CDx6ve7U-9mjqy-AfAtwNcMTyfKyUN5F6wGbmswzz69fr_2gB5HZbVVKNiht8D-p4Dxj2K9-6m2qEuhAEwUSx3du9mwzmMSYsNCIFQJWRa4YDLkMpdCaS06XRjNnDNGCaVM-I_681b_ucFSXeocDzPtCcMNYBPsldVMQnLx1K5_D3o5OUdfbiUvRYszmy0i-QCZCXryGyprd_FPSD7ps3zbeSdOJCk0k9EIQKb6x4xTGUZlBJ-WY9ypV6CWBqDh2770wShHuD0EZM
+                refreshToken: 70826d7f495331ac6954af3c1b1153cb73966208c79a2eff88fe7916673a465f6fa949904a468477062006e93ac82faf7365066f2b57bb211e0fd0445c9ee54a
+                user_id: 9822
+              errors: []
+    get-profile:
+      description: Профиль пользователя
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/get-profile-response'
+          example:
+            response:
+              body:
+                name: 'Владимир'
+                email: null
+                phone: '1234567890'
+                countActiveDeals: 0
+              errors: []
+    create-lead:
+      description: Результат отправки
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/create-lead-response'
+          example:
+            response:
+              body:
+                result: true
+                uuid: 2e4c6aab-92e4-47d0-a374-6bb0b568e247
+                uuid_main: e4c1de2e-f89b-4f40-84c8-8cbe27f0196e
+                message: Заявка обработана.
+              errors: []
+
+    bounding-box:
+        description: Bounding box
+        content:
+            application/json:
+                schema:
+                    $ref: '#/components/schemas/bounding-box-response'
+                example:
+                    response:
+                        body:
+                            boundingBox:
+                                bottomLeft:
+                                    longitude: 37.587613966315985
+                                    latitude: 30.243301978334785
+                                bottomRight:
+                                    longitude: 59.96967698447406
+                                    latitude: 30.243301978334785
+                                topRight:
+                                    longitude: 59.96967698447406
+                                    latitude: 55.753082977607846
+                                topLeft:
+                                    longitude: 37.587613966315985
+                                    latitude: 55.753082977607846
+                                distance: 33.374550265193704
+                        errors: [ ]
+
+  parameters: {}
+  examples:
+    apartments-filters:
+      summary: Filled all available parameters
+      value:
+        filter:
+          address: 'Цветной бульвар'
+          city: 'Москва'
+          balconyType: ['balcony']
+          buildingCeilingHeight: [">=300"]
+          buildingFloorCountMax: 20
+          buildingFloorCountMin: 10
+          buildingParkingTypes: ['a996ac6c-be70-4b31-81a8-13da834d42d6']
+          buildingTypes: ['1950f24f-1205-4e3c-b6bf-55e429cb4b9e']
+          decorationTypes: ['acf012c8-3d26-4202-9910-df627aff4d2a', 'dfb4cf47-e121-4b4c-8c05-10b523ee28dc']
+          elevatorType: ['freight']
+          floorNumberMax: 20
+          floorNumberMin: 20
+          fullAreaMax: 3500
+          fullAreaMin: 7000
+          housingTypes: null
+          kitchensAreaMax: 1000
+          kitchensAreaMin: 2000
+          livingAreaMax: 2000
+          livingAreaMin: null
+          priceRubMax: 10000000
+          priceRubMin: 5000000
+          roominess: ['1', '2']
+          saleTypes: ['00000000-0000-0000-0000-000000000000']
+          wcsType: ['combined']
+          windowViewTypes: ['cec3f7b3-035e-40e0-abf9-8a512d98e4ab']
+          sortBy: priceRub
+          sortOrder: desc
+    apartments-filters-v1:
+      summary: Filled all available parameters
+      value:
+        filter:
+          address: 'Цветной бульвар'
+          city: 'Москва'
+          balconyType: ['balcony']
+          buildingCeilingHeight: [">=300"]
+          buildingFloorCountMax: 20
+          buildingFloorCountMin: 10
+          buildingParkingTypes: ['a996ac6c-be70-4b31-81a8-13da834d42d6']
+          buildingTypes: ['1950f24f-1205-4e3c-b6bf-55e429cb4b9e']
+          decorationTypes: ['acf012c8-3d26-4202-9910-df627aff4d2a', 'dfb4cf47-e121-4b4c-8c05-10b523ee28dc']
+          elevatorType: ['freight']
+          floorNumberMax: 20
+          floorNumberMin: 20
+          fullAreaMax: 3500
+          fullAreaMin: 7000
+          housingTypes: null
+          kitchensAreaMax: 1000
+          kitchensAreaMin: 2000
+          livingAreaMax: 2000
+          livingAreaMin: null
+          priceRubMax: 10000000
+          priceRubMin: 5000000
+          roominess: ['1', '2']
+          saleTypes: ['00000000-0000-0000-0000-000000000000']
+          wcsType: ['combined']
+          windowViewTypes: ['cec3f7b3-035e-40e0-abf9-8a512d98e4ab']
+    apartments-filters-with-page:
+      summary: Count only
+      value:
+        filter:
+          page: 1
+          roominess: ['0']
+          fullAreaMin: 2800
+          fullAreaMax: 3800
+          buildingCeilingHeight: [">=300"]
+          housingTypes: [ '024268c5-c499-45c1-b32d-284a212f93e5' ]
+        countOnly: true
+    apartments-map-request:
+      summary: Немного фильтров + bounding box
+      value:
+        filter:
+          roominess: ['0']
+          fullAreaMin: 2800
+          fullAreaMax: 3800
+          buildingCeilingHeight: [">=300"]
+          housingTypes: [ '024268c5-c499-45c1-b32d-284a212f93e5' ]
+        boundingBox:
+          lowLeftLong: 59.864837
+          lowLeftLat: 30.410218
+          upRightLong: 59.95633866072284
+          upRightLat: 30.565306742773757
+    apartments-map-request-v2:
+        summary: Немного фильтров + bounding box
+        value:
+            filter:
+                roominess: [ '0' ]
+                fullAreaMin: 2800
+                fullAreaMax: 3800
+                buildingCeilingHeight: [ ">=300" ]
+                housingTypes: [ '024268c5-c499-45c1-b32d-284a212f93e5' ]
+                boundingBox:
+                    lowLeftLong: 59.864837
+                    lowLeftLat: 30.410218
+                    upRightLong: 59.95633866072284
+                    upRightLat: 30.565306742773757
+    bounding-box-request:
+        summary: Фильтр
+        value:
+            filter:
+                fullAreaMin: 28
+                address: Ленин
+    page:
+      summary: Пример загрузки виджетов с различными полями
+      value:
+        response:
+          body:
+            page:
+              alias: index
+              slug: mainPage
+              meta_title: 'ПИК-Брокер | Сервисы по улучшению жилищных условий'
+              meta_description: 'Трейд-ин: обменяйте старую квартиру на новую быстро и выгодно.'
+              og_title: 'ПИК-Брокер | Сервисы по улучшению жилищных условий'
+              og_description: 'Трейд-ин: обменяйте старую квартиру на новую быстро и выгодно.'
+              display_name: 'Трейд-ин'
+            widgets:
+              - name: 'main_features'
+                fields:
+                  features_list:
+                    - title: 'Объективная цена'
+                      description: 'Алгоритм и даёт оценку за 2 часа. Разница между оценкой и фактической суммой продажи квартиры — всего 2%'
+                      icon:
+                        src: '/widgets/images/605c986bec480e4fb8ca2dd02efbdfcb.png'
+                        alt: 'Объективная цена'
+                        title: ''
+                    - title: 'Точные сроки'
+                      description: 'Аналитика данных позволяют продать вашу квартиру в указанный срок или подобрать лучший вариант для покупки'
+                      icon:
+                        src: '/widgets/images/dcd68f73ca64fbdf06da65b045b3a252.png'
+                        alt: 'Точные сроки'
+                        title: ''
+              - name: 'tradein_partner'
+                fields:
+                  name: 'ГК ПИК'
+                  projects_count: '3'
+                  features:
+                    - value: "mortgage"
+                      caption: "Субсидированная ипотека"
+                      icon: "p-percent"
+                    - value: "promotions"
+                      caption: "Дополнительные акции"
+                      icon: "p-sale"
+          errors: []
+    page-tradein:
+      summary: Большой пример с виджетом tradein_partners_v2
+      value:
+        response:
+          body:
+            page:
+              alias: tradeinPage
+              slug: tradeinPage
+              meta_description: Обменяй свою старую квартиру на новую через Трейд-ин от ПИК-Брокер.
+                Быстрое принятие решения. Сопровождение сделки от начала до конца!
+              meta_title: 'Трейд-ин: обменять старую квартиру на новую | ПИК-Брокер'
+              og_title: 'Трейд-ин: обменять старую квартиру на новую | ПИК-Брокер'
+              og_description: Обменяй свою старую квартиру на новую через Трейд-ин от ПИК-Брокер.
+                Быстрое принятие решения. Сопровождение сделки от начала до конца!
+              display_name: Трейд-ин
+            widgets:
+              - name: tradein_header_v2
+                fields:
+                  image_320_x2:
+                    src: "/widgets/images/f27cbee62088b0c0466295bb5359ab0a.png"
+                    title: Трейд-ин
+                    alt: Трейд-ин
+                  image_320:
+                    src: "/widgets/images/987225dc352cf99831738092a568c6a5.png"
+                    title: Трейд-ин
+                    alt: Трейд-ин
+                  image_414_x2:
+                    src: "/widgets/images/2515c1a5f7ef80da77056e466f6d9cf0.png"
+                    title: Трейд-ин
+                    alt: Трейд-ин
+                  image_414:
+                    src: "/widgets/images/e7389cf424d82cbe3b88bac658670278.png"
+                    title: Трейд-ин
+                    alt: Трейд-ин
+                  image_768_x2:
+                    src: "/widgets/images/55f1d3198b59989c26320d7cf58934c0.png"
+                    title: Трейд-ин
+                    alt: Трейд-ин
+                  image_768:
+                    src: "/widgets/images/9b09950cd55ebcf0fd010ca347bb6caf.png"
+                    title: Трейд-ин
+                    alt: Трейд-ин
+                  image_1024_x2:
+                    src: "/widgets/images/6a14ede2fe80bcb927a98fe37417492c.png"
+                    title: Трейд-ин
+                    alt: Трейд-ин
+                  image_1024:
+                    src: "/widgets/images/2dc7443f9be973311d05e6b23cadbf89.png"
+                    title: Трейд-ин
+                    alt: Трейд-ин
+                  image_1280:
+                    src: "/widgets/images/3f5c1384a3a0f6b1dd37c991a59f9d0f.png"
+                    title: Трейд-ин
+                    alt: Трейд-ин
+                  image_1440:
+                    src: "/widgets/images/c723b8ae169b8c767daa1a0c502a2538.png"
+                    title: Трейд-ин
+                    alt: Трейд-ин
+                  image_1920:
+                    src: "/widgets/images/0101c9c95646178febedbcc1445829b6.png"
+                    title: Трейд-ин
+                    alt: Трейд-ин
+                  button_link: "#scoringTradeinWidget"
+                  button_text: Бесплатная оценка
+                  description: Обменяйте старую квартиру на новую быстро и выгодно
+                  heading: Трейд-ин
+              - name: tradein_feedback
+                fields:
+                  benefits:
+                    - text: Честно
+                      title: Оценим
+                    - text: Бесплатно
+                      title: Оформим
+                    - text: за 10 дней
+                      title: Обменяем
+                  notice_text: Наш менеджер свяжется с вами в ближайшее время
+                  notice_header: Заявка отправлена
+                  heading: Получить бесплатную оценку
+              - name: tradein_features
+                fields:
+                  features:
+                    - description: Продажа старой и покупка новой квартиры всего за 10 дней. Трейд-ин
+                        от ПИК-Брокер — самый быстрый способ обмена старого жилья на новое.
+                      title: Скорость
+                      icon: tradein-speed
+                    - description: Купим вашу квартиру сами или продадим с гарантией результата.
+                        Будьте уверены, что ваша старая квартира превратится в новую.
+                      title: Надёжность
+                      icon: tradein-protect
+                    - description: С нами новая квартира ещё дешевле. Индивидуальные сроки бронирования
+                        и скидка до 3% на новую квартиру. Никаких затрат на всех этапах сделки.
+                      title: Выгода
+                      icon: tradein-profit
+              - name: tradein_rating
+                fields:
+                  features:
+                    - text: Работаем со всеми застройщиками Москвы и МО
+                    - text: Оформление документов и расчёты берём на себя
+                    - text: Сниженная ставка по ипотеке. Подберём лучшие условия
+                  button_link: "#scoringTradeinWidget"
+                  button_text: Бесплатная оценка
+                  description: Проведём всю сделку от 10 дней с момента предоставления документов
+                  title: Просто и удобно
+                  subtitle: Трейд-ин
+                  image_1280:
+                    src: "/widgets/images/2dfd7170c7e9bca9c70e6158090e0def.png"
+                    title: ''
+                    alt: Просто и удобно
+                  image_1440:
+                    src: "/widgets/images/9f3e7fdd6440f45add248337e8cfff29.png"
+                    title: ''
+                    alt: Просто и удобно
+              - name: tradein_deal
+                fields:
+                  features_primary:
+                    - description: Оставьте заявку на сайте — мы предложим вам цену
+                      title: Оценим вашу квартиру
+                    - description: Оценим и проверим за 2 часа
+                      title: Купим вашу квартиру за 10 дней
+                    - description: Дадим скидку и зафиксируем стоимость жилья
+                      title: Подберём новую квартиру
+                    - description: Согласуем этапы сделки и условия договора. Подпишем документы
+                        по продаже старой и покупке новой квартиры
+                      title: Согласуем цену и условия
+                    - description: Сами направим и заберём документы из Росреестра
+                      title: Зарегистрируем право собственности
+                  description: Все процессы берём на себя, никаких скрытых комиссий или мелкого
+                    шрифта в договоре
+                  title: Выгодно оценим, быстро переведём деньги
+                  icon: tradein-deal
+              - name: tradein_partners_v2
+                fields:
+                  developers:
+                    - image_320_x2:
+                        src: "/widgets/images/3a70063a7ea7ab465884be6080f5edb1.png"
+                        title: Группа компаний ПИК
+                        alt: Группа компаний ПИК
+                      image_320:
+                        src: "/widgets/images/fb6f8d0d2221dd826f954e687f8811cf.png"
+                        title: Группа компаний ПИК
+                        alt: Группа компаний ПИК
+                      image_414_x2:
+                        src: "/widgets/images/3b2081a432377cecc9451f2b23310c44.png"
+                        title: Группа компаний ПИК
+                        alt: Группа компаний ПИК
+                      image_414:
+                        src: "/widgets/images/09bd0109deba26bb498194001ee3a609.png"
+                        title: Группа компаний ПИК
+                        alt: Группа компаний ПИК
+                      image_768_x2:
+                        src: "/widgets/images/14fffce766af0f9ecf9ae8ac18fa5fab.png"
+                        title: Группа компаний ПИК
+                        alt: Группа компаний ПИК
+                      image_768:
+                        src: "/widgets/images/6b23cf0dcbe1d9d15df5ee4f2577450b.png"
+                        title: Группа компаний ПИК
+                        alt: Группа компаний ПИК
+                      image_1024_x2:
+                        src: "/widgets/images/155db3e17cdc4c5f96010819e797de76.png"
+                        title: Группа компаний ПИК
+                        alt: Группа компаний ПИК
+                      image_1024:
+                        src: "/widgets/images/20bc5d9e25cff3448d0342cbf4c53aaa.png"
+                        title: Группа компаний ПИК
+                        alt: Группа компаний ПИК
+                      image_1280:
+                        src: "/widgets/images/c83bc4b0932a71922c52636b02cd4d3f.png"
+                        title: Группа компаний ПИК
+                        alt: Группа компаний ПИК
+                      main_image:
+                        src: "/widgets/images/5cafeff7cc35518d6b7f101a5e57ab63.png"
+                        title: Группа компаний ПИК
+                        alt: Группа компаний ПИК
+                      features:
+                        - value: mortgage
+                          caption: Субсидированная ипотека
+                          icon: p-percent
+                        - value: promotions
+                          caption: Дополнительные акции
+                          icon: p-sale
+                        - value: tradein
+                          caption: Трейд-ин по подписке
+                          icon: p-tradein
+                        - value: promo
+                          caption: Акция "Берем % на себя"
+                          icon: stock-icon
+                      projects_count: '49'
+                      start_price: '2,7'
+                      discount: '1'
+                      short_description: Крупнейший девелопер России
+                      name: ГК ПИК
+                      logo:
+                        src: "/widgets/images/6dd9aefadb965cd8717770731379f97e.png"
+                        title: Группа компаний ПИК
+                        alt: Группа компаний ПИК
+                    - image_320_x2:
+                        src: "/widgets/images/713281a35c84aa0e99e2eeceac8f9f5a.png"
+                        title: Группа компаний Самолет
+                        alt: Группа компаний Самолет
+                      image_320:
+                        src: "/widgets/images/bf41537ac7a699c9fa0e0142d82ca409.png"
+                        title: Группа компаний Самолет
+                        alt: Группа компаний Самолет
+                      image_414_x2:
+                        src: "/widgets/images/a1cb6ef88a00ddbe76576351fc1f32b1.png"
+                        title: Группа компаний Самолет
+                        alt: Группа компаний Самолет
+                      image_414:
+                        src: "/widgets/images/51f07712c650b02ecf07863e1aaeb207.png"
+                        title: Группа компаний Самолет
+                        alt: Группа компаний Самолет
+                      image_768_x2:
+                        src: "/widgets/images/f56d3f6d5995f8f73ab0c0353a9333fb.png"
+                        title: Группа компаний Самолет
+                        alt: Группа компаний Самолет
+                      image_768:
+                        src: "/widgets/images/ce2a23bb348d245e2469966f7fab08fb.png"
+                        title: Группа компаний Самолет
+                        alt: Группа компаний Самолет
+                      image_1024_x2:
+                        src: "/widgets/images/b4a81b9083e640491c5d6494d52faf56.png"
+                        title: Группа компаний Самолет
+                        alt: Группа компаний Самолет
+                      image_1024:
+                        src: "/widgets/images/6b2630bfc4ddc0b80aac445b883fa082.png"
+                        title: Группа компаний Самолет
+                        alt: Группа компаний Самолет
+                      image_1280:
+                        src: "/widgets/images/f96ba5ecf23e23dc2fdd42dcaf4e7bb5.png"
+                        title: Группа компаний Самолет
+                        alt: Группа компаний Самолет
+                      main_image:
+                        src: "/widgets/images/d4f3f1daffe5e09521325e6d10f67cb4.png"
+                        title: Группа компаний Самолет
+                        alt: Группа компаний Самолет
+                      features:
+                        - value: mortgage
+                          caption: Субсидированная ипотека
+                          icon: p-percent
+                        - value: tradein
+                          caption: Трейд-ин по подписке
+                          icon: p-tradein
+                      projects_count: '17'
+                      start_price: '2,8'
+                      discount: '1'
+                      short_description: Входит в топ-10 крупнейших девелоперов Московской области
+                      name: ГК Самолет
+                      logo:
+                        src: "/widgets/images/e1d88b250d86c673bedfc29c7e6adb45.png"
+                        title: Группа компаний Самолет
+                        alt: Группа компаний Самолет
+                    - image_320_x2:
+                        src: "/widgets/images/a93ab1c2f0a40c0ac9b1183612b8b017.png"
+                        title: Группа компаний А101
+                        alt: Группа компаний А101
+                      image_320:
+                        src: "/widgets/images/f3cc87d3516d285373d5639b245a9bdb.png"
+                        title: Группа компаний А101
+                        alt: Группа компаний А101
+                      image_414_x2:
+                        src: "/widgets/images/b8be1897dcdfede8f013f46d2d574f92.png"
+                        title: Группа компаний А101
+                        alt: Группа компаний А101
+                      image_414:
+                        src: "/widgets/images/8bc234b9d5d41d2662973cae2f06ff4d.png"
+                        title: Группа компаний А101
+                        alt: Группа компаний А101
+                      image_768_x2:
+                        src: "/widgets/images/1cba57bc02cdefa57ebcfecccee37824.png"
+                        title: Группа компаний А101
+                        alt: Группа компаний А101
+                      image_768:
+                        src: "/widgets/images/39ae292479d92cc4ddf7865467b75afa.png"
+                        title: Группа компаний А101
+                        alt: Группа компаний А101
+                      image_1024_x2:
+                        src: "/widgets/images/ad26977076c2e584a3652362085505f0.png"
+                        title: Группа компаний А101
+                        alt: Группа компаний А101
+                      image_1024:
+                        src: "/widgets/images/1d85467378a705715ab0a93a50cef847.png"
+                        title: Группа компаний А101
+                        alt: Группа компаний А101
+                      image_1280:
+                        src: "/widgets/images/5bed397db40d4386b9dc25331b9abe80.png"
+                        title: Группа компаний А101
+                        alt: Группа компаний А101
+                      main_image:
+                        src: "/widgets/images/e4f5ccba4f4187fcc2212fe79223171a.png"
+                        title: Группа компаний А101
+                        alt: Группа компаний А101
+                      features:
+                        - value: mortgage
+                          caption: Субсидированная ипотека
+                          icon: p-percent
+                        - value: tradein
+                          caption: Трейд-ин по подписке
+                          icon: p-tradein
+                      projects_count: '9'
+                      start_price: '4,5'
+                      discount: '1'
+                      short_description: Входит в топ ведущих девелоперов России
+                      name: ГК А101
+                      logo:
+                        src: "/widgets/images/fee760745c071bc803108fa39e0f358d.png"
+                        title: Группа компаний А101
+                        alt: Группа компаний А101
+                    - image_320_x2:
+                        src: "/widgets/images/baee476e812d259b0357195507d9c711.png"
+                        title: Level Group
+                        alt: Level Group
+                      image_320:
+                        src: "/widgets/images/40e26d3ff16699f2f2e305225d5aa4b4.png"
+                        title: Level Group
+                        alt: Level Group
+                      image_414_x2:
+                        src: "/widgets/images/1f6a93ecad7c97dbbc5c674aa438f94b.png"
+                        title: Level Group
+                        alt: Level Group
+                      image_414:
+                        src: "/widgets/images/41a3a4b084da665e16e3171f03b42f5b.png"
+                        title: Level Group
+                        alt: Level Group
+                      image_768_x2:
+                        src: "/widgets/images/7db1683609a1b3c7b8580e6fcede263b.png"
+                        title: Level Group
+                        alt: Level Group
+                      image_768:
+                        src: "/widgets/images/915f1644879ad86a9f78a649ee9f1eb5.png"
+                        title: Level Group
+                        alt: Level Group
+                      image_1024_x2:
+                        src: "/widgets/images/3e7afa29eb1b1221e9ac570351540849.png"
+                        title: Level Group
+                        alt: Level Group
+                      image_1024:
+                        src: "/widgets/images/322cdcc7614e9281d36da63132c69fd3.png"
+                        title: Level Group
+                        alt: Level Group
+                      image_1280:
+                        src: "/widgets/images/19f03d83010137341fb0db205562fc2d.png"
+                        title: Level Group
+                        alt: Level Group
+                      main_image:
+                        src: "/widgets/images/64b39c412f22a9bc32a1dea83f76e000.png"
+                        title: Level Group
+                        alt: Level Group
+                      features:
+                        - value: mortgage
+                          caption: Субсидированная ипотека
+                          icon: p-percent
+                        - value: tradein
+                          caption: Трейд-ин по подписке
+                          icon: p-tradein
+                      projects_count: '10'
+                      start_price: '4,3'
+                      discount: '1'
+                      short_description: Один из лидеров рынка московского девелопмента
+                      name: Level Group
+                      logo:
+                        src: "/widgets/images/89f1c88a0ba18b1cfbfff17d52fd1d52.png"
+                        title: Level Group
+                        alt: Level Group
+                    - image_320_x2:
+                        src: "/widgets/images/3ceb752bf4dcce3853250acd10786bed.png"
+                        title: Stone Hedge
+                        alt: Stone Hedge
+                      image_320:
+                        src: "/widgets/images/d83143d547d86f084e5150401ea6d098.png"
+                        title: Stone Hedge
+                        alt: Stone Hedge
+                      image_414_x2:
+                        src: "/widgets/images/4fe39b237f3d69835b6715b022e025d1.png"
+                        title: Stone Hedge
+                        alt: Stone Hedge
+                      image_414:
+                        src: "/widgets/images/cae7daa18460da6e10887e2a8f497fd7.png"
+                        title: Stone Hedge
+                        alt: Stone Hedge
+                      image_768_x2:
+                        src: "/widgets/images/5181d112dbf78b1eb0b497647661f3c5.png"
+                        title: Stone Hedge
+                        alt: Stone Hedge
+                      image_768:
+                        src: "/widgets/images/2970446c722bfaecc182e258c1374e15.png"
+                        title: Stone Hedge
+                        alt: Stone Hedge
+                      image_1024_x2:
+                        src: "/widgets/images/0b7709fd0756a6975a096c0d5d38e3ab.png"
+                        title: Stone Hedge
+                        alt: Stone Hedge
+                      image_1024:
+                        src: "/widgets/images/3deb43175b77e7476b1af4549626e564.png"
+                        title: Stone Hedge
+                        alt: Stone Hedge
+                      image_1280:
+                        src: "/widgets/images/5306090ce913c0e1eafec7efde1db016.png"
+                        title: Stone Hedge
+                        alt: Stone Hedge
+                      main_image:
+                        src: "/widgets/images/fc680ee27d75a88ddcaae982864b7774.png"
+                        title: Stone Hedge
+                        alt: Stone Hedge
+                      features:
+                        - value: mortgage
+                          caption: Субсидированная ипотека
+                          icon: p-percent
+                        - value: tradein
+                          caption: Трейд-ин по подписке
+                          icon: p-tradein
+                      projects_count: '7'
+                      start_price: '10,5'
+                      discount: '1'
+                      short_description: Концептуальные проекты бизнес и премиум-класса
+                      name: Stone Hedge
+                      logo:
+                        src: "/widgets/images/2edb8b58c02c0ac6cdccd45359debff6.png"
+                        title: Stone Hedge
+                        alt: Stone Hedge
+                    - image_320_x2:
+                        src: "/widgets/images/398e4263e0e6a2e34f8cf386da1b834b.png"
+                        title: Группа компаний МИЦ
+                        alt: Группа компаний МИЦ
+                      image_320:
+                        src: "/widgets/images/62e16d5b03b24e0539202a14f04020ad.png"
+                        title: Группа компаний МИЦ
+                        alt: Группа компаний МИЦ
+                      image_414_x2:
+                        src: "/widgets/images/dcb09e09ebf6245ec4be0c1052b9bdef.png"
+                        title: Группа компаний МИЦ
+                        alt: Группа компаний МИЦ
+                      image_414:
+                        src: "/widgets/images/bd3fa6089ac23606d031272ebf052d90.png"
+                        title: Группа компаний МИЦ
+                        alt: Группа компаний МИЦ
+                      image_768_x2:
+                        src: "/widgets/images/0a254a7b5dcc10f4fd1b8dd828d7c0dd.png"
+                        title: Группа компаний МИЦ
+                        alt: Группа компаний МИЦ
+                      image_768:
+                        src: "/widgets/images/e5e998392e3c69d01eeccb99453e75f9.png"
+                        title: Группа компаний МИЦ
+                        alt: Группа компаний МИЦ
+                      image_1024_x2:
+                        src: "/widgets/images/e0c030d806d1dace6fbee7e781d4c927.png"
+                        title: Группа компаний МИЦ
+                        alt: Группа компаний МИЦ
+                      image_1024:
+                        src: "/widgets/images/71c239cd46d25d04b629c4c95a184c24.png"
+                        title: Группа компаний МИЦ
+                        alt: Группа компаний МИЦ
+                      image_1280:
+                        src: "/widgets/images/43ba88f52bf0d79ac5056db3e0b93450.png"
+                        title: Группа компаний МИЦ
+                        alt: Группа компаний МИЦ
+                      main_image:
+                        src: "/widgets/images/81ed2a7328000e3deb2a42e0af064748.png"
+                        title: Группа компаний МИЦ
+                        alt: Группа компаний МИЦ
+                      features:
+                        - value: mortgage
+                          caption: Субсидированная ипотека
+                          icon: p-percent
+                        - value: tradein
+                          caption: Трейд-ин по подписке
+                          icon: p-tradein
+                      projects_count: '10'
+                      start_price: '2,2'
+                      discount: '1'
+                      short_description: Компания со стажем строительства более 20 лет
+                      name: ГК МИЦ
+                      logo:
+                        src: "/widgets/images/d365a9459aef40058f88dd94ef01ebe4.png"
+                        title: Группа компаний МИЦ
+                        alt: Группа компаний МИЦ
+                    - image_320_x2:
+                        src: "/widgets/images/4538d180978df1991cb45586a84961e0.png"
+                        title: MR Group
+                        alt: MR Group
+                      image_320:
+                        src: "/widgets/images/6507ee47c38a9d9d200b0213de34f2ed.png"
+                        title: MR Group
+                        alt: MR Group
+                      image_414_x2:
+                        src: "/widgets/images/b4af4541b91dbd8decf4d65caf40ff32.png"
+                        title: MR Group
+                        alt: MR Group
+                      image_414:
+                        src: "/widgets/images/b8de54eb1ecf35109b1102defdc020d8.png"
+                        title: MR Group
+                        alt: MR Group
+                      image_768_x2:
+                        src: "/widgets/images/76d52850a27800cb7ad215f31a2fc1f2.png"
+                        title: MR Group
+                        alt: MR Group
+                      image_768:
+                        src: "/widgets/images/1f891d230b8a2487eae841368a96114b.png"
+                        title: MR Group
+                        alt: MR Group
+                      image_1024_x2:
+                        src: "/widgets/images/e38f9dd3942c09e5ca4458f4b03f0fd6.png"
+                        title: MR Group
+                        alt: MR Group
+                      image_1024:
+                        src: "/widgets/images/4c80bceb9443925f8d839a5524ee4df7.png"
+                        title: MR Group
+                        alt: MR Group
+                      image_1280:
+                        src: "/widgets/images/0fc12d3d847541d34a4ab7cee4f0d616.png"
+                        title: MR Group
+                        alt: MR Group
+                      main_image:
+                        src: "/widgets/images/3633ce447d6f0f1614410e0be8b8f201.png"
+                        title: MR Group
+                        alt: MR Group
+                      features:
+                        - value: mortgage
+                          caption: Субсидированная ипотека
+                          icon: p-percent
+                        - value: tradein
+                          caption: Трейд-ин по подписке
+                          icon: p-tradein
+                      projects_count: '26'
+                      start_price: '6,3'
+                      discount: '1'
+                      short_description: Входит в топ-10 крупных застройщиков России
+                      name: MR Group
+                      logo:
+                        src: "/widgets/images/9352064bc86d0c7bce202f55d3e9982d.png"
+                        title: MR Group
+                        alt: MR Group
+                    - image_320_x2:
+                        src: "/widgets/images/9d3cf421fd84c58d7b674f53644d3271.png"
+                        title: АО Центр-Инвест
+                        alt: АО Центр-Инвест
+                      image_320:
+                        src: "/widgets/images/bb04505a8a85d43efb6cd468e5d54c36.png"
+                        title: АО Центр-Инвест
+                        alt: АО Центр-Инвест
+                      image_414_x2:
+                        src: "/widgets/images/add5c42cd7a15aac1e2e93c0795870f3.png"
+                        title: АО Центр-Инвест
+                        alt: АО Центр-Инвест
+                      image_414:
+                        src: "/widgets/images/b6dc3f6dc0d0815f4b44958d21bae2cb.png"
+                        title: АО Центр-Инвест
+                        alt: АО Центр-Инвест
+                      image_768_x2:
+                        src: "/widgets/images/aa80bfe00a78434bf58924faf8c56b4c.png"
+                        title: АО Центр-Инвест
+                        alt: АО Центр-Инвест
+                      image_768:
+                        src: "/widgets/images/f6ca5eaa408a4ada5500f7193e3ae411.png"
+                        title: АО Центр-Инвест
+                        alt: АО Центр-Инвест
+                      image_1024_x2:
+                        src: "/widgets/images/33891e85fe804be5d20c5d01940aea09.png"
+                        title: АО Центр-Инвест
+                        alt: АО Центр-Инвест
+                      image_1024:
+                        src: "/widgets/images/805c24db7de75ab2841caee18d18c2b7.png"
+                        title: АО Центр-Инвест
+                        alt: АО Центр-Инвест
+                      image_1280:
+                        src: "/widgets/images/49a156f24cfe07d04c1731775e13ede3.png"
+                        title: АО Центр-Инвест
+                        alt: АО Центр-Инвест
+                      main_image:
+                        src: "/widgets/images/811727aac923ccf502f981a788122bec.png"
+                        title: АО Центр-Инвест
+                        alt: АО Центр-Инвест
+                      features:
+                        - value: mortgage
+                          caption: Субсидированная ипотека
+                          icon: p-percent
+                        - value: tradein
+                          caption: Трейд-ин по подписке
+                          icon: p-tradein
+                      projects_count: '10'
+                      start_price: '6,7'
+                      discount: '1'
+                      short_description: Крупная инвестиционно-строительная компания
+                      name: АО Центр-Инвест
+                      logo:
+                        src: "/widgets/images/2950c268f44117d62c1ab352313e0b7b.png"
+                        title: АО Центр-Инвест
+                        alt: АО Центр-Инвест
+                  heading: Более 100 ЖК с уникальными предложениями от застройщиков
+              - name: tradein_products
+                fields:
+                  right_buttons_link: subscriptionPage
+                  right_buttons_text: Подробнее
+                  right_icon: tradein-products-rub
+                  right_description: Гарантировано найдём покупателя и проведём сделку
+                  right_heading: Не торопитесь и хотите продать выгоднее?
+                  right_upheading: Подписка
+                  left_buttons_link: mortgagePage
+                  left_buttons_text: Смотреть условия
+                  left_icon: tradein-products-balance
+                  left_description: Подберём ипотеку по сниженной ставке
+                  left_heading: Квартира мечты стоит дороже, чем вы рассчитывали?
+                  left_upheading: Ипотека
+              - name: tradein_faq
+                fields:
+                  questions:
+                    - answer: Вы можете выбрать квартиру в любом жилом комплексе.
+                      question: Какие ЖК входят в программу трейд-ин?
+                    - answer: Мы не покупаем квартиры больше 3-х комнат, в домах ниже 5 этажей
+                        и дороже 20 млн руб.
+                      question: Какие квартиры вы не покупаете?
+                    - answer: Цена будет на 10% ниже рыночной. Готовы выйти на сделку за 10 дней
+                        после предоставления полного пакета документов.
+                      question: Быстрый выкуп? И какой будет цена?
+                  not_found_button: Задать вопрос
+                  not_found_description: Напишите нам и мы поможем
+                  not_found_title: Не нашли ответ на свой вопрос?
+                  heading: Вопросы и ответы
+          errors: []
+    page-list:
+      summary: Список страниц сайта
+      value:
+        response:
+          body:
+            pages:
+              -   active: true
+                  slug: mainPage
+                  alias: main
+                  meta_title: ПИК-Брокер | Сервисы по улучшению жилищных условий
+                  meta_description: 'Трейд-ин: обменяйте старую квартиру на новую быстро и выгодно.
+                    Оставьте заявку на продажу старой квартиры и выберите новостройку в ПИК на специальных
+                    условиях. Бесплатное юридическое сопровождение, подписание всех документов за
+                    1 раз.'
+                  og_title: ПИК-Брокер | Сервисы по улучшению жилищных условий
+                  og_description: 'Трейд-ин: обменяйте старую квартиру на новую быстро и выгодно.
+                    Оставьте заявку на продажу старой квартиры и выберите новостройку в ПИК на специальных
+                    условиях. Бесплатное юридическое сопровождение, подписание всех документов за
+                    1 раз.'
+                  display_name: Главная
+              -   active: true
+                  slug: catalogPage
+                  alias: catalog
+                  meta_title: Купить квартиру в Москве и области | ПИК-Брокер
+                  meta_description: Каталог квартир от компании ПИК-Брокер. Выгодные предложения
+                    на недвижимость в России. Быстрое оформление сделки!
+                  og_title: Купить квартиру в Москве и области | ПИК-Брокер
+                  og_description: Каталог квартир от компании ПИК-Брокер. Выгодные предложения на
+                    недвижимость в России. Быстрое оформление сделки!
+                  display_name: Каталог
+          errors: []
+    widgets:
+      summary: Список глобальных виджетов
+      value:
+        response:
+          body:
+            widgets:
+              - name: city_map_v5__global
+                fields:
+                  conditions:
+                    - text: Купленные в ипотеку
+                    - text: С несколькими собственниками
+                    - text: До 3 комнат включительно, в домах не ниже 5 этажей
+                  conditions_heading: Какие квартиры мы выкупаем?
+                  search_placeholder: Поиск по городу...
+                  heading: Города в которых мы работаем
+          errors: []
+    apartment:
+      summary: Пример квартиры
+      value:
+        uuid: 173bbab2-f78e-408f-b468-48a31e013b14
+        contactPhoneNumber: '+79875554323'
+        balconiesCount: 0
+        loggiasCount: null
+        combinedWcsCount: 0
+        separateWcsCount: 1
+        roomType:
+          uuid: 24d8ff44-9e4b-439c-93e2-e628904e0044
+          name: Изолированная
+          slug: izolirovannaa
+          altTitle: Изолированная Альт
+        stoveType:
+          uuid: c144b729-ac58-4b6f-b77c-c7792b2f3bf4
+          name: Газ
+          slug: gaz
+          altTitle: Газ Альт
+        housingType:
+          uuid: 024268c5-c499-45c1-b32d-284a212f93e5
+          name: Первичка
+          slug: pervicka
+          altTitle: Первичка Альт
+        decorationType:
+          uuid: dfb4cf47-e121-4b4c-8c05-10b523ee28dc
+          name: Косметический
+          slug: kosmeticeskij
+          altTitle: Косметический Альт
+        windowViewType:
+          uuid: 70d699ae-2f0f-49a8-aca2-614aa2c8b270
+          name: Во двор
+          slug: vo-dvor
+          altTitle: Во двор Альт
+        heatingType:
+          uuid: 4169b3b6-dfbd-451e-a6f4-8378f4a5662f
+          name: Газ
+          slug: gaz
+          altTitle: Газ Альт
+        housingComplex:
+          uuid: 7955e6b1-3f99-4f1f-acbd-41aba7e1c72c
+          name: ЖК Дальневосточный
+          slug: dalnevostocnyj
+          altTitle: ЖК Дальневосточный
+        housingComplexBuilding: null
+        floorNumber: 1
+        fullArea: 5001
+        livingArea: 3000
+        kitchensArea: 1200
+        balconiesAndLoggiasArea: 101
+        bedroomsArea: 3000
+        bathroomsArea: 600
+        wcsArea: 100
+        hallwaysArea: 0
+        amoId: 153818
+        saleTypes:
+          - uuid: 3aa1e114-53ad-47ce-a046-b416e8e89718
+            name: Свободная
+            slug: svobodnaja
+            altTitle: Свободная
+        priceRub: 6925000
+        buildingType:
+          uuid: 4056adab-65e4-40ef-877c-a1a318d8a955
+          name: Монолитный
+          slug: monolitnyj
+          altTitle: Монолитный альт
+        buildingSeries: null
+        buildingConstructionYear: 2011
+        buildingConstructionYearComment: null
+        buildingFloorCount: 2
+        buildingCeilingHeight: 250
+        buildingPassengerElevatorsCount: 2
+        buildingFreightElevatorsCount: 0
+        isBuildingHasGarbageChute: true
+        buildingParkingType:
+          uuid: fa38f76f-ed06-4499-a087-68ccbff6207f
+          name: Многоуровневая
+          slug: mnogourovnevaa
+          altTitle: Многоуровневая Альт
+        buildingDeveloper:
+          uuid: 9fbcba8c-01a6-4629-9d0f-037b686f8dca
+          name: PIK
+          slug: pik
+          altTitle: ПИК Альт
+        buildingPorchsCount: null
+        subwayStations:
+          - station:
+              displayName: Выборгская
+              subwayLine:
+                name: Кировско-Выборгская
+                color: '#D6083B'
+                uuid: 27d8b121-b9d4-409d-b030-5757ec4c917a
+              uuid: b33f54e3-12ed-4687-89de-08f6ab54822f
+            travel:
+              uuid: f11960ae-637d-492e-beb1-38e655206853
+              name: Пешком
+              slug: peskom
+              altTitle: Пешком Альт
+            travelTimeToStation: 10
+        images:
+          - uuid: 64a2b517-7f6e-4938-94e9-a218f51543fb
+            title: title
+            alt: alt
+            isMain: true
+            isPlan: false
+            imageGroup:
+              name: Комнаты
+              slug: rooms
+              uuid: 370b19e5-7ba3-46e6-804b-acb23b5946ff
+            fileUrl: >-
+              /upload/images/d7/15/cc/b4/d715ccb435ded501592ceb6ed7aff48f_pik_image.jpeg
+        isRedevelopment: null
+        address:
+          formatted: 'Москва, улица Академика Челомея 8К2'
+          point:
+            latitude: 37.528217
+            longitude: 55.662963
+        videos:
+          - id: LmZqccw60F8
+            source: youtube
+          - id: 3M3R0mt52RM
+            source: youtube
+          - id: _0b7slM_qMc
+            source: youtube
+        roominess:
+          isStudio: true
+          count: null
+          area: [ ]
+
+tags: []
+security: []

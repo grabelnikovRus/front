@@ -1,0 +1,141 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/breakpoints';
+
+.checkbox_group {
+  &_item {
+    display: flex;
+    min-width: 56px;
+    height: 44px;
+    border-radius: 28px;
+
+    &:not(:last-child) {
+      margin-right: 4px;
+
+      @include breakpoint($lg) {
+        margin-right: 8px;
+      }
+    }
+  }
+
+  &_label {
+    margin-bottom: 8px;
+
+    // color: $white;
+    font-size: 12px;
+    line-height: 16px;
+
+    &:empty {
+      display: none;
+    }
+  }
+
+  &___opaque {
+    .checkbox_group_label {
+      color: $dark_100;
+    }
+  }
+
+  &_container {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+
+    &___error {
+      border-radius: 28px;
+      background-color: $red_100;
+    }
+  }
+
+  &_error_text {
+    margin-left: 20px;
+    color: $white;
+    font-weight: 400;
+    font-size: 10px;
+    font-family: Inter, sans-serif;
+
+    &___red {
+      color: $red_100;
+    }
+  }
+
+  &___classic {
+    .checkbox_group_container {
+      display: grid;
+      gap: 24px;
+      @include breakpoint($md) {
+        gap: 16px;
+      }
+    }
+
+    .checkbox_group_item {
+      height: auto;
+      margin-right: auto;
+    }
+  }
+
+  &___layout {
+    &_row {
+      .checkbox_group_item {
+        flex: 1;
+      }
+
+      .checkbox_group_container {
+        flex-wrap: nowrap;
+        width: 100%;
+      }
+    }
+
+    &_column {
+      .checkbox_group_item {
+        flex-grow: 1;
+        flex-shrink: 0;
+        width: 100%;
+        height: 56px;
+        margin-right: 0;
+
+        @include breakpoint($md) {
+          flex-basis: 192px;
+        }
+      }
+
+      .checkbox_group_container {
+        flex-wrap: wrap;
+        row-gap: 4px;
+        width: 100%;
+        column-gap: 8px;
+      }
+    }
+
+    &_column,
+    &_main,
+    &_row {
+      .checkbox_group_item {
+        height: 56px;
+      }
+    }
+
+    &_wrap {
+      .checkbox_group_item {
+        &:not(:last-child) {
+          margin-bottom: 6px;
+        }
+      }
+
+      .checkbox_group_container {
+        flex-wrap: wrap;
+        width: 100%;
+      }
+    }
+
+    &_main {
+      .checkbox_group_item:first-child {
+        flex: 1;
+      }
+
+      .checkbox_group_container {
+        flex-wrap: nowrap;
+        width: 100%;
+      }
+    }
+  }
+}

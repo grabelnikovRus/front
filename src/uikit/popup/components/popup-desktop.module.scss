@@ -1,0 +1,32 @@
+@import '../../../styles/variables/colors';
+@import '../../../styles/variables/breakpoints';
+
+.popup_desktop {
+  position: absolute;
+  z-index: 11;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 346px;
+  border-radius: 32px;
+  transition: opacity ease-in-out 200ms;
+
+  &___closed {
+    opacity: 0;
+    transform: unset;
+  }
+
+  &___open {
+    opacity: 1;
+    transform: unset;
+  }
+
+  &_wrapper {
+    padding: 0 24px;
+  }
+
+  &[data-popper-reference-hidden='true'] {
+    visibility: hidden;
+    pointer-events: none;
+  }
+}

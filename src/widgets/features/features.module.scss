@@ -1,0 +1,176 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/breakpoints';
+@import 'src/styles/variables/bg-effect';
+
+.group_list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 64px;
+
+  @include breakpoint($md) {
+    margin-bottom: 80px;
+  }
+
+  &_header {
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+    @include breakpoint($xs) {
+      font-size: 24px;
+      line-height: 32px;
+    }
+    @include breakpoint($md) {
+      font-size: 32px;
+      line-height: 38px;
+    }
+    @include breakpoint($xl2) {
+      font-size: 36px;
+      line-height: 42px;
+    }
+  }
+}
+
+.list {
+  display: grid;
+  grid-template-rows: repeat(2, 116px);
+  grid-template-columns: repeat(2, 2fr);
+  width: 100%;
+  margin-top: 24px;
+  border-radius: 32px;
+  box-shadow: $box-shadow2;
+
+  // margin-bottom: 0;
+
+  @include breakpoint($xs) {
+    grid-template-rows: repeat(2, 124px);
+    margin-top: 32px;
+  }
+
+  @include breakpoint($md) {
+    grid-template-rows: repeat(1, 124px);
+    grid-template-columns: repeat(4, 4fr);
+    gap: 16px;
+    margin-top: 48px;
+    box-shadow: none;
+  }
+
+  @include breakpoint($lg) {
+    grid-template-rows: repeat(1, 136px);
+  }
+
+  @include breakpoint($xl2) {
+    grid-template-rows: repeat(1, 104px);
+    gap: 24px;
+  }
+
+  &_item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px;
+
+    @include breakpoint($md) {
+      border-radius: 32px;
+      box-shadow: $box-shadow2;
+    }
+
+    @include breakpoint($lg) {
+      padding: 24px;
+    }
+
+    @include breakpoint($xl2) {
+      flex-direction: row;
+      padding: 32px;
+    }
+
+    &:first-child {
+      border-right: 1px $blue_300 solid;
+      border-bottom: 1px $blue_300 solid;
+
+      @include breakpoint($md) {
+        border: none;
+      }
+    }
+
+    &:nth-child(2) {
+      border-bottom: 1px $blue_300 solid;
+      border-left: 1px $blue_300 solid;
+      @include breakpoint($md) {
+        border: none;
+      }
+    }
+
+    &:nth-child(3) {
+      border-top: 1px $blue_300 solid;
+      border-right: 1px $blue_300 solid;
+      @include breakpoint($md) {
+        border: none;
+      }
+    }
+
+    &:last-child {
+      border-top: 1px $blue_300 solid;
+      border-left: 1px $blue_300 solid;
+      @include breakpoint($md) {
+        margin-right: 0;
+        border: none;
+      }
+    }
+  }
+
+  &_icon {
+    width: 36px;
+    height: 36px;
+    margin-bottom: 8px;
+    border-radius: 50%;
+    background-color: $blue_300;
+    @include breakpoint($lg) {
+      width: 40px;
+      height: 40px;
+    }
+    @include breakpoint($xl2) {
+      margin-bottom: 0;
+    }
+
+    svg {
+      color: $blue_100;
+      transform: scale(0.7);
+    }
+
+    path {
+      stroke: $blue_100;
+    }
+  }
+
+  &_info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 14px;
+    line-height: 20px;
+
+    @include breakpoint($xl2) {
+      align-items: flex-start;
+      margin-left: 16px;
+    }
+  }
+
+  &_title {
+    color: $dark_400;
+    font-size: 14px;
+    line-height: 20px;
+    text-align: center;
+  }
+
+  &_description {
+    font-size: 14px;
+    line-height: 20px;
+    text-align: center;
+  }
+}
+
+.location path {
+  stroke-width: 1px;
+}

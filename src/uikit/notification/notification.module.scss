@@ -1,0 +1,185 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/bg-effect';
+@import 'src/styles/variables/breakpoints';
+
+.notification {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+
+  &_overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba($dark_100, 0.4);
+    transition: opacity ease-in-out 200ms;
+
+    &___closed {
+      opacity: 0;
+    }
+
+    &___open {
+      opacity: 1;
+    }
+  }
+
+  &_container {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    max-width: 100%;
+    max-height: 70vh;
+    padding: 32px;
+    border-radius: 48px 48px 0 0;
+    background-color: $white;
+    transition: transform ease-in-out 200ms;
+
+    @include breakpoint($xs) {
+      padding: 40px;
+      border-radius: 56px 56px 0 0;
+    }
+
+    @include breakpoint($sm) {
+      padding: 48px;
+      border-radius: 64px 64px 0 0;
+    }
+
+    @include breakpoint($md) {
+      position: relative;
+      right: unset;
+      bottom: unset;
+      left: unset;
+      width: 454px;
+      max-width: unset;
+      max-height: unset;
+      padding: 48px 60px;
+      border-radius: 98px;
+      box-shadow: $box-shadow2;
+      transition: opacity ease-in-out 200ms;
+    }
+
+    &___closed {
+      transform: translateY(100%);
+      @include breakpoint($md) {
+        opacity: 0;
+        transform: unset;
+      }
+    }
+
+    &___open {
+      transform: translateY(0);
+      @include breakpoint($md) {
+        opacity: 1;
+        transform: unset;
+      }
+    }
+  }
+
+  &_content {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    max-width: 224px;
+    margin: auto;
+
+    @include breakpoint($xs) {
+      max-width: 271px;
+    }
+
+    @include breakpoint($md) {
+      max-width: unset;
+    }
+  }
+
+  &_image {
+    width: 80px;
+    height: 94px;
+
+    @include breakpoint($xs) {
+      width: 100px;
+      height: 118px;
+    }
+
+    @include breakpoint($md) {
+      width: 120px;
+      height: 142px;
+    }
+  }
+
+  &_title {
+    margin-top: 20px;
+    font-weight: 500;
+    font-size: 20px;
+    font-family: TTNorms, sans-serif;
+    line-height: 28px;
+    text-align: center;
+
+    @include breakpoint($xs) {
+      margin-top: 24px;
+      font-size: 24px;
+    }
+
+    &___success {
+      color: $dark_100;
+    }
+
+    &___error {
+      color: $red_100;
+    }
+  }
+
+  &_description {
+    margin-top: 12px;
+    color: $dark_100;
+    font-weight: 500;
+    font-size: 14px;
+    font-family: Inter, sans-serif;
+    line-height: 20px;
+    text-align: center;
+    opacity: 0.6;
+
+    @include breakpoint($xs) {
+      margin-top: 20px;
+      font-size: 16px;
+      line-height: 24px;
+    }
+
+    @include breakpoint($md) {
+      opacity: unset;
+    }
+
+    &:empty {
+      display: none;
+    }
+  }
+
+  &_banner {
+    margin-top: 32px;
+
+    @include breakpoint($md) {
+      margin-top: 24px;
+    }
+  }
+
+  &_button {
+    margin-top: 24px;
+
+    @include breakpoint($xs) {
+      margin-top: 32px;
+    }
+
+    &___hide {
+      display: none;
+    }
+  }
+}

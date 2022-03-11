@@ -1,0 +1,38 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/breakpoints';
+
+.search_catalog {
+  &__container {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  &__dropdown {
+    display: flex;
+    justify-content: center;
+  }
+
+  &__header {
+    margin: 0;
+    color: $dark_100;
+    font-weight: 500;
+    font-size: 32px;
+    font-family: TTNorms, sans-serif;
+    line-height: 38px;
+    text-align: center;
+    @media screen and (min-width: $xs) {
+      font-size: 36px;
+      line-height: 42px;
+    }
+    @media screen and (min-width: $lg) {
+      padding: 0;
+      font-size: 50px;
+      line-height: 56px;
+    }
+    @media screen and (min-width: $xl2) {
+      font-size: 60px;
+      line-height: 64px;
+    }
+  }
+}

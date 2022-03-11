@@ -1,0 +1,189 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/breakpoints';
+@import 'src/styles/variables/bg-effect';
+
+.gallery {
+  position: relative;
+  overflow: hidden;
+
+  &_buttons {
+    display: grid;
+    grid-auto-flow: column;
+    margin-top: 16px;
+    column-gap: 8px;
+    @include breakpoint($md) {
+      position: absolute;
+      bottom: 16px;
+      left: 0;
+      display: flex;
+      gap: 0;
+      width: 100%;
+      margin: 0;
+      padding: 0 16px;
+    }
+  }
+
+  &_badge {
+    padding: 6px;
+    border: 1.5px solid $blue_300;
+    border-radius: 220px;
+    background-color: $white;
+    font-size: 14px;
+    line-height: 20px;
+    cursor: pointer;
+    @include breakpoint($md) {
+      display: block;
+      padding: 8px 18px;
+      border-radius: 18px;
+    }
+    @include breakpoint($xl2) {
+      bottom: 16px;
+    }
+
+    span {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    svg {
+      width: 14px;
+      height: 14px;
+      margin-right: 10px;
+      @include breakpoint($md) {
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+
+  &_badge:nth-child(2) {
+    @include breakpoint($md) {
+      margin-left: 8px;
+    }
+  }
+
+  &_full_screen {
+    display: none;
+    @include breakpoint($md) {
+      display: block;
+      width: 36px;
+      height: 36px;
+      margin-left: auto;
+      padding: 0;
+      border-radius: 50%;
+      background-color: $white;
+      cursor: pointer;
+
+      span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      svg {
+        width: 22px;
+        height: 22px;
+      }
+    }
+  }
+
+  img {
+    object-fit: cover;
+  }
+}
+
+.mobile_screen {
+  position: relative;
+  grid-area: image;
+  overflow: hidden;
+  height: 162px;
+  border-radius: 24px;
+  @include breakpoint($xs) {
+    height: 191px;
+  }
+  @include breakpoint($md) {
+    display: none;
+  }
+}
+
+.medium_screen {
+  display: none;
+  @include breakpoint($md) {
+    display: block;
+    height: 386px;
+  }
+  @include breakpoint($lg) {
+    display: none;
+  }
+
+  &_btn {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: none;
+    border-radius: 32px;
+  }
+}
+
+.full_screen {
+  display: none;
+  @include breakpoint($lg) {
+    display: grid;
+    grid-template: repeat(2, 157px) / 379px repeat(2, 194px);
+    grid-template-areas:
+      'first second third'
+      'first fourth fifth';
+    gap: 4px;
+    height: 318px;
+  }
+  @include breakpoint($xl2) {
+    grid-template-rows: repeat(2, 228px);
+    grid-template-columns: 551px repeat(2, 282px);
+    gap: 6px;
+    height: 462px;
+  }
+
+  &_btn {
+    overflow: hidden;
+    padding: 0;
+    border: none;
+  }
+
+  &_btn:first-child {
+    grid-area: first;
+    border-radius: 36px 0 0 36px;
+  }
+
+  &_btn:nth-child(2) {
+    grid-area: second;
+  }
+
+  &_btn:nth-child(3) {
+    grid-area: third;
+    border-radius: 0 36px 0 0;
+  }
+
+  &_btn:nth-child(4) {
+    grid-area: fourth;
+  }
+
+  &_btn:nth-child(5) {
+    grid-area: fifth;
+    border-radius: 0 0 36px;
+  }
+
+  &___few_photo {
+    @include breakpoint($lg) {
+      display: block;
+      height: 436px;
+
+      .full_screen_btn {
+        width: 100%;
+        height: 100%;
+        border-radius: 36px;
+      }
+    }
+  }
+}

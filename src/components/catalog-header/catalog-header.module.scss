@@ -1,0 +1,136 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/breakpoints';
+@import 'src/styles/variables/bg-effect';
+
+.action_panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+
+  @include breakpoint($md) {
+    width: auto;
+
+    & > * {
+      margin-left: 8px;
+    }
+  }
+
+  @include breakpoint($xl2) {
+    & > * {
+      margin-left: 16px;
+    }
+  }
+
+  &_sort {
+    @include breakpoint($md) {
+      order: 2;
+    }
+  }
+
+  &_filter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: 0;
+
+    @include breakpoint($md) {
+      order: 1;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: $blue_300;
+    }
+
+    @include breakpoint($xl2) {
+      display: none;
+    }
+
+    svg {
+      width: 18px;
+      height: 18px;
+      color: $dark_100;
+
+      @include breakpoint($md) {
+        width: 14px;
+        height: 14px;
+      }
+    }
+  }
+
+  &_swither {
+    width: 200px;
+
+    @include breakpoint($xs) {
+      width: 263px;
+    }
+
+    @include breakpoint($md) {
+      order: 3;
+      width: 187px;
+    }
+  }
+}
+
+.header {
+  position: relative;
+  z-index: 14;
+  padding: 8px 0;
+
+  &___catalog {
+    position: sticky;
+    top: 0;
+
+    @include breakpoint($md) {
+      padding: 23px 0;
+      background: transparent;
+    }
+  }
+
+  &___catalog_map {
+    @include breakpoint($md) {
+      padding: 0;
+    }
+
+    .action_panel_sort {
+      @include breakpoint($md) {
+        display: none;
+      }
+
+      svg {
+        display: none;
+      }
+    }
+
+    .action_panel_filter {
+      display: block;
+    }
+  }
+
+  &___scroll {
+    background: $white;
+    box-shadow: $box-shadow1;
+  }
+
+  &_wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  &_search_result {
+    display: none;
+
+    @include breakpoint($md) {
+      display: block;
+      font-weight: 500;
+      font-size: 24px;
+      font-family: TTNorms, sans-serif;
+      line-height: 28px;
+    }
+  }
+}

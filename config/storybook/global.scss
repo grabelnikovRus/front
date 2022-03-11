@@ -1,0 +1,8 @@
+@import '../../src/styles/globals.scss';
+@import '../../src/legacy/styles/global.scss';
+@import 'src/styles/variables/_breakpoints';
+
+body {
+  overflow: overlay;
+  padding: 0;
+}

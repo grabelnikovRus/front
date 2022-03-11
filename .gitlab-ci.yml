@@ -1,0 +1,262 @@
+variables:
+  DOCKER_TLS_CERTDIR: ""
+  ANSIBLE_CONFIG: deployment/ansible.cfg
+  DOCKER_HOST: "dind:2375"
+
+default:
+  before_script:
+    - eval $(ssh-agent -s)
+    - chmod 600 ${DEPLOY_SSH_KEY} && chmod 755 ./
+    - ssh-add ${DEPLOY_SSH_KEY}
+    - echo ${CI_REGISTRY_PASSWORD} | docker login -u ${CI_REGISTRY_USER} --password-stdin ${CI_REGISTRY}
+    - ansible-galaxy install --force -r deployment/requirements.yml
+
+    - export IMAGE_PATH_NODE_NO_TAG="${IMAGE_PATH_BASE}/ru_site_front_node"
+    - export IMAGE_PATH_NODE="${IMAGE_PATH_NODE_NO_TAG}:${CI_PIPELINE_ID}"
+    - export IMAGE_PATH_NODE_DEPS="${IMAGE_PATH_NODE_NO_TAG}:deps"
+
+    - export IMAGE_PATH_NGINX_NO_TAG="${IMAGE_PATH_BASE}/ru_site_front_nginx"
+    - export IMAGE_PATH_NGINX="${IMAGE_PATH_NGINX_NO_TAG}:${CI_COMMIT_REF_SLUG}"
+    - export IMAGE_PATH_NGINX_LATEST="${IMAGE_PATH_NGINX_NO_TAG}:latest"
+
+    - set | grep IMAGE_PATH | grep -v grep > "image_paths.env"
+    - ./deployment/wait-for-it.sh ${DOCKER_HOST} -t 60
+
+stages:
+  - builds
+  - staging
+  - release_candidate
+  - demo
+  - production
+
+test_node:
+  when: always
+  stage: builds
+  script:
+    - IMAGE_PATH_NODE_LINTER="${IMAGE_PATH_NODE_NO_TAG}:linter"
+    - docker pull ${IMAGE_PATH_NODE_DEPS}
+    - docker build
+      --cache-from ${IMAGE_PATH_NODE_DEPS}
+      --tag ${IMAGE_PATH_NODE_LINTER}
+      --target linter
+      --file ./deployment/docker/node/Dockerfile
+      .
+    - docker run --rm ${IMAGE_PATH_NODE_LINTER} yarn lint-all
+    - docker rmi ${IMAGE_PATH_NODE_DEPS} ${IMAGE_PATH_NODE_LINTER}
+
+build_nginx:
+  when: always
+  stage: builds
+  script:
+    - docker pull ${IMAGE_PATH_NGINX_LATEST} || true
+    - docker build
+      --cache-from ${IMAGE_PATH_NGINX_LATEST}
+      --tag ${IMAGE_PATH_NGINX}
+      --tag ${IMAGE_PATH_NGINX_LATEST}
+      --file ./deployment/docker/nginx/Dockerfile
+      ./deployment/docker/nginx
+    - docker push --all-tags ${IMAGE_PATH_NGINX_NO_TAG}
+    - docker rmi ${IMAGE_PATH_NGINX} ${IMAGE_PATH_NGINX_LATEST}
+
+build_node:
+  when: always
+  stage: builds
+  script:
+    - deployment/build_envs.sh
+    - docker pull ${IMAGE_PATH_NODE_DEPS} || true
+    - docker build
+      --cache-from ${IMAGE_PATH_NODE_DEPS}
+      --tag ${IMAGE_PATH_NODE_DEPS}
+      --target deps
+      --file ./deployment/docker/node/Dockerfile
+      .
+    - docker build
+      --cache-from ${IMAGE_PATH_NODE_DEPS}
+      --tag ${IMAGE_PATH_NODE}
+      --file ./deployment/docker/node/Dockerfile
+      .
+    - docker push --all-tags ${IMAGE_PATH_NODE_NO_TAG}
+    - docker rmi ${IMAGE_PATH_NODE} ${IMAGE_PATH_NODE_DEPS}
+
+.deploy_app:
+  stage: staging
+  variables:
+    PLAYBOOK_LIMIT: "destination_dev"
+  script:
+    - deployment/deploy_envs.sh
+    - ansible-playbook ${PLAYBOOK} -t deploy -l ${PLAYBOOK_LIMIT} -v
+
+.deploy_app_dev:
+  extends: .deploy_app
+  variables:
+    STG_DOMAIN_NAME: '~'
+    BACKEND_URL: "https://back-dev.kvarta.ru"
+    USERPANEL_URL: "https://lk-rc.kvarta.ru"
+    IMG_PROXY_URL: "https://imgproxy-dev.kvarta.ru"
+    BRAND: "kvarta"
+    APP_ENV: "staging"
+    PLAYBOOK: "deployment/kvarta.ru_deploy_staging.yml"
+  script:
+    - deployment/deploy_envs.sh
+    - ansible-playbook ${PLAYBOOK} -t deploy -l ${PLAYBOOK_LIMIT} -v
+  environment:
+    name: dev/$CI_COMMIT_BRANCH
+    url: https://ru-site-front-$CI_COMMIT_REF_SLUG.kvarta.ru
+    on_stop: destroy_branch
+    auto_stop_in: 1 week
+
+.deploy_app_pikbroker:
+  stage: staging
+  when: manual
+  variables:
+    PLAYBOOK_LIMIT: "destination_prod"
+  script:
+    - deployment/deploy_envs.sh
+    - curl -X POST --data-urlencode 'payload={"channel":"#site-monitoring","username":"Monitor","text":"Релиз фронта pik-broker.ru запущен."}' https://hooks.slack.com/services/${SLACK_TOKEN}
+    - ansible-playbook ${PLAYBOOK} -t deploy -l ${PLAYBOOK_LIMIT} -v
+    - curl -X POST --data-urlencode 'payload={"channel":"#site-monitoring","username":"Monitor","text":"Релиз фронта pik-broker.ru закончен. Зарелизили! Сейчас сайт должен быть доступен."}' https://hooks.slack.com/services/${SLACK_TOKEN}
+
+.deploy_app_kvarta:
+  stage: staging
+  when: manual
+  variables:
+    PLAYBOOK_LIMIT: "destination_prod"
+  script:
+    - deployment/deploy_envs.sh
+    - curl -X POST --data-urlencode 'payload={"channel":"#site-monitoring","username":"Monitor","text":"Релиз фронта kvarta.ru запущен."}' https://hooks.slack.com/services/${SLACK_TOKEN}
+    - ansible-playbook ${PLAYBOOK} -t deploy -l ${PLAYBOOK_LIMIT} -v
+    - curl -X POST --data-urlencode 'payload={"channel":"#site-monitoring","username":"Monitor","text":"Релиз фронта kvarta.ru закончен. Зарелизили! Сейчас сайт должен быть доступен."}' https://hooks.slack.com/services/${SLACK_TOKEN}
+
+deploy_branch:
+  extends: .deploy_app_dev
+  only:
+    - branches
+  except:
+    - master
+    - demo
+    - /^release\/.*$/
+
+# Branch deploy with a custom backend url example
+# 1. add the branch to 'except' section of 'deploy_branch' above, like
+#   - feature/RUS-XXX
+# 2. add the following section with a branch name and backend url you need
+#
+# deploy_branch_feature_RUS_XXX:
+#   extends: .deploy_app_dev
+#   only:
+#     - feature/RUS-XXX
+#   variables:
+#     BACKEND_URL: "https://back-feature-rus-xxx.kvarta.ru"
+
+destroy_branch:
+  stage: staging
+  when: manual
+  only:
+    - branches
+  except:
+    - develop
+    - master
+    - demo
+    - /^release\/.*$/
+  variables:
+    STG_DOMAIN_NAME: '~'
+    PLAYBOOK: "deployment/kvarta.ru_deploy_staging.yml"
+    PLAYBOOK_LIMIT: "destination_dev"
+  script:
+    - ansible-playbook ${PLAYBOOK} -t destroy -l ${PLAYBOOK_LIMIT}
+  dependencies: []
+  environment:
+    name: dev/$CI_COMMIT_BRANCH
+    action: stop
+
+deploy_rc:
+  extends: .deploy_app
+  when: manual
+  only:
+    - /^release\/.*$/
+  variables:
+    BACKEND_URL: "https://back-rc.kvarta.ru"
+    USERPANEL_URL: "https://lk-rc.kvarta.ru"
+    IMG_PROXY_URL: "https://imgproxy-dev.kvarta.ru"
+    BRAND: "kvarta"
+    APP_ENV: "rc"
+    PLAYBOOK: "deployment/kvarta.ru_deploy_rc.yml"
+    PLAYBOOK_LIMIT: "destination_rc"
+  environment:
+    name: kv rc
+    url: https://rc.kvarta.ru
+
+pik_deploy_rc:
+  extends: .deploy_app
+  when: manual
+  only:
+    - /^release\/.*$/
+  variables:
+    BACKEND_URL: "https://back-rc.kvarta.ru"
+    USERPANEL_URL: "https://lk-rc.kvarta.ru"
+    IMG_PROXY_URL: "https://imgproxy-dev.kvarta.ru"
+    BRAND: "pik-broker"
+    APP_ENV: "rc"
+    PLAYBOOK: "deployment/pik-broker.ru_deploy_rc.yml"
+    PLAYBOOK_LIMIT: "destination_rc"
+  environment:
+    name: pb rc
+    url: https://rc.pik-broker.ru
+
+deploy_demo:
+  extends: .deploy_app
+  when: manual
+  only:
+    - demo
+    - develop
+    - hotfix/RUS-1395
+  variables:
+    BACKEND_URL: "https://demo-back.kvarta.ru"
+    USERPANEL_URL: "https://lk.kvarta.ru"
+    IMG_PROXY_URL: "https://imgproxy.kvarta.ru"
+    UISCOM: $UISCOM_DEMO_KVARTA
+    BRAND: "kvarta"
+    APP_ENV: "demo"
+    PLAYBOOK: "deployment/kvarta.ru_deploy_demo.yml"
+    PLAYBOOK_LIMIT: "destination_demo"
+  environment:
+    name: kv demo
+    url: https://demo.kvarta.ru
+
+kvarta_deploy prod:
+  extends: .deploy_app_kvarta
+  only:
+    - master
+  variables:
+    BACKEND_URL: "https://back.kvarta.ru"
+    USERPANEL_URL: "https://lk.kvarta.ru"
+    IMG_PROXY_URL: "https://imgproxy.kvarta.ru"
+    UISCOM: $UISCOM_PROD_KVARTA
+    GTM_ID: $GTM_ID_KVARTA
+    SENTRY_DSN: $SENTRY_DSN_KVARTA
+    BRAND: "kvarta"
+    APP_ENV: "prod"
+    PLAYBOOK: "deployment/kvarta.ru_deploy_master.yml"
+    PLAYBOOK_LIMIT: "destination_prod"
+  environment:
+    name: kv prod
+    url: https://kvarta.ru
+
+pik_broker_deploy prod:
+  extends: .deploy_app_pikbroker
+  only:
+    - master
+  variables:
+    BACKEND_URL: "https://back.kvarta.ru"
+    USERPANEL_URL: "https://lk.pik-broker.ru"
+    IMG_PROXY_URL: "https://imgproxy.kvarta.ru"
+    UISCOM: $UISCOM_PROD_PIK
+    GTM_ID: $GTM_ID_PIK
+    SENTRY_DSN: $SENTRY_DSN_PIK
+    BRAND: "pik-broker"
+    APP_ENV: "prod"
+    PLAYBOOK: "deployment/pik-broker.ru_deploy_master.yml"
+    PLAYBOOK_LIMIT: "destination_prod"
+  environment:
+    name: pb prod
+    url: https://pik-broker.ru

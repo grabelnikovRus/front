@@ -1,0 +1,375 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/breakpoints';
+
+.dropdown {
+  position: relative;
+  max-width: 100%;
+
+  &_button {
+    display: flex;
+    width: 100%;
+    border: none;
+    border-radius: 28px;
+    color: $white;
+    font-weight: 500;
+    font-size: 24px;
+    font-family: Inter, sans-serif;
+    line-height: 28px;
+    white-space: nowrap;
+    cursor: pointer;
+    column-gap: 16px;
+    transition: background-color 0.2s ease;
+    appearance: none;
+
+    &___open {
+      svg {
+        transform: rotate(180deg);
+      }
+    }
+
+    span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    svg {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      padding: 6px;
+      border-radius: 50%;
+    }
+  }
+
+  &_button___size_slim {
+    padding: 8px 16px;
+    font-size: 14px;
+    line-height: 20px;
+
+    svg {
+      width: 24px;
+      height: 24px;
+      padding: 0;
+      border-radius: 0;
+      background-color: transparent;
+      color: $white;
+    }
+  }
+
+  &_menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    left: 0;
+    z-index: 10;
+    overflow: hidden;
+    border-radius: 32px;
+    background-color: $white;
+    box-shadow: 0 16px 24px rgb(0 0 0 / 6%);
+    outline: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    transform: translateZ(0); // overflow: hidden for border-radius doesn't work in Safari
+
+    &___open {
+      padding: 0 8px 0 24px;
+      opacity: 1;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: var(--top-fade-position);
+        right: 32px;
+        left: 0;
+        height: 116px;
+        border-top-left-radius: 32px;
+        background: linear-gradient(180deg, $white 0%, rgb(255 255 255 / 0%) 100%);
+        pointer-events: none;
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        right: 32px;
+        bottom: var(--bottom-fade-position);
+        left: 0;
+        height: 116px;
+        border-bottom-left-radius: 32px;
+        background: linear-gradient(0deg, $white 0%, rgb(255 255 255 / 0%) 100%);
+        pointer-events: none;
+      }
+    }
+  }
+
+  &_list {
+    overflow-y: auto;
+    max-height: 210px;
+
+    &___open {
+      padding: 18px 0;
+    }
+  }
+
+  &_item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2px 48px 2px 0;
+    color: $dark_100;
+    font-weight: 500;
+    font-size: 14px;
+    font-family: Inter, sans-serif;
+    line-height: 24px;
+    cursor: default;
+
+    &:not(:last-child) {
+      margin-bottom: 8px;
+    }
+
+    &___highlighted {
+      color: $blue_100;
+    }
+
+    &___selected {
+      padding-right: 24px;
+      color: $blue_100;
+    }
+
+    svg {
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  &_icon_btn {
+    display: none;
+  }
+
+  &_error {
+    padding-left: 20px;
+    border-radius: 0 0 70px 70px;
+    background-color: $red_100;
+    color: $white;
+    font-weight: 400;
+    font-size: 10px;
+    font-family: Inter, sans-serif;
+  }
+
+  &___white {
+    .dropdown {
+      &_button {
+        padding-bottom: 0;
+        padding-left: 0;
+        background-color: transparent;
+
+        svg {
+          background: linear-gradient(135deg, rgba($blue_100, 0.1) 0%, rgba($blue_100, 0.1) 100%);
+          color: $blue_100;
+        }
+      }
+
+      &_selected_text {
+        flex-basis: 100%;
+        overflow: hidden;
+        color: $blue_100;
+        text-align: left;
+        text-overflow: ellipsis;
+
+        span {
+          color: $dark_100;
+        }
+      }
+    }
+  }
+
+  &___small_screen_icon {
+    .dropdown {
+      &_menu {
+        top: calc(100% + 16px);
+        width: 288px;
+
+        @include breakpoint($xs) {
+          width: 327px;
+        }
+
+        @include breakpoint($md) {
+          top: calc(100% + 8px);
+          width: 210px;
+        }
+      }
+
+      &_button {
+        display: none;
+
+        @include breakpoint($xl2) {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          width: 200px;
+          padding: 0 8px 0 16px;
+          border: 1px solid $border4;
+          background-color: $white;
+          color: $dark_100;
+          font-size: 14px;
+          line-height: 20px;
+        }
+
+        &___icon {
+          display: block;
+
+          @include breakpoint($xl2) {
+            display: none;
+          }
+        }
+      }
+
+      &_item {
+        padding-right: 6px;
+        cursor: pointer;
+      }
+
+      &_icon_render {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+        cursor: pointer;
+        @include breakpoint($md) {
+          width: 42px;
+          height: 42px;
+          border-radius: 50%;
+          background-color: $blue_300;
+
+          svg {
+            width: 100%;
+            height: 100%;
+
+            @include breakpoint($md) {
+              width: 20px;
+              height: 20px;
+            }
+          }
+        }
+
+        svg {
+          position: absolute;
+        }
+      }
+    }
+  }
+
+  &___round_borders {
+    display: flex;
+    flex-direction: column;
+    height: 80px;
+
+    .dropdown {
+      &_menu {
+        padding: 0;
+        border: 1px solid $border3;
+      }
+
+      &_item {
+        height: 35px;
+        margin: 0;
+        padding: 0 17px;
+        background-color: $white;
+        cursor: pointer;
+
+        &:hover {
+          @media (hover: hover) {
+            background-color: $dark_600;
+          }
+        }
+      }
+
+      &_button {
+        position: relative;
+        height: 56px;
+        padding: 17px 18px;
+        border: 1px solid $border3;
+        border-radius: 28px;
+        background-color: $white;
+
+        &::before {
+          content: '';
+          position: absolute;
+          top: 21px;
+          right: 18px;
+          width: 9px;
+          height: 9px;
+          border-bottom: 1.5px solid $dark_400;
+          border-left: 1.5px solid $dark_400;
+          transform: rotate(-45deg);
+        }
+
+        div {
+          color: $dark_100;
+          font-size: 14px;
+          font-family: Inter, sans-serif;
+          line-height: 20px;
+        }
+      }
+
+      &_error {
+        position: relative;
+        height: 24px;
+        padding-left: 20px;
+        border-radius: 0 0 70px 70px;
+        background-color: $red_100;
+        color: $white;
+        font-weight: 400;
+        font-size: 10px;
+        font-family: Inter, sans-serif;
+
+        &::before,
+        &::after {
+          content: '';
+          position: absolute;
+          top: -25px;
+          display: block;
+          width: 25px;
+          height: 25px;
+          background-color: $red_100;
+        }
+
+        &::before {
+          left: 0;
+        }
+
+        &::after {
+          right: 0;
+        }
+      }
+
+      &_button___error {
+        z-index: 1;
+        border: 1px solid $red_100;
+      }
+
+      &_button___open::before {
+        top: 24px;
+        transform: rotate(135deg);
+      }
+
+      &__icon {
+        display: none;
+      }
+    }
+
+    label {
+      position: relative;
+      overflow: visible;
+      width: auto;
+      height: auto;
+      margin-bottom: 8px;
+      margin-left: 5px;
+      font-size: 12px;
+      line-height: 16px;
+      clip-path: none;
+    }
+  }
+}

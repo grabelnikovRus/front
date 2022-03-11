@@ -1,0 +1,132 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/breakpoints';
+@import 'src/styles/variables/bg-effect';
+
+.list {
+  position: fixed;
+  bottom: 0;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border-radius: 32px 32px 0 0;
+  background-color: $white;
+  transition: transform 0.3s 0s;
+  transform: translateY(100%);
+
+  @include breakpoint($md) {
+    left: 24px;
+    width: 391px;
+    height: calc(100vh - 112px - calc(100vh - 100%));
+  }
+  @include breakpoint($xl) {
+    left: 32px;
+  }
+
+  &___open {
+    transition: transform 0.3s 0.3s;
+    transform: translateY(0%);
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 14px;
+      left: 50%;
+      display: block;
+      width: 55px;
+      height: 5px;
+      border-radius: 5px;
+      background-color: $gray2;
+      transform: translateX(-50%);
+      @include breakpoint($md) {
+        display: none;
+      }
+    }
+  }
+
+  &___close {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 35px;
+    padding: 0 24px;
+    font-size: 20px;
+    font-family: TTNorms, sans-serif;
+    line-height: 28px;
+    @include breakpoint($md) {
+      height: 56px;
+    }
+
+    svg {
+      display: none;
+      @include breakpoint($md) {
+        position: absolute;
+        top: 19px;
+        right: 13px;
+        display: block;
+        width: 23px;
+        height: 23px;
+        cursor: pointer;
+      }
+    }
+  }
+
+  &_wrapper {
+    display: grid;
+    row-gap: 16px;
+    align-items: start;
+    justify-items: center;
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 100%;
+    margin: 0 auto;
+    border-radius: 24px 24px 0 0;
+
+    @include breakpoint($xs) {
+      border-radius: 32px 32px 0 0;
+    }
+
+    @include breakpoint($md) {
+      height: calc(100% - 56px);
+      padding-top: 0;
+    }
+
+    &::-webkit-scrollbar {
+      width: 8px;
+      border-radius: 3px;
+      background-color: $dark_600;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 3px;
+      background-color: $dark_400;
+    }
+  }
+
+  &_count {
+    display: none;
+    @include breakpoint($md) {
+      display: block;
+    }
+  }
+
+  &_preloader {
+    width: 70%;
+  }
+}
+
+.hidden {
+  overflow: hidden;
+}
+
+.bottom_sheet_content {
+  max-height: calc(100% - 84px);
+  padding: 40px 0 20px;
+}
+
+.bottom_sheet_wrapper {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+}

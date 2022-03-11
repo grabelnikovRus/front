@@ -1,0 +1,164 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/breakpoints';
+@import 'src/styles/variables/bg-effect';
+
+.area {
+  max-width: 288px;
+  padding: 24px;
+  border-radius: 32px;
+  box-shadow: 0 14px 86px 5px rgb(151 165 193 / 20%);
+
+  @include breakpoint($xs) {
+    max-width: 343px;
+  }
+
+  @include breakpoint($md) {
+    max-width: 688px;
+    padding: 0;
+  }
+
+  @include breakpoint($lg) {
+    max-width: 776px;
+  }
+
+  &_inform {
+    @include breakpoint($md) {
+      padding: 32px 32px 0;
+    }
+  }
+
+  &_subway_stations {
+    margin-bottom: 24px;
+
+    @include breakpoint($md) {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+
+      & > *:not(:last-child) {
+        margin-right: 32px;
+      }
+    }
+  }
+
+  &___without_map {
+    .area_subway_stations {
+      margin-bottom: 0;
+    }
+
+    .area_inform {
+      padding-bottom: 32px;
+    }
+  }
+
+  &_title {
+    margin-bottom: 16px;
+    font-weight: 400;
+    font-size: 20px;
+    font-family: TTNorms, sans-serif;
+    line-height: 28px;
+
+    @include breakpoint($md) {
+      display: none;
+    }
+  }
+
+  &_address {
+    margin-bottom: 16px;
+    font-size: 12px;
+    line-height: 16px;
+
+    @include breakpoint($xs) {
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    @include breakpoint($md) {
+      margin-bottom: 24px;
+    }
+
+    @include breakpoint($xl2) {
+      margin-bottom: 16px;
+    }
+  }
+}
+
+.developer {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+
+  @include breakpoint($md) {
+    margin-bottom: 8px;
+  }
+
+  @include breakpoint($xl2) {
+    margin-bottom: 16px;
+  }
+
+  &_icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    margin-right: 16px;
+    border-radius: 50%;
+
+    @include breakpoint($md) {
+      width: 56px;
+      height: 56px;
+    }
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &_complex {
+    font-size: 14px;
+    line-height: 20px;
+
+    @include breakpoint($xs) {
+      font-size: 16px;
+      line-height: 24px;
+    }
+  }
+}
+
+.subway {
+  display: flex;
+  grid-area: subway;
+  align-items: center;
+  margin-bottom: 8px;
+  color: $dark_400;
+  font-size: 12px;
+  line-height: 16px;
+
+  &_station {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    color: $dark_100;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &_travel {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+  }
+
+  &_time {
+    display: flex;
+    align-items: center;
+
+    svg {
+      width: 12px;
+      height: 12px;
+      margin-right: 8px;
+    }
+  }
+}

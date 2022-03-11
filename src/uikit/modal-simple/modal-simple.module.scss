@@ -1,0 +1,123 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/bg-effect';
+@import 'src/styles/variables/breakpoints';
+
+.modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 15;
+  min-height: 100vh;
+  transition: opacity ease-in-out 200ms;
+
+  &___closed {
+    opacity: 0;
+  }
+
+  &___open {
+    opacity: 1;
+  }
+
+  &_overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+    background-color: $blue_300;
+  }
+
+  &_container {
+    overflow-y: auto;
+    height: 100%;
+  }
+
+  &_close {
+    position: absolute;
+    top: 16px;
+    right: 8px;
+    z-index: 1;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border-radius: 50%;
+    background-color: $gray3;
+
+    @include breakpoint($xs) {
+      top: 16px;
+      right: 16px;
+    }
+
+    @include breakpoint($md) {
+      width: 40px;
+      height: 40px;
+    }
+
+    &:active {
+      background-color: $gray3;
+    }
+
+    &:hover:not([disabled]) {
+      background-color: $gray3;
+    }
+
+    span {
+      display: flex;
+      align-items: center;
+    }
+
+    svg {
+      width: 14px;
+      height: 14px;
+      color: $gray4;
+
+      @include breakpoint($md) {
+        width: 24px;
+        height: 24px;
+      }
+
+      path {
+        stroke-width: 1.5px;
+      }
+    }
+  }
+
+  &_body {
+    position: relative;
+    width: calc(320px - 16px);
+    height: max-content;
+    margin: 16px auto 48px;
+    padding: 16px;
+    border-radius: 32px;
+    background-color: $white;
+    box-shadow: $box-shadow2;
+
+    @include breakpoint($xs) {
+      width: 327px;
+      padding: 24px;
+    }
+
+    @include breakpoint($md) {
+      width: 688px;
+      margin: 40px auto 80px;
+      padding: 48px 48px 64px;
+    }
+
+    @include breakpoint($lg) {
+      width: 776px;
+      padding: 48px 92px 64px;
+    }
+
+    @include breakpoint($xl2) {
+      width: 1128px;
+      padding: 64px 193px;
+    }
+
+    &___ios {
+      margin: 16px auto 130px;
+    }
+  }
+}

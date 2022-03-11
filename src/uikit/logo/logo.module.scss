@@ -1,0 +1,26 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/breakpoints';
+
+.logo {
+  display: flex;
+  align-items: center;
+  outline: none;
+
+  &___dark {
+    color: $dark_100;
+  }
+
+  &___light {
+    color: $white;
+  }
+
+  svg {
+    width: 147px;
+    height: 16px;
+
+    @include breakpoint($lg) {
+      width: 184px;
+      height: 20px;
+    }
+  }
+}

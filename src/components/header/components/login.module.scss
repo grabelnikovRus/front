@@ -1,0 +1,457 @@
+// stylelint-disable no-descending-specificity,function-no-unknown,scss/no-global-function-names
+
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/breakpoints';
+
+.loginWrap {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  width: 100%;
+  height: 100%;
+  outline: none;
+  @media screen and (min-width: $md) {
+    top: 64px;
+    left: auto;
+  }
+}
+
+.loginContainer {
+  display: block;
+}
+
+.loginForm {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  width: 100%;
+  max-width: 100%;
+  height: 100vh;
+  padding: 28px 20px 70px;
+  border-radius: 0;
+  background-color: $black;
+  @media screen and (min-width: $xs) {
+    padding: 28px 32px 70px;
+  }
+  @media screen and (min-width: $sm) {
+    padding: 28px 51px;
+  }
+  @media screen and (min-width: $md) {
+    overflow-y: visible;
+    max-width: 392px;
+    height: auto;
+    padding: 32px 40px 40px;
+    border-radius: 40px;
+  }
+  @media screen and (min-width: $lg) {
+    max-width: 472px;
+    padding: 48px 60px 60px;
+  }
+
+  form {
+    width: 100%;
+    margin: 0 auto;
+    @media screen and (min-width: 360px) and (max-width: 767px) {
+      padding: 0 16px 12px;
+    }
+  }
+
+  .registrationForm {
+    .confirmText {
+      margin: 24px 0 16px;
+    }
+  }
+
+  h3 {
+    margin: 32px 0 24px;
+    color: $white;
+    font-weight: 500;
+    font-size: 24px;
+    font-family: TTNorms, sans-serif;
+    line-height: 28px;
+    text-align: center;
+    @media screen and (min-width: $xs) {
+      margin: 40px 0 32px;
+      font-size: 32px;
+      line-height: 38px;
+    }
+    @media screen and (min-width: $md) {
+      margin: 0 0 24px;
+    }
+    @media screen and (min-width: $lg) {
+      margin: 0 0 36px;
+      font-size: 36px;
+      line-height: 42px;
+      letter-spacing: -0.5px;
+    }
+  }
+
+  label {
+    color: $white;
+  }
+
+  .label {
+    display: block;
+    margin: 0 0 8px;
+    padding: 0 3px;
+    font-size: 12px;
+    line-height: 16px;
+  }
+
+  .loginInput {
+    width: 100%;
+
+    input {
+      box-sizing: border-box;
+      width: 100%;
+      height: 56px;
+      padding: 18px;
+      border: 2px solid $white;
+      border-radius: 28px;
+      background-color: $white;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 20px;
+    }
+  }
+
+  .button {
+    display: block;
+    width: 100%;
+    margin: 16px 0 0;
+    padding: 18px 48px;
+    border: 0;
+    border-radius: 70px;
+    color: $white;
+    font-weight: 600;
+    font-size: 14px;
+    font-family: Inter, sans-serif;
+    line-height: 20px;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .button__blue {
+    margin: 21px 0 0;
+    background-color: $blue_100;
+
+    @media screen and (min-width: $xs) {
+      margin: 29px 0 0;
+    }
+
+    &:disabled {
+      background-color: $dark_600;
+      color: $dark_400;
+      cursor: default;
+    }
+  }
+
+  .button__dark {
+    background-color: $dark_100;
+  }
+
+  .link {
+    display: block;
+    margin: 30px auto 0;
+    border: none;
+    background: transparent;
+    color: #3f8cff;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 18px;
+    text-align: center;
+  }
+
+  .smsFields {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 73px;
+  }
+}
+
+.mobileView {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+
+  .logo {
+    @include breakpoint($md) {
+      display: none;
+    }
+  }
+
+  .closeBtn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: 2px solid rgba($white, 0.5);
+    border-radius: 50%;
+    background-color: transparent;
+    color: $white;
+    cursor: pointer;
+    @media screen and (min-width: $xs) {
+      right: 32px;
+    }
+    @media screen and (min-width: $sm) {
+      right: 51px;
+    }
+    @media screen and (min-width: $md) {
+      right: 20px;
+    }
+    @media screen and (min-width: $lg) {
+      top: 24px;
+      right: 24px;
+    }
+
+    svg {
+      width: 24px;
+      height: 24px;
+    }
+  }
+}
+
+.timer {
+  margin: 5px 0 0;
+  border: none;
+  background-color: transparent;
+  color: #b2b3bd;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
+  text-align: center;
+}
+
+.repeatBtn {
+  display: block;
+  margin: 5px auto 0;
+  border: none;
+  background-color: transparent;
+  color: #3f8cff;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.back_link {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 50%;
+  background: transparentize(#e3e6ec, 0.5);
+  @media screen and (max-width: 767px) {
+    top: 104px;
+    left: 32px;
+  }
+}
+
+.smsBlock {
+  display: flex;
+  flex-wrap: wrap;
+
+  .label {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0 0 8px;
+
+    p {
+      color: $white;
+      font-size: 12px;
+      line-height: 16px;
+
+      &:last-child {
+        opacity: 0.6;
+      }
+    }
+  }
+
+  .helperBlock {
+    display: flex;
+    flex-wrap: wrap;
+    height: 77px;
+    padding: 0;
+  }
+
+  .smsInput {
+    flex-shrink: 0;
+    width: 25%;
+
+    &:first-child {
+      input {
+        border-width: 2px 1px 2px 2px;
+        border-left-color: $white;
+        border-radius: 28px 0 0 28px;
+      }
+    }
+
+    &:nth-child(4) {
+      input {
+        border-width: 2px 2px 2px 1px;
+        border-right-color: $white;
+        border-radius: 0 28px 28px 0;
+      }
+    }
+
+    input {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+      width: 100%;
+      height: 56px;
+      padding: 16px 26px;
+      border-width: 2px 1px;
+      border-style: solid;
+      border-color: $white $border3;
+      border-radius: 0;
+      background-color: $white;
+      font-weight: 500;
+      font-style: normal;
+      font-size: 14px;
+      font-family: Inter, sans-serif;
+      line-height: 20px;
+      text-align: center;
+      @media screen and (max-width: 374px) {
+        width: 100%;
+        padding: 16px 22px;
+      }
+
+      &::placeholder {
+        text-align: center;
+      }
+
+      &:placeholder-shown {
+        text-align: left;
+      }
+    }
+  }
+
+  .errorText {
+    display: none;
+    padding: 0 0 1px 22px;
+    color: #fff;
+    font-weight: 500;
+    font-size: 10px;
+    line-height: 1.1em;
+  }
+}
+
+.successBlock {
+  margin: 0 auto;
+  @media screen and (max-width: 767px) {
+    padding: 34px 0 14px;
+  }
+
+  &_title {
+    color: $white;
+    font-weight: 700;
+    font-size: 24px;
+    font-family: TTNorms, sans-serif;
+    line-height: 32px;
+    text-align: center;
+  }
+
+  &_text {
+    width: 100%;
+    max-width: 240px;
+    margin: 18px 0 0;
+    color: $white;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    text-align: left;
+  }
+}
+
+.error {
+  .smsFields {
+    border-radius: 28px;
+    background-color: $red_100;
+  }
+
+  .errorText {
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
+
+  .smsInput {
+    &:first-child {
+      input {
+        border-left-color: $red_100;
+      }
+    }
+
+    &:nth-child(4) {
+      input {
+        border-right-color: $red_100;
+      }
+    }
+
+    input {
+      border-color: $red_100;
+      background-color: $white;
+      color: $red_100;
+    }
+  }
+}
+
+.d_none {
+  display: none;
+}
+
+.preloaderBlock {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 40px;
+  background-color: rgb(255 255 255 / 50%);
+
+  img {
+    animation-name: rotate;
+    animation-duration: 0.6s;
+    animation-timing-function: linear;
+    animation-delay: 0s;
+    animation-iteration-count: infinite;
+  }
+}
+
+.dialog {
+  @media screen and (max-width: 415px) {
+    height: 100%;
+  }
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}

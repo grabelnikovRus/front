@@ -1,0 +1,61 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/breakpoints';
+
+.apartment_popup {
+  position: absolute;
+  z-index: 1;
+  display: none;
+  width: 359px;
+  padding: 24px;
+  border-radius: 24px;
+  background-color: $white;
+  font-size: 14px;
+  line-height: 24px;
+  @include breakpoint($md) {
+    display: block;
+  }
+
+  header {
+    display: grid;
+    grid-template-columns: repeat(2, max-content);
+    align-items: center;
+    font-size: 24px;
+    line-height: 32px;
+    column-gap: 14px;
+  }
+
+  p {
+    margin: 17px 0 0;
+  }
+
+  &--trade {
+    top: 30px;
+    left: 0;
+    background-color: $pink1;
+
+    svg {
+      width: 48px;
+      height: 48px;
+    }
+  }
+
+  &--primary {
+    top: 30px;
+    left: 0;
+
+    svg {
+      width: 54px;
+      height: 48px;
+    }
+  }
+
+  &--secondary {
+    top: 30px;
+    left: 0;
+
+    svg {
+      width: 64px;
+      height: 52px;
+    }
+  }
+}

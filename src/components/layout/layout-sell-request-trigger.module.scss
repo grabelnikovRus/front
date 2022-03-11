@@ -1,0 +1,107 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/breakpoints';
+@import 'src/styles/variables/bg-effect';
+
+.sell_request_trigger {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  padding: 0 20px;
+
+  @media screen and (min-width: $xs) {
+    padding: 0 32px;
+  }
+
+  @media screen and (min-width: $sm) {
+    padding: 0 51px;
+  }
+
+  &_modal_wrapper {
+    display: flex;
+    align-items: center;
+    overflow-y: hidden;
+    width: 100%;
+    height: 100%;
+    background: $blue_300;
+  }
+
+  &_modal_container {
+    position: relative;
+    overflow-y: auto;
+    width: calc(320px - 16px);
+    height: calc(100% - 32px);
+    margin: 0 auto;
+    padding: 16px;
+    border-radius: 32px;
+    background: $white;
+    box-shadow: $box-shadow2;
+
+    @include breakpoint($xs) {
+      width: 327px;
+      padding: 24px;
+    }
+
+    @include breakpoint($sm) {
+      height: calc(100% - 64px);
+    }
+
+    @include breakpoint($md) {
+      width: 688px;
+      height: calc(100% - 80px);
+      padding: 48px;
+    }
+
+    @include breakpoint($lg) {
+      width: 776px;
+      padding: 48px 92px;
+    }
+
+    @include breakpoint($xl2) {
+      width: 1128px;
+      padding: 64px 193px;
+    }
+  }
+
+  &_modal_close {
+    position: absolute;
+    top: 16px;
+    right: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border: none;
+    border-radius: 50%;
+    background: $gray3;
+    outline: none;
+
+    @include breakpoint($xs) {
+      top: 16px;
+      right: 16px;
+    }
+
+    @include breakpoint($md) {
+      width: 40px;
+      height: 40px;
+    }
+
+    svg {
+      width: 14px;
+      height: 14px;
+      color: $gray4;
+
+      @include breakpoint($md) {
+        width: 24px;
+        height: 24px;
+      }
+
+      path {
+        stroke-width: 1.5px;
+      }
+    }
+  }
+}

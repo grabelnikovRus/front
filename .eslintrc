@@ -1,0 +1,130 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json",
+    "sourceType": "module"
+  },
+  "plugins": ["@typescript-eslint", "import"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:import/errors",
+    "plugin:import/typescript",
+    "plugin:import/warnings",
+    "plugin:prettier/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:react/recommended"
+  ],
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    },
+    "import/resolver": {
+      "typescript": {}
+    }
+  },
+  "ignorePatterns": [
+    ".next",
+    "build",
+    "coverage",
+    "src/api",
+    "src/legacy",
+    "public",
+    "src/lib/*.js"
+  ],
+  "rules": {
+    "@typescript-eslint/array-type": ["error", { "default": "array-simple" }],
+    "@typescript-eslint/ban-ts-comment": ["error", { "ts-ignore": "allow-with-description" }],
+    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/no-unnecessary-type-assertion": "error",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      { "args": "none", "caughtErrors": "none", "ignoreRestSiblings": true, "vars": "all" }
+    ],
+    "@typescript-eslint/prefer-optional-chain": "error",
+    "array-callback-return": "error",
+    "arrow-body-style": ["error", "as-needed", { "requireReturnForObjectLiteral": false }],
+    "curly": ["error", "multi-line"],
+    "eqeqeq": ["error", "always", { "null": "ignore" }],
+    "import/first": "error",
+    "import/no-cycle": "error",
+    "import/order": [
+      "error",
+      {
+        "groups": ["builtin", "external", "internal", "sibling", "parent", "index"],
+        "pathGroups": [
+          {
+            "pattern": "@/**",
+            "group": "internal"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": ["builtin"],
+        "newlines-between": "always",
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
+      }
+    ],
+    "max-lines": ["error", 300],
+    "no-console": ["error", { "allow": ["error", "info", "table"] }],
+    "no-extra-boolean-cast": ["error", { "enforceForLogicalOperands": true }],
+    "no-param-reassign": "error",
+    "no-restricted-globals": ["error", "event", "React"],
+    "no-restricted-imports": [
+      "error",
+      {
+        "paths": [
+          {
+            "name": "react",
+            "importNames": ["default"],
+            "message": "Please use named imports from 'react' instead."
+          },
+          {
+            "name": "react",
+            "importNames": ["FC"],
+            "message": "Please use VFC instead."
+          }
+        ]
+      }
+    ],
+    "no-unneeded-ternary": ["error", { "defaultAssignment": false }],
+    "no-use-before-define": "error",
+    "no-useless-computed-key": "error",
+    "one-var": ["error", "never"],
+    "react-hooks/exhaustive-deps": "error",
+    "react/jsx-boolean-value": ["error", "never"],
+    "react/jsx-curly-brace-presence": ["error", "never"],
+    "react/jsx-uses-react": "off",
+    "react/prop-types": "off",
+    "react/react-in-jsx-scope": "off",
+    "react/self-closing-comp": "error"
+  },
+  "overrides": [
+    {
+      "files": ["config/**/*.js", "*.config.js"],
+      "env": {
+        "node": true
+      },
+      "rules": {
+        "@typescript-eslint/no-var-requires": "off"
+      }
+    },
+    {
+      "files": ["*.test.tsx", "config/jest/*.js"],
+      "env": {
+        "jest": true
+      },
+      "rules": {
+        "@typescript-eslint/no-explicit-any": "off"
+      }
+    }
+  ]
+}

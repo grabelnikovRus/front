@@ -1,0 +1,118 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/bg-effect';
+@import 'src/styles/variables/breakpoints';
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+  min-height: 100vh;
+  transition: opacity ease-in-out 200ms;
+
+  &___closed {
+    opacity: 0;
+  }
+
+  &___open {
+    opacity: 1;
+  }
+
+  &_overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba($color: $dark_100, $alpha: 40%);
+  }
+
+  &_container {
+    position: fixed;
+    inset: 0;
+    overflow: auto;
+    max-width: 100%;
+    padding: 28px 20px 20px;
+    background-color: $black;
+    color: $white;
+
+    @include breakpoint($xs) {
+      padding: 28px 32px 32px;
+    }
+
+    @include breakpoint($sm) {
+      padding: 28px 51px 51px;
+    }
+
+    @include breakpoint($md) {
+      position: relative;
+      inset: initial;
+      max-width: 392px;
+      margin: 20px;
+      padding: 32px 40px 40px;
+      border-radius: 40px;
+      background-color: $white;
+      box-shadow: $box-shadow2;
+    }
+
+    @include breakpoint($lg) {
+      max-width: 472px;
+      padding: 48px 60px 60px;
+    }
+  }
+
+  &_header {
+    margin-bottom: 32px;
+
+    @include breakpoint($xs) {
+      margin-bottom: 40px;
+    }
+
+    @include breakpoint($md) {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      margin-bottom: 0;
+    }
+
+    @include breakpoint($lg) {
+      top: 24px;
+      right: 24px;
+    }
+  }
+
+  &_body {
+    margin: auto;
+  }
+
+  &_title {
+    margin-bottom: 24px;
+    color: $white;
+    font-weight: 500;
+    font-size: 24px;
+    font-family: TTNorms, sans-serif;
+    line-height: 28px;
+    text-align: left;
+
+    @include breakpoint($xs) {
+      font-size: 32px;
+      line-height: 38px;
+    }
+
+    @include breakpoint($md) {
+      color: $dark_100;
+      text-align: center;
+    }
+
+    @include breakpoint($lg) {
+      margin-bottom: 36px;
+      font-size: 36px;
+      line-height: 42px;
+      letter-spacing: -0.5px;
+    }
+  }
+
+  &_content {
+    color: $white;
+  }
+}

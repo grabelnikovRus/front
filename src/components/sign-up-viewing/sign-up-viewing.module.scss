@@ -1,0 +1,49 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/breakpoints';
+@import 'src/styles/variables/bg-effect';
+
+.modal_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal_body {
+  max-width: 311px;
+  margin: 0 auto;
+
+  @include breakpoint($md) {
+    max-width: auto;
+  }
+}
+
+.button {
+  height: 36px;
+
+  &:last-child {
+    @include breakpoint($xs) {
+      margin-left: 0;
+    }
+  }
+
+  &___send {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &___big {
+    height: 32px;
+    padding: 16px 32px;
+
+    @include breakpoint($md) {
+      height: 52px;
+    }
+  }
+
+  svg {
+    width: 24px;
+    height: 24px;
+    margin-right: 4px;
+  }
+}

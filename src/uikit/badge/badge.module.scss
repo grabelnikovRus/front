@@ -1,0 +1,37 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/breakpoints';
+@import 'src/styles/variables/bg-effect';
+
+.badge {
+  width: fit-content;
+  padding: 8px 9px;
+  border-radius: 32px;
+  font-size: 12px;
+  line-height: 16px;
+
+  &___default {
+    background-color: $dark_600;
+  }
+
+  &___gradient {
+    background-image: $linear-gradient1;
+
+    span {
+      background-image: $linear-gradient1;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  }
+
+  &___blue {
+    background-color: $blue_300;
+
+    span {
+      color: $dark_100;
+    }
+  }
+
+  &___full {
+    width: 100%;
+  }
+}

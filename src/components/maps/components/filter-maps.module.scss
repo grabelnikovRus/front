@@ -1,0 +1,107 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/breakpoints';
+@import 'src/styles/variables/bg-effect';
+
+.filter {
+  position: fixed;
+  bottom: 0;
+  z-index: 10;
+  overflow: hidden;
+  width: 100%;
+  height: calc(100vh - 80px - calc(100vh - 100%));
+  border-radius: 32px 32px 0 0;
+  background-color: $white;
+  transition: transform 0.3s 0s;
+  transform: translateY(100%);
+
+  @include breakpoint($md) {
+    left: 24px;
+    width: 359px;
+    height: calc(100vh - 112px);
+  }
+  @include breakpoint($xl) {
+    left: 32px;
+  }
+
+  &___open {
+    transition: transform 0.3s 0.3s;
+    transform: translateY(0%);
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 14px;
+      left: 50%;
+      display: block;
+      width: 55px;
+      height: 5px;
+      border-radius: 5px;
+      background-color: $gray2;
+      transform: translateX(-50%);
+      @include breakpoint($xs) {
+        top: 21px;
+      }
+      @include breakpoint($md) {
+        display: none;
+      }
+    }
+  }
+
+  &___close {
+    position: relative;
+
+    svg {
+      display: none;
+      @include breakpoint($md) {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        z-index: 1;
+        display: block;
+        width: 24px;
+        height: 24px;
+        cursor: pointer;
+      }
+    }
+  }
+
+  &_wrapper {
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 100%;
+
+    @include breakpoint($md) {
+      height: calc(100% - 24px);
+      padding: 24px 24px 0;
+    }
+
+    &::-webkit-scrollbar {
+      width: 7px;
+      background-color: $white;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 3px;
+      background-color: $gray1;
+    }
+  }
+
+  :global(.MuiIconButton-root) {
+    display: none;
+  }
+}
+
+.bottom_sheet_content {
+  max-height: calc(100% - 84px);
+  padding: 0;
+  padding-top: 40px;
+
+  &___iOS {
+    top: 35px;
+    transition: 0.3s top;
+  }
+}
+
+.bottom_sheet_wrapper {
+  padding: 0;
+}

@@ -1,0 +1,42 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/breakpoints';
+@import 'src/styles/variables/bg-effect';
+
+.banner_modal {
+  padding: 24px 32px;
+  border-radius: 32px;
+  background: $blue_300;
+  text-align: center;
+
+  @include breakpoint($xs) {
+    padding: 32px;
+  }
+
+  @include breakpoint($md) {
+    padding: 24px;
+  }
+
+  &_title {
+    margin-bottom: 16px;
+    font-weight: 400;
+    font-size: 20px;
+    font-family: TTNorms, sans-serif;
+    line-height: 28px;
+
+    @include breakpoint($xs) {
+      margin-bottom: 24px;
+    }
+  }
+
+  &_description {
+    margin-bottom: 16px;
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  &_btn {
+    max-width: 208px;
+    background-color: $blue_100;
+    color: $white;
+  }
+}

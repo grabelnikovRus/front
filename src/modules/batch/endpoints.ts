@@ -1,0 +1,11 @@
+const _API_PREFIX = '/api-react/'
+
+export const API_APARTMENT_META = _API_PREFIX + 'apartments-v2/${id}/meta'
+export const API_APARTMENTS_V1 = _API_PREFIX + 'apartments-search-v1'
+export const API_CONTACTS = _API_PREFIX + 'contacts-v1'
+export const API_MENUS = _API_PREFIX + 'menus-v1'
+export const API_PAGE_WIDGETS = _API_PREFIX + 'pages-v2/${slug}'
+export const API_PAGES = _API_PREFIX + 'pages-v1'
+export const API_SETTINGS_CATALOG_V1 = _API_PREFIX + 'catalog-settings-v1'
+export const API_WIDGETS = _API_PREFIX + 'widgets-v1'
+export const API_SIMILAR_APARTMENTS = _API_PREFIX + 'apartments-similar-v1/${id}'

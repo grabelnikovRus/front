@@ -1,0 +1,51 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/breakpoints';
+@import 'src/styles/variables/bg-effect';
+
+.container {
+  position: absolute;
+  left: 320px;
+  z-index: 5;
+  display: none;
+  transition: top 0.5s;
+  transform: translateY(-50%);
+
+  &_balloon {
+    width: auto;
+    padding: 18px 17px;
+    border-radius: 18px;
+    background-color: $dark_100;
+    color: $white;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 20px;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: -7px;
+      display: block;
+      width: 15px;
+      height: 15px;
+      border-radius: 2px;
+      background-color: $dark_100;
+      transform: translateY(-50%) rotate(45deg);
+    }
+
+    &:hover:not([disabled]) {
+      background-color: $blue_100;
+
+      &::before {
+        background-color: $blue_100;
+      }
+    }
+  }
+
+  &___visible {
+    display: none;
+    @include breakpoint($xl2) {
+      display: block;
+    }
+  }
+}

@@ -1,0 +1,562 @@
+/* eslint-disable max-lines */
+
+import { CatalogNumberTypeEnum, CatalogSelectTypeEnum, CatalogTextTypeEnum } from '@/api'
+import { CatalogSettingsEntity } from '@/modules/settings/catalog-settings.entity'
+
+export const catalogSettings: CatalogSettingsEntity = {
+  address: {
+    title: 'Местоположение',
+    type: CatalogTextTypeEnum.Text,
+    required: false,
+    _default: null,
+    minlength: 3,
+    maxlength: 255,
+    pattern: '',
+    regexp: null,
+    messages: {
+      maxlength: 'Пожалуйста, укоротите этот текст до 255 символов или менее',
+      minlength: 'Пожалуйста, используйте не менее 3 символов',
+      pattern: 'Пожалуйста, используйте требуемый формат',
+      required: 'Пожалуйста, заполните это поле',
+    },
+  },
+  priceRubMin: {
+    title: 'Цена, от',
+    type: CatalogNumberTypeEnum.Number,
+    required: false,
+    _default: null,
+    min: 3000000,
+    max: 25000000,
+    messages: {
+      max: 'Введите цену от 3 до 25 млн рублей',
+      min: 'Введите цену от 3 до 25 млн рублей',
+      required: 'Пожалуйста, заполните это поле',
+    },
+  },
+  priceRubMax: {
+    title: 'Цена, до',
+    type: CatalogNumberTypeEnum.Number,
+    required: false,
+    _default: null,
+    min: 3000000,
+    max: 25000000,
+    messages: {
+      max: 'Введите цену от 3 до 25 млн рублей',
+      min: 'Введите цену от 3 до 25 млн рублей',
+      required: 'Пожалуйста, заполните это поле',
+    },
+  },
+  roominess: {
+    title: 'Количество комнат',
+    type: CatalogSelectTypeEnum.Checkbox,
+    required: false,
+    _default: null,
+    multiple: true,
+    options: [
+      {
+        value: '0',
+        caption: 'Студия',
+        slug: null,
+      },
+      {
+        value: '1',
+        caption: '1',
+        slug: null,
+      },
+      {
+        value: '2',
+        caption: '2',
+        slug: null,
+      },
+      {
+        value: '3',
+        caption: '3',
+        slug: null,
+      },
+    ],
+  },
+  fullAreaMin: {
+    title: 'Общая площадь, от',
+    type: CatalogNumberTypeEnum.Number,
+    required: false,
+    _default: null,
+    min: 0,
+    max: 15000,
+    messages: {
+      max: 'Укажите площадь от 0 до 150 м²',
+      min: 'Укажите площадь от 0 до 150 м²',
+      required: 'Пожалуйста, заполните это поле',
+    },
+  },
+  fullAreaMax: {
+    title: 'Общая площадь, до',
+    type: CatalogNumberTypeEnum.Number,
+    required: false,
+    _default: null,
+    min: 0,
+    max: 15000,
+    messages: {
+      max: 'Укажите площадь от 0 до 150 м²',
+      min: 'Укажите площадь от 0 до 150 м²',
+      required: 'Пожалуйста, заполните это поле',
+    },
+  },
+  housingTypes: {
+    title: 'Тип объекта',
+    type: CatalogSelectTypeEnum.Checkbox,
+    multiple: true,
+    required: false,
+    _default: null,
+    options: [
+      {
+        value: '024268c5-c499-45c1-b32d-284a212f93e5',
+        caption: 'Первичка',
+        slug: 'newbuilding',
+      },
+      {
+        value: '1e8c006c-cbf0-4fcc-8725-6b4d319e3bee',
+        caption: 'Вторичка',
+        slug: 'second',
+      },
+    ],
+  },
+  saleTypes: {
+    title: 'Тип продажи',
+    type: CatalogSelectTypeEnum.Checkbox,
+    multiple: true,
+    required: false,
+    _default: null,
+    options: [
+      {
+        value: '3aa1e114-53ad-47ce-a046-b416e8e89718',
+        caption: 'Свободная',
+        slug: 'freeSale',
+      },
+      {
+        value: '8e285810-56e2-4452-b945-b629de70bc59',
+        caption: 'Трейд-ин+',
+        slug: 'trade_in_plus',
+      },
+    ],
+  },
+  kitchensAreaMin: {
+    title: 'Площадь кухни, от',
+    type: CatalogNumberTypeEnum.Number,
+    required: false,
+    _default: null,
+    min: 0,
+    max: 5000,
+    messages: {
+      max: 'Укажите площадь от 0 до 50 м²',
+      min: 'Укажите площадь от 0 до 50 м²',
+      required: 'Пожалуйста, заполните это поле',
+    },
+  },
+  kitchensAreaMax: {
+    title: 'Площадь кухни, до',
+    type: CatalogNumberTypeEnum.Number,
+    required: false,
+    _default: null,
+    min: 0,
+    max: 5000,
+    messages: {
+      max: 'Укажите площадь от 0 до 50 м²',
+      min: 'Укажите площадь от 0 до 50 м²',
+      required: 'Пожалуйста, заполните это поле',
+    },
+  },
+  livingAreaMin: {
+    title: 'Жилая площадь, от',
+    type: CatalogNumberTypeEnum.Number,
+    required: false,
+    _default: null,
+    min: 0,
+    max: 15000,
+    messages: {
+      max: 'Укажите площадь от 0 до 150 м²',
+      min: 'Укажите площадь от 0 до 150 м²',
+      required: 'Пожалуйста, заполните это поле',
+    },
+  },
+  livingAreaMax: {
+    title: 'Жилая площадь, до',
+    type: CatalogNumberTypeEnum.Number,
+    required: false,
+    _default: null,
+    min: 0,
+    max: 15000,
+    messages: {
+      max: 'Укажите площадь от 0 до 150 м²',
+      min: 'Укажите площадь от 0 до 150 м²',
+    },
+  },
+  buildingFloorCountMin: {
+    title: 'Этажей в доме, от',
+    type: CatalogNumberTypeEnum.Number,
+    required: false,
+    _default: null,
+    min: 5,
+    max: 80,
+    messages: {
+      max: 'Введите этажность от 5 до 80',
+      min: 'Введите этажность от 5 до 80',
+      required: 'Пожалуйста, заполните это поле',
+    },
+  },
+  buildingFloorCountMax: {
+    title: 'Этажей в доме, до',
+    type: CatalogNumberTypeEnum.Number,
+    required: false,
+    _default: null,
+    min: 5,
+    max: 80,
+    messages: {
+      max: 'Введите этажность от 5 до 80',
+      min: 'Введите этажность от 5 до 80',
+      required: 'Пожалуйста, заполните это поле',
+    },
+  },
+  floorNumberMin: {
+    title: 'Этаж квартиры, от',
+    type: CatalogNumberTypeEnum.Number,
+    required: false,
+    _default: null,
+    min: 1,
+    max: 80,
+    messages: {
+      max: 'Введите этаж от 1 до 80',
+      min: 'Введите этаж от 1 до 80',
+      required: 'Пожалуйста, заполните это поле',
+    },
+  },
+  floorNumberMax: {
+    title: 'Этаж квартиры, до',
+    type: CatalogNumberTypeEnum.Number,
+    required: false,
+    _default: null,
+    min: 1,
+    max: 80,
+    messages: {
+      max: 'Введите этаж от 1 до 80',
+      min: 'Введите этаж от 1 до 80',
+      required: 'Пожалуйста, заполните это поле',
+    },
+  },
+  decorationTypes: {
+    title: 'Уровень ремонта',
+    type: CatalogSelectTypeEnum.Checkbox,
+    multiple: true,
+    required: false,
+    _default: ['00000000-0000-0000-0000-000000000000'],
+    options: [
+      {
+        value: '00000000-0000-0000-0000-000000000000',
+        caption: 'Любой',
+        slug: null,
+      },
+      {
+        value: 'acf012c8-3d26-4202-9910-df627aff4d2a',
+        caption: 'Без ремонта',
+        slug: 'noCian',
+      },
+      {
+        value: 'dfb4cf47-e121-4b4c-8c05-10b523ee28dc',
+        caption: 'Косметический',
+        slug: 'cosmeticCian',
+      },
+      {
+        value: 'fd86906f-05b4-4e68-808f-30f4fb54226f',
+        caption: 'Дизайнерский',
+        slug: 'designCian',
+      },
+      {
+        value: '86bedc34-b9bc-49ec-bc09-bd823257cc58',
+        caption: 'Евроремонт',
+        slug: 'euroCian',
+      },
+    ],
+  },
+  wcsType: {
+    title: 'Санузел',
+    type: CatalogSelectTypeEnum.Checkbox,
+    multiple: true,
+    required: false,
+    _default: ['no-matter'],
+    options: [
+      {
+        value: 'no-matter',
+        caption: 'Неважно',
+        slug: null,
+      },
+      {
+        value: 'separate',
+        caption: 'Раздельный',
+        slug: null,
+      },
+      {
+        value: 'combined',
+        caption: 'Совмещённый',
+        slug: null,
+      },
+    ],
+  },
+  buildingCeilingHeight: {
+    title: 'Высота потолков',
+    type: CatalogSelectTypeEnum.Checkbox,
+    multiple: true,
+    required: false,
+    _default: ['no-matter'],
+    options: [
+      {
+        value: 'no-matter',
+        caption: 'Неважно',
+        slug: null,
+      },
+      {
+        value: '<=250',
+        caption: '2.5 м',
+        slug: null,
+      },
+      {
+        value: '=260',
+        caption: '2.6 м',
+        slug: null,
+      },
+      {
+        value: '=270',
+        caption: '2.7 м',
+        slug: null,
+      },
+      {
+        value: '=280',
+        caption: '2.8 м',
+        slug: null,
+      },
+      {
+        value: '=290',
+        caption: '2.9 м',
+        slug: null,
+      },
+      {
+        value: '=300',
+        caption: '3 м',
+        slug: null,
+      },
+      {
+        value: '>300',
+        caption: '3 м +',
+        slug: null,
+      },
+    ],
+  },
+  buildingTypes: {
+    title: 'Тип дома',
+    type: CatalogSelectTypeEnum.Checkbox,
+    multiple: true,
+    required: false,
+    _default: ['00000000-0000-0000-0000-000000000000'],
+    options: [
+      {
+        value: '00000000-0000-0000-0000-000000000000',
+        caption: 'Неважно',
+        slug: null,
+      },
+      {
+        value: '1950f24f-1205-4e3c-b6bf-55e429cb4b9e',
+        caption: 'Кирпичный',
+        slug: 'brick',
+      },
+      {
+        value: 'f402f7c0-93b6-4b45-b5d5-dfe2b21726a0',
+        caption: 'Блочный',
+        slug: 'block',
+      },
+      {
+        value: '4056adab-65e4-40ef-877c-a1a318d8a955',
+        caption: 'Монолитный',
+        slug: 'monolith',
+      },
+      {
+        value: 'ab5aab24-7197-4b68-a1f0-a43cb5a19387',
+        caption: 'Монолитно-кирпичный',
+        slug: 'monolithbrick',
+      },
+      {
+        value: '2f777358-b1e2-4ddf-a4f3-35135f465d7a',
+        caption: 'Панельный',
+        slug: 'panel',
+      },
+      {
+        value: '26327a32-920e-40c3-a508-c893095098b5',
+        caption: 'Сталинский',
+        slug: 'stalin',
+      },
+    ],
+  },
+  windowViewTypes: {
+    title: 'Вид из окна',
+    type: CatalogSelectTypeEnum.Checkbox,
+    multiple: true,
+    required: false,
+    _default: ['00000000-0000-0000-0000-000000000000'],
+    options: [
+      {
+        value: '00000000-0000-0000-0000-000000000000',
+        caption: 'Неважно',
+        slug: null,
+      },
+      {
+        value: 'cec3f7b3-035e-40e0-abf9-8a512d98e4ab',
+        caption: 'На улицу',
+        slug: 'street',
+      },
+      {
+        value: '70d699ae-2f0f-49a8-aca2-614aa2c8b270',
+        caption: 'Во двор',
+        slug: 'yard',
+      },
+      {
+        value: '90ecba8d-1773-433e-9b0d-6b466d45fab3',
+        caption: 'На улицу и во двор',
+        slug: 'yardAndStreet',
+      },
+    ],
+  },
+  elevatorType: {
+    title: 'Лифт',
+    type: CatalogSelectTypeEnum.Checkbox,
+    multiple: true,
+    required: false,
+    _default: ['no-matter'],
+    options: [
+      {
+        value: 'no-matter',
+        caption: 'Неважно',
+        slug: null,
+      },
+      {
+        value: 'any',
+        caption: 'Любой лифт',
+        slug: null,
+      },
+      {
+        value: 'freight',
+        caption: 'Грузовой',
+        slug: null,
+      },
+    ],
+  },
+  balconyType: {
+    title: 'Балкон',
+    type: CatalogSelectTypeEnum.Checkbox,
+    multiple: true,
+    required: false,
+    _default: ['no-matter'],
+    options: [
+      {
+        value: 'no-matter',
+        caption: 'Неважно',
+        slug: null,
+      },
+      {
+        value: 'loggia',
+        caption: 'Лоджия',
+        slug: null,
+      },
+      {
+        value: 'balcony',
+        caption: 'Балкон',
+        slug: null,
+      },
+    ],
+  },
+  buildingGarbageChute: {
+    title: 'Мусоропровод',
+    type: CatalogSelectTypeEnum.Checkbox,
+    multiple: true,
+    required: false,
+    _default: ['no-matter'],
+    options: [
+      {
+        value: 'no-matter',
+        caption: 'Неважно',
+        slug: null,
+      },
+      {
+        value: 'yes',
+        caption: 'Есть',
+        slug: null,
+      },
+      {
+        value: 'no',
+        caption: 'Нет',
+        slug: null,
+      },
+    ],
+  },
+  buildingParkingTypes: {
+    title: 'Парковка',
+    type: CatalogSelectTypeEnum.Checkbox,
+    multiple: true,
+    required: false,
+    _default: ['00000000-0000-0000-0000-000000000000'],
+    options: [
+      {
+        value: '00000000-0000-0000-0000-000000000000',
+        caption: 'Неважно',
+        slug: null,
+      },
+      {
+        value: 'a996ac6c-be70-4b31-81a8-13da834d42d6',
+        caption: 'Наземная',
+        slug: 'ground',
+      },
+      {
+        value: '14fc51c7-80b0-4702-ba5a-fb0185d9195c',
+        caption: 'Подземный',
+        slug: 'underground',
+      },
+      {
+        value: '769e2c6a-14b2-4669-b456-a9737ee1032f',
+        caption: 'Многоуровневый',
+        slug: 'multilevel',
+      },
+      {
+        value: '514cfc09-719b-44c5-9582-8b22b7524dfd',
+        caption: 'На крыше',
+        slug: 'roof',
+      },
+      {
+        value: 'deb9d9ba-915e-45b0-9e5f-27095cbe926c',
+        caption: 'За шлагбаумом во дворе',
+        slug: 'barrier',
+      },
+    ],
+  },
+  loanRateMax: {
+    title: 'Ставка ипотеки, до',
+    type: CatalogNumberTypeEnum.Number,
+    required: false,
+    _default: null,
+    min: 1,
+    max: 50,
+    messages: {
+      required: 'Пожалуйста, заполните это поле',
+      max: 'Введите ставку ипотеки от 1 до 50',
+      min: 'Введите ставку ипотеки от 1 до 50',
+    },
+  },
+  loanRateMin: {
+    title: 'Ставка ипотеки, от',
+    type: CatalogNumberTypeEnum.Number,
+    required: false,
+    _default: null,
+    min: 1,
+    max: 50,
+    messages: {
+      required: 'Пожалуйста, заполните это поле',
+      max: 'Введите ставку ипотеки от 1 до 50',
+      min: 'Введите ставку ипотеки от 1 до 50',
+    },
+  },
+}

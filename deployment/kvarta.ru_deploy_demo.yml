@@ -1,0 +1,29 @@
+- hosts: destination
+  become: true
+
+  roles:
+    - role: staging2
+      base_domain_name: kvarta.ru
+      deploy_third_domain: true
+      docker_compose_file: "deployment-docker-compose.yml"
+      domains:
+        - name: "demo.kvarta.ru."
+          base_auth:
+            username: "ya"
+            password: "ya"
+          tls_enabled:
+            tls_fullchain: "/etc/letsencrypt/live/kvarta.ru-0001/fullchain.pem"
+            tls_key: "/etc/letsencrypt/live/kvarta.ru-0001/privkey.pem"
+          locations:
+            - location: "/"
+              port_name: "FRONTEND"
+      dotenv_files:
+        - src: ".env.deploy_staging"
+          dst: ".env"
+      owner_user: 1001
+      owner_group: 1001
+      rsync_options:
+        - "--exclude=.git"
+        - "--exclude=.yarn-cache"
+      staging_application_env_file: ".env"
+      static_staging: true

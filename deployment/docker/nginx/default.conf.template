@@ -1,0 +1,70 @@
+proxy_cache_path /var/nginx-proxy-cache-suggest levels=1:2 keys_zone=cache_suggest:15m max_size=100M;
+
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server ipv6only=on;
+    listen 443 ssl;
+    listen [::]:443 ssl;
+
+    ssl_certificate /etc/nginx/cert/localhost.crt;
+    ssl_certificate_key /etc/nginx/cert/localhost.key;
+
+    server_name _;
+    location ~ (^/lead/create|^/api-react/|^/api/|^/widgets/images/|^/upload/menu/|^/upload/images/|^/iframe/|^/bundle/|^/sitemap.*\.xml) {
+        proxy_pass ${BACKEND_PROXY_PASS};
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+
+    # Прокси для suggest-maps.yandex.ru
+    location /ymaps-suggest/ {
+        proxy_pass https://suggest-maps.yandex.ru/;
+        proxy_ssl_server_name on;
+
+        # Подмена access-control-allow-origin
+        proxy_hide_header 'access-control-allow-origin';
+        add_header 'access-control-allow-origin' $http_origin always;
+
+        # Кэш ответа
+        proxy_cache cache_suggest;
+        proxy_ignore_headers 'X-Accel-Expires' 'Expires' 'Cache-Control' 'Set-Cookie' 'Vary';
+        proxy_cache_valid 10m;
+        proxy_cache_valid 404 15s;
+        proxy_buffering on;
+    }
+
+    location /catalog-main {
+        return 301 $scheme://$http_host/buy;
+    }
+    location /alternative {
+        return 301 $scheme://$http_host/exchange;
+    }
+    location /exchange-max {
+        return 301 $scheme://$http_host/exchange$is_args$args;
+    }
+    location /tradein {
+        return 301 $scheme://$http_host/trade-in$is_args$args;
+    }
+    location /buy {
+        return 301 $scheme://$http_host/$is_args$args;
+    }
+
+    location / {
+        error_page 404 = @error404;
+        proxy_intercept_errors on;
+        proxy_pass http://pik-broker-front-node:3000;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Port $server_port;
+    }
+
+    location @error404 {
+        rewrite ^/(.*) /not-found break;
+        proxy_pass http://pik-broker-front-node:3000;
+    }
+}

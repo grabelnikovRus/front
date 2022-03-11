@@ -1,0 +1,88 @@
+{
+  "CONTACT_PHONE": "+74952526020",
+  "FORM": {
+    "APARTMENT_FILTER": {
+      "APARTMENT_PLURAL": ["квартир", "квартира", "квартиры"],
+      "SLUG_SALE_TRADEIN": "trade_in_plus"
+    },
+    "ERROR_UNDEFINED_MESSAGE": "Произошла ошибка, попробуйте повторить позже",
+    "UNKNOW_ERROR": "Что-то пошло не так, попробуйте еще раз",
+    "LEAD": {
+      "SMS_INTERVAL": 1e3,
+      "SMS_TIMEOUT": 12e4,
+      "USER_NAME_MAXLENGTH": 100,
+      "USER_NAME_MAXLENGTH_MESSAGE": "Пожалуйста, укоротите это текст до 100 символов или менее.",
+      "USER_NAME_MINLENGTH": 1,
+      "USER_NAME_MINLENGTH_MESSAGE": "Пожалуйста, используйте не менее 1 символов.",
+      "USER_NAME_PATTERN": "^[\\s\\-A-Za-zЁА-яё]+$",
+      "USER_NAME_PATTERN_MESSAGE": "Пожалуйста, используйте требуемый формат.",
+      "USER_NAME_REQUIRED": true,
+      "USER_NAME_REQUIRED_MESSAGE": "Пожалуйста, заполните это поле.",
+      "USER_PHONE_MAXLENGTH": 17,
+      "USER_PHONE_MAXLENGTH_MESSAGE": "Пожалуйста, укоротите это текст до 17 символов или менее.",
+      "USER_PHONE_MINLENGTH": 17,
+      "USER_PHONE_MINLENGTH_MESSAGE": "Используйте формат: +7(000) 000-00-00.",
+      "USER_PHONE_LENGTH": 10,
+      "USER_PHONE_LENGTH_MESSAGE": "Используйте формат: +7(000) 000-00-00.",
+      "USER_PHONE_PATTERN": "^\\+7\\(\\d{3}\\)\\s\\d{3}-\\d{2}-\\d{2}$",
+      "USER_PHONE_PATTERN_MESSAGE": "Пожалуйста, используйте требуемый формат.",
+      "USER_PHONE_REQUIRED": true,
+      "USER_PHONE_REQUIRED_MESSAGE": "Пожалуйста, заполните это поле."
+    }
+  },
+  "GOOGLETAGMANAGER": {
+    "APIKEY": "GTM-MJ3Z2JR"
+  },
+  "MENU": {
+    "HEADER_MOBILE": {
+      "SLUG_CATALOG": "menu_mobile__sell",
+      "SLUG_INDEX": "menu_mobile__main"
+    }
+  },
+  "PAGE": {
+    "ALIAS_404": "404",
+    "APARTMENT": {
+      "ERROR_INVALID_ID": 10,
+      "ERROR_WRONG_ID": 100,
+      "SLUG_HOUSING_PRIMARY": "newbuilding",
+      "SLUG_HOUSING_SECONDARY": "second",
+      "SLUG_SALE_FREE": "svobodnaja",
+      "SLUG_SALE_TRADEIN": "trade_in_plus",
+      "SLUG_TRAVEL_BYCAR": "car",
+      "SLUG_TRAVEL_ONFOOT": "peskom"
+    },
+    "CATALOG": {
+      "PAGE_INITIAL": 1,
+      "SORT_BY_INITIAL": "createdAt",
+      "SORT_ORDER_INITIAL": "desc"
+    },
+    "SLUG_404": "notFoundPage",
+    "SLUG_APARTMENT": "apartmentPage",
+    "SLUG_CATALOG": "catalogPage",
+    "SLUG_CATALOG_ENTRY": "catalogMainPage",
+    "SLUG_INDEX": "mainPage",
+    "SLUG_LEGAL": "legalPage",
+    "SLUG_LEGAL_PERSONAL": "personalLegalPage",
+    "SLUG_LEGAL_PRIVACY": "privacyLegalPage",
+    "SLUG_NODISCOUNT": "buyoutNoDiscountPage"
+  },
+  "SEGMENTSTREAM": {
+    "APIKEY": "6551ec9a-c860-46b7-8a1e-46976df3701c"
+  },
+  "SITE": {
+    "COOKIES_EXPIRES": 30,
+    "ERROR": "<svg fill=\"none\" viewBox=\"0 0 18 18\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M12 6L6 12\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\"></path><path d=\"M12 12L6 6\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\"></path></svg>",
+    "PRELOADER": "<svg height=\"30\" style=\"enable-background:new 0 0 30 30;\" viewBox=\"0 0 30 30\" width=\"30\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M20.8,7.2c1.2,0.9,1.7,2.3,1.7,3.8v6.7c0,2.4-2,4.3-4.5,4.3H6c-2.5,0-4.5-1.9-4.5-4.3V11c0-1.8,0.4-2.8,1.7-3.7s5.6-4,5.6-4c2.3-1.9,4.4-1.6,6.5,0l2.7,2V2.5\" fill=\"none\" stroke=\"${color}\" stroke-width=\"2.1\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" stroke-linecap=\"round\" stroke-dashoffset=\"400\" stroke-dasharray=\"50\"><animate attributeName=\"stroke-dashoffset\" dur=\"10s\" repeatCount=\"indefinite\" values=\"400;0\" /></path></svg>",
+    "PRELOADER_BLACK": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAiIGhlaWdodD0iMzAiIHZpZXdCb3g9IjAgMCAzMCAzMCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMzAgMzA7IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik0yMC44LDcuMmMxLjIsMC45LDEuNywyLjMsMS43LDMuOHY2LjdjMCwyLjQtMiw0LjMtNC41LDQuM0g2Yy0yLjUsMC00LjUtMS45LTQuNS00LjNWMTFjMC0xLjgsMC40LTIuOCwxLjctMy43czUuNi00LDUuNi00YzIuMy0xLjksNC40LTEuNiw2LjUsMGwyLjcsMlYyLjUiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIyLjEiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtZGFzaG9mZnNldD0iNDAwIiBzdHJva2UtZGFzaGFycmF5PSI1MCI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0ic3Ryb2tlLWRhc2hvZmZzZXQiIGR1cj0iMTBzIiByZXBlYXRDb3VudD0iaW5kZWZpbml0ZSIgdmFsdWVzPSI0MDA7MCIgLz48L3BhdGg+PC9zdmc+",
+    "SUCCESS": "<svg width=\"10\" height=\"8\" viewBox=\"0 0 10 8\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"> <path d=\"M10 1.54509L8.40909 0.000976562L3.86364 4.41274L1.59091 2.20686L0 3.75098L3.86364 7.50098L10 1.54509Z\" fill=\"white\"/> </svg>"
+  },
+  "WIDGET": {
+    "SLUG_404": "wrong_link_v5__notfound",
+    "SLUG_BANNER": "floating_banner_v5__global",
+    "SLUG_CITYMAP": "city_map_v5__global",
+    "SLUG_COMPLAINT": "complaint_v5__global",
+    "SLUG_COOKIES": "cookies_v5__global",
+    "SLUG_COPYRIGHT": "footer_v5__global",
+    "SLUG_NODISCOUNT": "top_banner_v5__global"
+  }
+}

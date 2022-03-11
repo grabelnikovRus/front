@@ -1,0 +1,122 @@
+/** @format */
+
+.articlearticle {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1360px;
+  margin: 0 auto;
+  @media screen and (max-width: 1439px) {
+    justify-content: center;
+  }
+  section {
+    @media screen and (max-width: 1439px) {
+      max-width: 944px;
+      padding: 0;
+    }
+    @media screen and (max-width: 991px) {
+      max-width: 688px;
+    }
+    @media screen and (max-width: 767px) {
+      max-width: 343px;
+      &.full-size {
+        max-width: 100%;
+      }
+    }
+    @media screen and (max-width: 359px) {
+      max-width: 288px;
+      &.full-size {
+        max-width: 100%;
+      }
+    }
+  }
+}
+
+.apartment_card {
+  width: 100%;
+  &_banner {
+    position: relative;
+    width: 100%;
+    margin: 0 0 40px 0;
+    @media screen and (max-width: 767px) {
+      margin: 0 0 24px 0;
+    }
+    @media screen and (max-width: 359px) {
+      margin: 0 0 16px 0;
+    }
+  }
+  &_breadcrumbs {
+    z-index: 3;
+    display: flex;
+    margin: 0 0 16px 0;
+    @media screen and (min-width: 992px) {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+    }
+    @media screen and (max-width: 991px) {
+      flex-wrap: nowrap;
+      height: 22px;
+    }
+    @media screen and (max-width: 767px) {
+      margin: 0 16px 16px;
+    }
+  }
+  &_content {
+    display: flex;
+    width: 100%;
+    margin: 0 0 60px 0;
+    @media screen and (max-width: 991px) {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    &__less_five {
+      flex-wrap: wrap;
+      max-width: 890px;
+      @media screen and (max-width: 1439px) {
+        max-width: 544px;
+      }
+      @media screen and (max-width: 991px) {
+        max-width: 680px;
+      }
+      @media screen and (max-width: 767px) {
+        max-width: 340px;
+      }
+      @media screen and (max-width: 359px) {
+        max-width: 288px;
+      }
+      .less_five {
+        height: 504px;
+        @media screen and (max-width: 1439px) {
+          height: 306px;
+        }
+        @media screen and (max-width: 991px) {
+          height: 382px;
+        }
+        @media screen and (max-width: 767px) {
+          height: 191px;
+        }
+        @media screen and (max-width: 359px) {
+          height: 162px;
+        }
+      }
+    }
+    &__more_five {
+      max-width: 890px;
+      @media screen and (max-width: 1439px) {
+        max-width: 544px;
+      }
+      @media screen and (max-width: 991px) {
+        max-width: 680px;
+      }
+      @media screen and (max-width: 767px) {
+        max-width: 340px;
+      }
+      @media screen and (max-width: 359px) {
+        max-width: 288px;
+      }
+    }
+  }
+}

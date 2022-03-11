@@ -1,0 +1,151 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/breakpoints';
+
+.nav {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 40px;
+
+  @include breakpoint($xl2) {
+    justify-content: space-between;
+  }
+
+  &_any {
+    display: grid;
+    grid-template-columns: repeat(3, max-content);
+    align-items: center;
+    margin-left: auto;
+
+    @include breakpoint($xl2) {
+      margin-left: 0;
+    }
+
+    & > * {
+      margin-left: 8px;
+      @include breakpoint($xl2) {
+        margin-left: 24px;
+      }
+    }
+  }
+}
+
+.any {
+  &_tel {
+    display: none;
+    padding: 8px;
+    color: $white;
+    @include breakpoint($xl2) {
+      display: inline;
+    }
+  }
+
+  &_icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: 2px solid rgba($color: $white, $alpha: 30%);
+    border-radius: 50%;
+    background-color: transparent;
+    cursor: pointer;
+
+    &:hover {
+      border: 1px solid $border3;
+    }
+
+    &:active {
+      border: 1px solid border3;
+    }
+
+    svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    svg path {
+      stroke: $white;
+    }
+  }
+
+  &___call {
+    display: none;
+    @include breakpoint($md) {
+      display: flex;
+    }
+    @include breakpoint($xl2) {
+      display: none;
+    }
+  }
+}
+
+.header {
+  padding: 16px 0 24px;
+  transition: 0.5s;
+  @include breakpoint($xs) {
+    padding: 20px 0 32px;
+  }
+  @include breakpoint($sm) {
+    padding: 16px 0 32px;
+  }
+  @include breakpoint($md) {
+    padding: 16px 0 32px;
+  }
+  @include breakpoint($lg) {
+    padding: 16px 0 40px;
+  }
+  @include breakpoint($xl2) {
+    padding: 16px 0 48px;
+  }
+
+  &___isLocationOpen {
+    background-color: $blue_100;
+    @include breakpoint($md) {
+      background-color: transparent;
+    }
+  }
+
+  &___map {
+    padding-bottom: 8px;
+
+    @include breakpoint($md) {
+      padding-bottom: 16px;
+    }
+  }
+
+  &___catalog {
+    @include breakpoint($md) {
+      padding-bottom: 16px;
+    }
+  }
+
+  .nav {
+    &_any {
+      & > * {
+        margin-left: 0;
+        @include breakpoint($xl2) {
+          margin-left: 0;
+        }
+      }
+    }
+  }
+
+  .any_icon {
+    svg path {
+      stroke: $dark_100;
+    }
+  }
+
+  .any_tel {
+    color: $dark_100;
+  }
+
+  &.header___isLocationOpen {
+    background-color: $white;
+    @include breakpoint($md) {
+      background-color: transparent;
+    }
+  }
+}

@@ -1,0 +1,116 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/breakpoints';
+@import 'src/styles/variables/bg-effect';
+
+.list {
+  display: grid;
+  grid-template-rows: repeat(4, 64px);
+  margin: 0 0 64px;
+  border-radius: 24px;
+  box-shadow: $box-shadow2;
+  @include breakpoint($xs) {
+    grid-template-rows: repeat(4, 80px);
+  }
+  @include breakpoint($md) {
+    grid-template-rows: 128px;
+    grid-template-columns: repeat(4, 160px);
+    gap: 16px;
+    justify-content: center;
+    margin: 0 0 80px;
+    box-shadow: none;
+  }
+  @include breakpoint($lg) {
+    grid-template-rows: 136px;
+    grid-template-columns: repeat(4, 182px);
+  }
+  @include breakpoint($xl2) {
+    grid-template-rows: 104px;
+    grid-template-columns: repeat(4, 264px);
+    gap: 24px;
+    margin-bottom: 80px;
+  }
+
+  &_item {
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    @include breakpoint($md) {
+      padding: 0 32px;
+    }
+    @include breakpoint($md) {
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 10px;
+      border-radius: 32px;
+      box-shadow: $box-shadow2;
+    }
+    @include breakpoint($lg) {
+      padding: 0 32px;
+    }
+    @include breakpoint($xl2) {
+      flex-direction: row;
+    }
+
+    &:not(:last-child) {
+      border-bottom: 1.5px solid rgba($color: $blue_200, $alpha: 70%);
+    }
+  }
+
+  &_icon {
+    position: relative;
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    margin-right: 16px;
+    border-radius: 50%;
+    background-color: rgba($color: $blue_100, $alpha: 10%);
+    @include breakpoint($md) {
+      width: 40px;
+      height: 40px;
+      margin: 0 0 8px;
+    }
+    @include breakpoint($xl2) {
+      justify-content: start;
+      margin: 0 16px 0 0;
+    }
+
+    svg {
+      position: absolute;
+      transform: scale(0.8);
+      @include breakpoint($md) {
+        transform: scale(0.65);
+      }
+    }
+
+    path {
+      fill: none;
+      stroke: $blue_100;
+      stroke-width: 1.5px;
+    }
+  }
+
+  &_text {
+    font-size: 12px;
+    font-family: Inter, sans-serif;
+    line-height: 16px;
+    @include breakpoint($xs) {
+      font-size: 14px;
+      line-height: 20px;
+    }
+    @include breakpoint($md) {
+      text-align: center;
+    }
+    @include breakpoint($xl2) {
+      text-align: start;
+    }
+  }
+}
+
+.shield path,
+.percent path {
+  fill: $blue_100;
+  stroke-width: 0.5px;
+}

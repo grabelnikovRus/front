@@ -1,0 +1,216 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/breakpoints';
+@import 'src/styles/variables/bg-effect';
+
+.slider {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  &_arrow {
+    position: absolute;
+    top: 46px;
+    display: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: $border1;
+    cursor: pointer;
+    @include breakpoint($md) {
+      display: block;
+    }
+    @include breakpoint($xl2) {
+      top: 60px;
+    }
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      display: block;
+    }
+
+    &::before {
+      left: 13px;
+      width: 14px;
+      height: 1.5px;
+      background-color: $dark_400;
+      transform: translateY(-50%);
+    }
+
+    &::after {
+      left: 18px;
+      width: 8px;
+      height: 8px;
+      border-right: 1.5px $dark_400 solid;
+      border-bottom: 1.5px $dark_400 solid;
+      transform: translateY(-50%) rotate(-45deg);
+    }
+  }
+
+  &_arrow___next {
+    right: 0;
+  }
+
+  &_arrow___prev {
+    &::after {
+      left: 13px;
+      transform: translateY(-50%) rotate(135deg);
+    }
+  }
+
+  :global(.swiper-pagination-bullets) {
+    position: unset;
+    z-index: unset;
+    display: flex;
+    justify-content: center;
+    padding: 24px 0;
+    @include breakpoint($md) {
+      padding: 40px 0;
+    }
+    @include breakpoint($xl2) {
+      padding: 54px 0 48px;
+    }
+
+    :global(.swiper-pagination-bullet) {
+      width: max-content;
+      height: max-content;
+      margin: 0;
+      padding: 8px 15px;
+      border-radius: 32px;
+      background-color: $blue_200;
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 20px;
+      opacity: 1;
+      cursor: pointer;
+
+      @include breakpoint($md) {
+        padding: 16px 24px;
+      }
+
+      &:not(:last-child) {
+        margin-right: 4px;
+        @include breakpoint($md) {
+          margin-right: 8px;
+        }
+      }
+    }
+
+    /* stylelint-disable-next-line no-descending-specificity */
+    :global(.swiper-pagination-bullet-active) {
+      background-color: $dark_100;
+      color: $white;
+    }
+  }
+}
+
+.description {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  border: 1.5px solid $blue_300;
+  border-radius: 32px;
+  @include breakpoint($md) {
+    flex-flow: row wrap;
+  }
+  @include breakpoint($xl2) {
+    border: none;
+  }
+
+  &_item {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    @include breakpoint($md) {
+      width: 50%;
+      padding: 40px;
+    }
+    @include breakpoint($xl2) {
+      flex-direction: column;
+      width: 197px;
+      padding: 40px 30px;
+      border-radius: 32px;
+    }
+  }
+
+  &_item:not(:last-child) {
+    border-bottom: 1.5px solid $blue_300;
+    @include breakpoint($md) {
+      border: none;
+    }
+    @include breakpoint($xl2) {
+      margin-right: 20px;
+    }
+  }
+
+  &_item:first-child,
+  &_item:nth-child(2) {
+    border-bottom: 1.5px solid $blue_300;
+    @include breakpoint($xl2) {
+      border: 1.5px solid $blue_300;
+    }
+  }
+
+  &_item:first-child,
+  &_item:nth-child(3) {
+    @include breakpoint($md) {
+      border-right: 1.5px solid $blue_300;
+    }
+    @include breakpoint($xl2) {
+      border: 1.5px solid $blue_300;
+    }
+  }
+
+  &_item:last-child {
+    @include breakpoint($xl2) {
+      border: 1.5px solid $blue_300;
+    }
+  }
+
+  &_icon {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    margin-right: 16px;
+    border-radius: 50%;
+    background-color: $blue_300;
+    @include breakpoint($md) {
+      width: 36px;
+      height: 36px;
+    }
+    @include breakpoint($xl2) {
+      width: 40px;
+      height: 40px;
+      margin: 0 0 8px;
+    }
+
+    svg {
+      width: 100%;
+      height: 100%;
+      transform: scale(0.7);
+    }
+
+    path {
+      stroke: $blue_100;
+    }
+  }
+
+  &_text {
+    @include breakpoint($xl2) {
+      text-align: center;
+    }
+  }
+}
+
+.key,
+.clock {
+  path {
+    stroke-width: 2px;
+  }
+}

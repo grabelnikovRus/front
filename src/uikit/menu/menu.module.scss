@@ -1,0 +1,66 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/breakpoints';
+
+.menu {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  justify-content: center;
+  margin-top: 24px;
+  column-gap: 3px;
+
+  @include breakpoint($xs) {
+    margin-top: 32px;
+    column-gap: 4px;
+  }
+
+  @include breakpoint($md) {
+    grid-template-columns: repeat(4, max-content);
+    justify-content: start;
+    margin-top: 0;
+    margin-left: 41px;
+    column-gap: 4px;
+  }
+
+  @include breakpoint($xl2) {
+    margin-left: 0;
+  }
+
+  &_link {
+    display: block;
+    padding: 8px 0;
+    border: 1px solid transparent;
+    border-radius: 20px;
+    color: $dark_100;
+    font-size: 10px;
+    line-height: 12px;
+    text-align: center;
+
+    @include breakpoint($xs) {
+      padding: 8px 14px;
+    }
+
+    @include breakpoint($md) {
+      padding: 7px 17px;
+      border-radius: 39px;
+    }
+
+    @include breakpoint($xl2) {
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    @include breakpoint($md) {
+      @media (hover: hover) {
+        &:hover {
+          background-color: $blue_200;
+          color: $blue_100;
+        }
+      }
+    }
+  }
+
+  &_link___active {
+    background-color: $dark_100;
+    color: $white;
+  }
+}

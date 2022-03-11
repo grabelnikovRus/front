@@ -1,0 +1,68 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/breakpoints';
+
+.copy {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 50%;
+  background-color: $white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  @include breakpoint($md) {
+    top: 16px;
+    right: 16px;
+  }
+
+  &___active {
+    background-color: $blue_100;
+    transition: background-color 0.3s;
+    @include breakpoint($lg) {
+      &::after {
+        content: 'Ссылка скопирована';
+        position: absolute;
+        right: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 150px;
+        height: 30px;
+        border-radius: 12px;
+        background-color: $dark_100;
+        color: $white;
+        font-size: 12px;
+      }
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 9px;
+      left: 14px;
+      display: block;
+      width: 6px;
+      height: 10px;
+      border: 2px solid $white;
+      border-top: transparent;
+      border-left: transparent;
+      background-color: transparent;
+      transform: rotate(45deg);
+    }
+  }
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  svg:hover path {
+    stroke: $blue_100;
+  }
+}

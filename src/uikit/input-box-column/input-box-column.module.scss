@@ -1,0 +1,77 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/bg-effect';
+
+.input_box_column {
+  &_container {
+    display: flex;
+    flex-flow: column wrap;
+
+    & > div:last-child {
+      margin-top: 8px;
+    }
+  }
+
+  &_label {
+    margin-bottom: 8px;
+    color: $white;
+    font-size: 12px;
+    line-height: 16px;
+  }
+
+  &_unit {
+    margin-left: 4px;
+    color: $dark_400;
+    font-size: 12px;
+    line-height: 16px;
+    opacity: 0.5;
+  }
+
+  &_input {
+    display: flex;
+    flex-wrap: wrap;
+    overflow: hidden;
+    height: 56px;
+    border-radius: 70px;
+
+    &___error input {
+      color: $red_100;
+    }
+  }
+
+  &___transparent {
+    .input_box_column_input {
+      background: $white;
+      box-shadow: $box-shadow1;
+    }
+  }
+
+  &___opaque {
+    .input_box_column_input {
+      border: 1px solid $dark_500;
+      background-color: $white;
+    }
+
+    .input_box_column_label {
+      color: $dark_100;
+    }
+  }
+
+  &___error {
+    &_bg {
+      border-radius: 28px;
+      background-color: $red_100;
+    }
+
+    .input_box_column_input {
+      border: 1px solid $red_100;
+    }
+  }
+
+  &_error_text {
+    margin-left: 20px;
+    color: $white;
+    font-weight: 400;
+    font-size: 10px;
+    font-family: Inter, sans-serif;
+  }
+}

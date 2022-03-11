@@ -1,0 +1,168 @@
+@import 'src/styles/variables/breakpoints';
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/bg-effect';
+
+.form {
+  width: 100%;
+
+  &_wrapper {
+    display: grid;
+    grid-template-columns: 1fr;
+    row-gap: 32px;
+
+    @include breakpoint($md) {
+      row-gap: 48px;
+    }
+  }
+
+  &_error {
+    padding: 8px 19px 0;
+    color: $red_100;
+    font-size: 12px;
+    line-height: 16px;
+  }
+
+  &_first_block {
+    display: grid;
+    grid-template-columns: 1fr;
+    row-gap: 32px;
+
+    @include breakpoint($md) {
+      grid-template-columns: repeat(2, 1fr);
+      column-gap: 24px;
+    }
+
+    @include breakpoint($xl2) {
+      column-gap: 40px;
+    }
+  }
+
+  &_second_block {
+    display: grid;
+    grid-template-columns: 1fr;
+
+    @include breakpoint($md) {
+      grid-template-columns: repeat(2, 1fr);
+      column-gap: 24px;
+    }
+
+    @include breakpoint($xl2) {
+      column-gap: 40px;
+    }
+  }
+
+  &_title {
+    margin-bottom: 0;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 32px;
+
+    @include breakpoint($md) {
+      grid-column: span 2;
+      font-size: 32px;
+      line-height: 40px;
+    }
+  }
+
+  &_subtitle {
+    margin-bottom: 8px;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    text-align: left;
+
+    @include breakpoint($md) {
+      margin-bottom: 16px;
+      font-size: 24px;
+      line-height: 32px;
+    }
+  }
+
+  &_text {
+    margin-bottom: 16px;
+    color: $dark_400;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 16px;
+
+    @include breakpoint($md) {
+      margin-bottom: 24px;
+    }
+  }
+
+  &_autosagest {
+    z-index: 2;
+
+    @include breakpoint($md) {
+      grid-column: span 2;
+    }
+  }
+
+  &_area_floor {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 9px;
+  }
+
+  &_renovation {
+    @include breakpoint($md) {
+      grid-column: span 2;
+    }
+  }
+
+  &_button {
+    margin: 0 auto;
+  }
+
+  &_submit {
+    width: 263px;
+  }
+}
+
+.second_block {
+  &_subtitle {
+    @include breakpoint($md) {
+      grid-column: span 2;
+    }
+  }
+
+  &_text {
+    @include breakpoint($md) {
+      grid-column: span 2;
+    }
+  }
+}
+
+.hide_on_mobile {
+  display: none;
+  @include breakpoint($md) {
+    display: block;
+  }
+}
+
+.error_block {
+  padding: 16px;
+  border-radius: 32px;
+  background-color: rgba($red_100, 0.1);
+  color: $red_100;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  text-align: center;
+
+  @include breakpoint($xs) {
+    padding: 24px;
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  @include breakpoint($md) {
+    grid-column: span 2;
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  @include breakpoint($xl2) {
+    padding: 32px;
+  }
+}

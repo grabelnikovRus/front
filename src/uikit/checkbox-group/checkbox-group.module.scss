@@ -1,0 +1,53 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/breakpoints';
+
+.checkbox_group {
+  &__layout {
+    &_main {
+      label:first-of-type {
+        flex: 1;
+      }
+    }
+  }
+
+  &_label {
+    margin-bottom: 8px;
+    color: #fff;
+    font-size: 12px;
+    line-height: 16px;
+
+    &:empty {
+      display: none;
+    }
+  }
+
+  &_container {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+
+    &__layout {
+      &_main {
+        flex-wrap: nowrap;
+        width: 100%;
+      }
+    }
+
+    & > *:not(:last-child) {
+      margin-right: 4px;
+
+      @include breakpoint($lg) {
+        margin-right: 8px;
+      }
+    }
+  }
+
+  &_container___indicator_button {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4px;
+    @include breakpoint($md) {
+      gap: 8px;
+    }
+  }
+}

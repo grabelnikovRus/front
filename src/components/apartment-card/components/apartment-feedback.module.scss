@@ -1,0 +1,74 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/breakpoints';
+@import 'src/styles/variables/bg-effect';
+
+.apartment_feedback {
+  padding: 16px 0;
+
+  @include breakpoint($xl2) {
+    padding: 24px;
+    border-radius: 32px;
+    background: $white;
+    box-shadow: $box-shadow2;
+  }
+
+  &_info {
+    display: none;
+
+    @include breakpoint($xl2) {
+      display: block;
+    }
+  }
+}
+
+.buttons {
+  display: grid;
+  grid-template-columns: 136px 136px;
+  column-gap: 8px;
+
+  @include breakpoint($xs) {
+    grid-template-columns: 157px 157px;
+    column-gap: 8px;
+  }
+
+  @include breakpoint($md) {
+    grid-template-columns: 160px 160px;
+    column-gap: 16px;
+  }
+
+  @include breakpoint($xl2) {
+    grid-template-columns: 142px 149px;
+  }
+
+  &_button {
+    height: 32px;
+    padding: 16px 32px;
+
+    @include breakpoint($md) {
+      height: 52px;
+    }
+
+    &___mobile {
+      @include breakpoint($xl2) {
+        display: none;
+      }
+    }
+
+    &___desc {
+      display: none;
+
+      @include breakpoint($xl2) {
+        display: block;
+      }
+    }
+  }
+
+  &_phone {
+    background-color: $blue_300;
+    color: $blue_100;
+
+    &:hover:not([disabled]) {
+      background-color: $blue_300;
+    }
+  }
+}

@@ -1,0 +1,122 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/breakpoints';
+@import 'src/styles/variables/bg-effect';
+
+.form {
+  &_inner {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(218px, 1fr));
+    row-gap: 24px;
+    column-gap: 16px;
+    place-items: start;
+  }
+
+  &_error {
+    &:empty {
+      display: none;
+    }
+  }
+}
+
+.control {
+  width: 100%;
+
+  &_ttl {
+    margin: 0 0 8px;
+    color: $white;
+    font-size: 12px;
+    line-height: 16px;
+    text-align: left;
+    @include breakpoint($md) {
+      color: $dark_100;
+    }
+  }
+
+  &_field {
+    width: 100%;
+  }
+
+  &_inner {
+    position: relative;
+
+    :global(.MuiInput-underline::before) {
+      border-bottom: 0;
+    }
+
+    :global(.MuiInput-underline::after) {
+      border-bottom: 0;
+    }
+
+    :global(.MuiInput-underline:hover:not(.Mui-disabled)::before) {
+      border-bottom: 0;
+    }
+
+    input {
+      align-self: flex-start;
+      box-sizing: border-box;
+      width: 100%;
+      height: 56px;
+      padding: 18px;
+      border: 1px solid rgba($border3, 0.6);
+      border-radius: 70px;
+      color: $dark_100;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 20px;
+
+      &::placeholder {
+        color: $dark_400;
+      }
+    }
+  }
+
+  &_error {
+    color: $blue_100;
+
+    &_txt {
+      position: relative;
+      bottom: 1px;
+      display: block;
+      padding: 0 22px;
+      color: $white;
+      font-weight: 500;
+      font-size: 10px;
+      line-height: 1.1em;
+
+      &:empty {
+        height: 11px;
+      }
+    }
+
+    .control_inner {
+      &::before {
+        content: ' ';
+        position: absolute;
+        right: initial;
+        bottom: 0;
+        left: 0;
+        z-index: 0;
+        display: block;
+        width: 100%;
+        height: 100%;
+        border: none;
+        border-radius: 30px;
+        background-color: $red_100;
+        box-shadow: none;
+      }
+    }
+
+    input {
+      z-index: 1;
+      border-color: $red_100;
+      background-color: $white;
+      color: $red_100;
+    }
+  }
+}
+
+.form___apartment {
+  .control_ttl {
+    color: $dark_100;
+  }
+}

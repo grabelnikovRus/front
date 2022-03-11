@@ -1,0 +1,50 @@
+ls:
+  pages:
+    .dir: kebab-case
+
+    .json: kebab-case
+    .ts: kebab-case
+    .tsx: kebab-case | regex:^_[a-z-]* | regex:^[\w\.\[\]]*
+
+
+  "{public,src}":
+    .dir: kebab-case
+
+    .json: kebab-case
+    .js: kebab-case
+    .jsx: kebab-case
+    .ts: kebab-case
+    .d.ts: kebab-case
+    .tsx: kebab-case
+    .stories.tsx: kebab-case
+    .test.ts: kebab-case
+    .test.tsx: kebab-case
+    .types.ts: kebab-case
+    .hook.ts: kebab-case
+
+    .html: kebab-case
+    .css: kebab-case
+    .module.css: kebab-case
+
+    .svg: kebab-case
+    .png: kebab-case
+    .jpg: kebab-case
+    .jpeg: kebab-case
+
+  "public/js":
+    .worker.min.js: kebab-case
+    .min.js: kebab-case
+
+  "src/modules":
+    .dir: kebab-case
+
+    .ts: kebab-case
+    .api.ts: kebab-case
+    .hook.ts: kebab-case
+    .mock.ts: kebab-case
+    .entity.ts: kebab-case
+
+ignore:
+  - public/images
+  - src/api
+  - src/legacy

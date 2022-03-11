@@ -1,0 +1,124 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/breakpoints';
+@import 'src/styles/variables/bg-effect';
+
+.container {
+  display: grid;
+  font-family: Inter, sans-serif;
+}
+
+.label {
+  margin-bottom: 8px;
+  font-size: 12px;
+  line-height: 16px;
+
+  &_dynamic {
+    margin-left: 8px;
+    color: $gray4;
+  }
+}
+
+.input {
+  display: flex;
+  height: 56px;
+  padding: 16px;
+  border: 1px solid $border4;
+  border-radius: 70px;
+  font-size: 14px;
+  line-height: 20px;
+
+  &_plus::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 1.5px;
+    height: 9.5px;
+    background-color: $blue_100;
+    transform: translate(-50%, -50%);
+  }
+
+  &_plus,
+  &_minus {
+    position: relative;
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    border: 1px solid $blue_100;
+    border-radius: 50%;
+    background-color: $white;
+    @include breakpoint($lg) {
+      border-color: $gray4;
+
+      &::after {
+        background-color: $gray4;
+      }
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 9.5px;
+      height: 1.5px;
+      background-color: $blue_100;
+      transform: translate(-50%, -50%);
+      @include breakpoint($lg) {
+        background-color: $gray4;
+      }
+    }
+
+    &:hover {
+      @media (hover: hover) {
+        border-color: $blue_100;
+
+        &::before,
+        &::after {
+          background-color: $blue_100;
+        }
+      }
+    }
+
+    &:active {
+      border-color: $dark_100;
+
+      &::before,
+      &::after {
+        background-color: $dark_100;
+      }
+    }
+
+    &:disabled {
+      border-color: $border4;
+
+      &::before,
+      &::after {
+        background-color: $border4;
+      }
+    }
+  }
+
+  &_value {
+    margin-left: 40px;
+    border: none;
+    outline: none;
+
+    &:disabled {
+      background-color: transparent;
+      color: $gray4;
+      opacity: 1;
+      -webkit-text-fill-color: $gray4;
+    }
+  }
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+  padding: 0 16px;
+  color: $gray4;
+  font-size: 12px;
+  line-height: 16px;
+}

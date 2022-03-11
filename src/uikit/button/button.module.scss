@@ -1,0 +1,77 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/breakpoints';
+@import 'src/styles/variables/bg-effect';
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px 48px;
+  border-radius: 70px;
+  color: $white;
+}
+
+.button___primary {
+  background-color: $dark_100;
+
+  &:active {
+    background-color: $dark_300;
+  }
+
+  &:disabled {
+    background-color: $dark_600;
+    color: $dark_400;
+    cursor: default;
+  }
+
+  &:hover:not([disabled]) {
+    background-color: $black;
+  }
+}
+
+.button___secondary {
+  background-color: $blue_100;
+
+  &:active {
+    background-color: $blue_100;
+  }
+
+  &:disabled {
+    background-color: $dark_600;
+    cursor: default;
+  }
+
+  &:hover:not([disabled]) {
+    background-color: $blue_100;
+  }
+}
+
+.button___back {
+  background-color: $blue_200;
+  color: $blue_100;
+}
+
+.button___small {
+  padding: 18px 32px;
+}
+
+.button___medium {
+  padding: 18px 48px;
+
+  @media (max-width: $md) {
+    width: 100%;
+    padding: 18px 0;
+  }
+}
+
+.button___large {
+  padding: 18px 64px;
+
+  @media (max-width: $xxs) {
+    padding: 18px 48px;
+  }
+}
+
+.button___full {
+  width: 100%;
+}

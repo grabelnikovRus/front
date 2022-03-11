@@ -1,0 +1,84 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/breakpoints';
+@import 'src/styles/variables/bg-effect';
+
+.container {
+  &___full {
+    max-width: 100%;
+  }
+
+  &___container {
+    max-width: 288px;
+    margin: auto;
+
+    @include breakpoint($xs) {
+      max-width: 327px;
+    }
+
+    @include breakpoint($md) {
+      max-width: 688px;
+    }
+
+    @include breakpoint($lg) {
+      max-width: 776px;
+    }
+
+    @include breakpoint($xl2) {
+      max-width: 1128px;
+    }
+  }
+
+  &___apartment {
+    max-width: 288px;
+    margin: auto;
+
+    @include breakpoint($xs) {
+      max-width: 343px;
+    }
+
+    @include breakpoint($md) {
+      max-width: 688px;
+    }
+
+    @include breakpoint($lg) {
+      max-width: 776px;
+    }
+
+    @include breakpoint($xl2) {
+      max-width: 1128px;
+    }
+  }
+
+  &___mobile_full {
+    max-width: 100%;
+    margin: auto;
+
+    @include breakpoint($md) {
+      max-width: 688px;
+    }
+
+    @include breakpoint($lg) {
+      max-width: 776px;
+    }
+
+    @include breakpoint($xl2) {
+      max-width: 1128px;
+    }
+  }
+
+  &___default {
+    background-color: $white;
+  }
+
+  &___light {
+    background-color: transparent;
+  }
+
+  &___border_top {
+    border-radius: 32px 32px 0 0;
+  }
+
+  &___border_all {
+    border-radius: 32px;
+  }
+}

@@ -1,0 +1,70 @@
+@import 'src/styles/variables/_breakpoints';
+
+.container {
+  max-width: 1128px;
+  margin: auto;
+  padding: 20px 0;
+
+  @media screen and (max-width: $xl) {
+    max-width: 776px;
+  }
+
+  @media screen and (max-width: $md) {
+    max-width: 688px;
+  }
+
+  @media screen and (max-width: $sm) {
+    max-width: 100%;
+    padding: 0 52px;
+  }
+
+  @media screen and (max-width: $xs) {
+    padding: 0 32px;
+  }
+
+  @media screen and (max-width: $xxs) {
+    padding: 0 20px;
+  }
+
+  &--no-padding {
+    @media screen and (max-width: $md) {
+      padding: 0;
+    }
+  }
+}
+
+.container_exchange_card {
+  width: 280px;
+  margin-right: auto;
+  margin-left: auto;
+
+  @media screen and (min-width: $xs) {
+    width: 311px;
+  }
+
+  @media screen and (min-width: $md) {
+    width: 624px;
+  }
+
+  @media screen and (min-width: $lg) {
+    width: 248px;
+  }
+
+  @media screen and (min-width: $xl2) {
+    width: 355px;
+  }
+}
+
+.container_faq {
+  @media screen and (min-width: $md) {
+    width: 688px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  @media screen and (min-width: $lg) {
+    width: 776px;
+  }
+  @media screen and (min-width: $xl2) {
+    width: 1128px;
+  }
+}

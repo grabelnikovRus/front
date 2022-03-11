@@ -1,0 +1,229 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/breakpoints';
+@import 'src/styles/variables/bg-effect';
+
+.apartment {
+  display: grid;
+  grid-template-areas:
+    'gallery'
+    'options'
+    'area'
+    'banner'
+    'purity'
+    'calculator'
+    'history'
+    'info'
+    'feedback'
+    'similar';
+  grid-template-columns: 1fr;
+  width: 100%;
+
+  @include breakpoint($md) {
+    grid-template-areas:
+      'gallery'
+      'options'
+      'area'
+      'banner'
+      'purity'
+      'calculator'
+      'history'
+      'info'
+      'feedback'
+      'similar';
+  }
+
+  @include breakpoint($xl2) {
+    grid-template-areas:
+      'gallery gallery'
+      'options feedback'
+      'area feedback'
+      'purity feedback'
+      'calculator feedback'
+      'history feedback'
+      'info feedback'
+      'similar feedback';
+    grid-template-columns: 1fr 355px;
+    column-gap: 32px;
+  }
+
+  &___few_photo {
+    @include breakpoint($xl2) {
+      grid-template-areas:
+        'gallery feedback'
+        'options feedback'
+        'area feedback'
+        'purity feedback'
+        'calculator feedback'
+        'history feedback'
+        'info feedback'
+        'similar feedback';
+      grid-template-columns: 741px 355px;
+
+      .feedback {
+        margin-top: 0;
+      }
+    }
+  }
+}
+
+.gallery {
+  grid-area: gallery;
+  overflow: hidden;
+  @include breakpoint($xl2) {
+    width: 1128px;
+  }
+}
+
+.options {
+  grid-area: options;
+  margin-top: 24px;
+  @include breakpoint($md) {
+    margin-top: 40px;
+  }
+  @include breakpoint($lg) {
+    margin-top: 32px;
+  }
+  @include breakpoint($xl2) {
+    display: none;
+  }
+}
+
+.banner_mobile {
+  grid-area: banner;
+  margin-top: 32px;
+  @include breakpoint($xl2) {
+    display: none;
+  }
+}
+
+.banner_desktop {
+  display: none;
+  @include breakpoint($xl2) {
+    display: block;
+  }
+}
+
+.legal_purity {
+  grid-area: purity;
+  margin-top: 32px;
+  border-radius: 32px;
+  box-shadow: $box-shadow2;
+}
+
+.calculator {
+  grid-area: calculator;
+  margin-top: 32px;
+  border-radius: 32px;
+  box-shadow: $box-shadow2;
+}
+
+.history {
+  grid-area: history;
+  margin-top: 32px;
+}
+
+.area {
+  grid-area: area;
+  width: 100%;
+  margin-top: 16px;
+
+  @include breakpoint($xs) {
+    margin-top: 24px;
+  }
+
+  @include breakpoint($md) {
+    margin-top: 40px;
+  }
+
+  @include breakpoint($lg) {
+    margin-top: 32px;
+  }
+
+  @include breakpoint($xl2) {
+    margin-top: 48px;
+  }
+}
+
+.info {
+  grid-area: info;
+  margin-top: 32px;
+  margin-bottom: 64px;
+
+  @include breakpoint($md) {
+    margin-bottom: 32px;
+  }
+}
+
+.feedback {
+  display: none;
+  grid-area: feedback;
+
+  @include breakpoint($xl2) {
+    position: sticky;
+    top: 10px;
+    display: grid;
+    gap: 16px;
+    align-self: flex-start;
+    width: 100%;
+    margin: 48px 0 80px;
+  }
+}
+
+.similar_apartments {
+  grid-area: similar;
+  margin-bottom: 64px;
+
+  &_title {
+    margin-bottom: 40px;
+    font-weight: 500;
+    font-size: 20px;
+    font-family: TTNorms, sans-serif;
+    line-height: 28px;
+
+    @include breakpoint($md) {
+      font-size: 24px;
+    }
+
+    @include breakpoint($xl2) {
+      font-size: 36px;
+      line-height: 42px;
+      letter-spacing: -0.5px;
+    }
+  }
+
+  &_item {
+    margin-bottom: 16px;
+  }
+}
+
+.bottom_panel {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 0 4px;
+  background-color: $white;
+  box-shadow: $box-shadow3;
+
+  @include breakpoint($xs) {
+    padding: 0 8px;
+  }
+
+  @include breakpoint($md) {
+    left: calc(50% - 368px / 2);
+    max-width: 368px;
+    padding: 0 16px;
+    border-radius: 32px;
+  }
+
+  @include breakpoint($xl2) {
+    display: none;
+  }
+}
+
+.btn {
+  color: $blue_100;
+}

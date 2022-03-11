@@ -1,0 +1,28 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/breakpoints';
+
+.left_block {
+  flex-shrink: 0;
+  height: 100%;
+  padding: 0;
+  border-radius: 24px;
+  background-color: $white;
+  transition: 0.4s;
+}
+
+.drawer_paper {
+  @include breakpoint($md) {
+    border-radius: 0 32px 32px 0;
+  }
+}
+
+.bottom_sheet_content {
+  top: 84px;
+  max-height: 100%;
+  padding: 0;
+  padding-top: 40px;
+}
+
+.bottom_sheet_wrapper {
+  padding: 0;
+}

@@ -1,0 +1,22 @@
+version: "3.5"
+
+services:
+  # Nginx
+  pik-broker-front-nginx:
+    image: "${IMAGE_PATH_NGINX}"
+    restart: unless-stopped
+    environment:
+      BACKEND_PROXY_PASS: "${BACKEND_PROXY_PASS}"
+    volumes:
+      - ./deployment/docker/nginx/nginx.dev.conf:/etc/nginx/nginx.conf
+    ports:
+      - "${FRONTEND}:80"
+
+  # Node
+  pik-broker-front-node:
+    image: "${IMAGE_PATH_NODE}"
+    restart: unless-stopped
+    volumes:
+      - .env:/app/.env
+    environment:
+      - API_ORIGIN

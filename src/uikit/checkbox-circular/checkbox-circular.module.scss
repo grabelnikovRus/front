@@ -1,0 +1,106 @@
+@import 'src/styles/variables/colors';
+
+.checbox_circular {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+
+  &:checked + label {
+    background-color: $dark_100;
+    color: $white;
+  }
+
+  &_label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 56px;
+    padding: 18px 20px;
+    border: 1px solid $border3;
+    border-radius: 70px;
+    background-color: $white;
+    font-size: 14px;
+    line-height: 20px;
+    cursor: pointer;
+    user-select: none;
+
+    &--full {
+      width: 100%;
+    }
+
+    &--full_empty_space {
+      flex: 1;
+    }
+
+    &--width_icon {
+      justify-content: flex-start;
+      padding: 4px 20px 4px 4px;
+    }
+  }
+
+  &_icon_area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    margin-right: 16px;
+    border-radius: 24px;
+    background: $white;
+  }
+
+  &_icon {
+    width: 24px;
+    height: 24px;
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &___indicator_button {
+    &:checked + label {
+      border-color: transparent;
+      background-color: $blue_300;
+      color: $dark_100;
+    }
+
+    &:checked + label::before {
+      border: 7px solid $blue_100;
+      background-color: $white;
+    }
+  }
+
+  &_label___indicator_button {
+    position: relative;
+    min-width: 129px;
+    border: 1.5px solid $blue_300;
+    color: $dark_400;
+    font-size: 12px;
+    line-height: 16px;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 20px;
+      display: block;
+      width: 24px;
+      height: 24px;
+      border: 1.5px solid $border3;
+      border-radius: 50%;
+      background-color: transparent;
+    }
+  }
+
+  &___simple_filter:checked + label {
+    background-color: $blue_100;
+    color: $white;
+  }
+
+  &_label___simple_filter {
+    border: 1px solid $dark_500;
+    background-color: $white;
+    color: $dark_100;
+  }
+}

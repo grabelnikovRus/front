@@ -1,0 +1,583 @@
+// stylelint-disable no-descending-specificity,declaration-no-important
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/breakpoints';
+
+.complaint_form {
+  @media screen and (max-width: 768px) {
+    max-width: 453px;
+    margin: auto;
+  }
+
+  @media screen and (max-width: 414px) {
+    .subtitle {
+      margin-top: 12px;
+      font-size: 16px !important;
+      line-height: 24px !important;
+    }
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  @media screen and (min-width: $xs) {
+    margin-bottom: 40px;
+  }
+  @media screen and (min-width: $sm) {
+    margin-bottom: 0;
+  }
+
+  &_logo {
+    @media screen and (min-width: $sm) {
+      display: none;
+    }
+  }
+
+  &_logo___confirm {
+    margin-left: 50px;
+  }
+
+  .backBtn {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: 2px solid rgba($white, 0.5);
+    border-radius: 50%;
+    background-color: transparent;
+  }
+}
+
+.complaintContainer {
+  overflow: hidden;
+}
+
+.complaintModal {
+  max-width: 596px !important;
+  padding: 48px 60px;
+  border-radius: 48px !important;
+  background-color: $black !important;
+  color: $white;
+  font-weight: 500 !important;
+  font-size: 14px;
+  line-height: 20px;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    max-width: 100% !important;
+    height: 100%;
+    max-height: 100% !important;
+    margin: 0 !important;
+    padding: 32px;
+    border-radius: 0 !important;
+  }
+
+  h3 {
+    margin: 0;
+    color: $white;
+    font-weight: 500;
+    font-size: 36px;
+    font-family: TTNorms, sans-serif;
+    line-height: 42px;
+    letter-spacing: -0.5px;
+    @media screen and (max-width: 768px) {
+      font-size: 32px;
+      line-height: 38px;
+      letter-spacing: 0;
+    }
+  }
+
+  p {
+    width: 100%;
+    margin: 8px 0 32px;
+    color: $white;
+    font-size: 16px;
+    line-height: 24px;
+    @media screen and (max-width: 767px) {
+      margin: 8px 0;
+    }
+  }
+
+  .termsText {
+    width: 100%;
+    margin: 32px 0 0;
+    color: $white;
+    font-size: 12px;
+    line-height: 16px;
+    text-align: center;
+
+    &::after {
+      @media screen and (max-width: 767px) {
+        content: '';
+        display: block;
+        margin-top: 32px;
+        opacity: 0;
+        visibility: hidden;
+      }
+    }
+
+    a {
+      color: $blue_100;
+      cursor: pointer;
+    }
+  }
+
+  .formBlock {
+    width: 100%;
+
+    @media screen and (min-width: $sm) {
+      width: calc(50% - 8px);
+    }
+    @media screen and (max-width: 767px) {
+      width: 100%;
+      margin: 24px 0 0;
+    }
+
+    label {
+      z-index: 1;
+    }
+
+    .helperBlock {
+      height: 76px;
+    }
+  }
+
+  .textArea {
+    display: block;
+    width: 100%;
+    padding-bottom: 24px;
+  }
+
+  .textArea--error {
+    padding-bottom: 8px;
+  }
+
+  .selectBlock {
+    display: block;
+    width: 100%;
+    margin-bottom: 24px;
+  }
+
+  .selectIcon {
+    position: absolute;
+    top: 24px;
+    right: 10px;
+    z-index: 10;
+    width: 24px;
+    height: 24px;
+    pointer-events: none;
+    fill: none;
+  }
+
+  .label {
+    display: block;
+    margin: 0 0 6px;
+    color: $white;
+    font-size: 12px;
+    line-height: 16px;
+  }
+
+  .complaintInput {
+    border-radius: 70px;
+    background-color: $white;
+  }
+
+  input {
+    border-radius: 70px;
+    background-color: $white;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  textarea {
+    border-radius: 28px;
+    background-color: $white;
+    font-weight: 500 !important;
+  }
+
+  &--white {
+    background-color: $white !important;
+
+    @media screen and (max-width: 767px) {
+      position: absolute !important;
+      bottom: 0;
+      max-width: 454px !important;
+      height: auto !important;
+      border-radius: 64px 64px 0 0 !important;
+    }
+  }
+}
+
+.closeBtn {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 2px solid rgba($white, 0.5);
+  border-radius: 50%;
+  background-color: $dark_100;
+
+  svg {
+    width: 24px;
+    height: 24px;
+    color: $white;
+  }
+}
+
+.successBlock,
+.failedBlock {
+  display: flex;
+  flex-flow: column wrap;
+  align-items: center;
+  justify-content: center;
+  color: $dark_100;
+  font-size: 16px;
+  line-height: 18px;
+
+  & > div {
+    margin-bottom: 32px;
+    text-align: center;
+  }
+
+  img {
+    width: 120px;
+    height: auto;
+    margin-bottom: 32px;
+  }
+
+  h3 {
+    margin: 0 0 16px;
+    color: $red_100;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 32px;
+    text-align: center;
+  }
+}
+
+.complaintSelects {
+  @media screen and (max-width: 1439px) {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .complaintSelectBlock {
+    width: 100%;
+
+    &:nth-child(2) {
+      margin: 16px 0 0;
+      @media screen and (min-width: 768px) and (max-width: 1439px) {
+        margin: 0;
+      }
+    }
+
+    & > div {
+      width: 100%;
+    }
+
+    .complaintSelect {
+      padding: 16px 100px 16px 22px;
+      border: 2px solid transparent;
+      border-radius: 70px;
+      background: $white;
+      color: currentcolor;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 20px;
+
+      @media screen and (max-width: 1439px) {
+        padding: 16px 48px 16px 22px;
+        border: 2px solid transparent !important;
+        border-radius: 70px !important;
+      }
+
+      &.policySelect {
+        border: none;
+        border-radius: 70px;
+      }
+    }
+  }
+}
+
+.complaintOption {
+  justify-content: space-between !important;
+  margin: 0 0 24px !important;
+  padding: 0 24px !important;
+  background-color: transparent !important;
+  color: #11142d !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+  line-height: 20px !important;
+  @media screen and (max-width: 767px) {
+    min-height: 40px !important;
+    margin: 0 !important;
+    padding: 0 16px !important;
+    font-size: 14px !important;
+    white-space: break-spaces !important;
+  }
+
+  &::after {
+    content: '';
+    display: none;
+    width: 11px;
+    height: 9px;
+    background-image: url('/images/new-design/icons/selected.svg');
+  }
+
+  &:last-child {
+    margin: 0 !important;
+    margin-bottom: 24px !important;
+    @media screen and (max-width: 767px) {
+      margin-bottom: 0 !important;
+    }
+  }
+
+  &:first-child {
+    margin-top: 24px !important;
+    @media screen and (max-width: 767px) {
+      margin-top: 0 !important;
+    }
+  }
+
+  &:hover {
+    color: $blue_100 !important;
+  }
+}
+
+.complaintOptionActive {
+  background-color: transparent !important;
+  color: $blue_100 !important;
+
+  &::after {
+    display: block;
+  }
+}
+
+.complaintSelectIcon {
+  position: absolute;
+  top: 24px;
+  right: 10px;
+  z-index: 10;
+  width: 24px;
+  height: 24px;
+  pointer-events: none;
+  fill: none !important;
+}
+
+.smsForm {
+  width: 100%;
+  max-width: 279px;
+  text-align: center;
+  @media screen and (max-width: 768px) {
+    width: auto;
+    margin: 40px auto;
+  }
+
+  .closeBtn {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: 2px solid $white;
+    border-radius: 50%;
+  }
+
+  h3 {
+    margin: 0 0 32px;
+    color: $white;
+    font-weight: 500;
+    font-size: 36px;
+    font-family: TTNorms, sans-serif;
+    line-height: 42px;
+    letter-spacing: -0.5px;
+    text-align: center;
+  }
+
+  .sms_error {
+    border-radius: 28px;
+    background-color: $red_100;
+
+    .errorText {
+      display: block;
+      width: 100%;
+      text-align: left;
+    }
+
+    .smsInput {
+      input {
+        border-color: $red_100 !important;
+        border-top-width: 2px !important;
+        border-bottom-width: 2px !important;
+        background-color: #fff !important;
+        color: $red_100;
+      }
+    }
+  }
+
+  .smsBlock {
+    display: flex;
+    flex-wrap: wrap;
+
+    .label {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      margin: 0 0 10px;
+      padding: 0 3px;
+
+      span {
+        font-weight: 500;
+        font-style: normal;
+        font-size: 12px;
+        line-height: 16px;
+
+        &:first-child {
+          color: $white;
+        }
+
+        &:last-child {
+          color: rgba($white, 0.6);
+        }
+      }
+    }
+
+    .smsContainer {
+      display: flex;
+      flex-wrap: wrap;
+      width: 100%;
+      height: 73px;
+    }
+
+    .helperBlock {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .smsInput {
+      flex-shrink: 0;
+      width: 25%;
+
+      &:first-child {
+        input {
+          border-width: 2px 1px 2px 2px;
+          border-radius: 70px 0 0 70px;
+        }
+      }
+
+      &:nth-child(4) {
+        input {
+          border-width: 2px 2px 2px 1px;
+          border-radius: 0 70px 70px 0;
+        }
+      }
+
+      input {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+        width: 100%;
+        height: 56px;
+        padding: 16px 27px;
+        border-width: 1px;
+        border-style: solid;
+        border-color: #e3e6ec;
+        border-radius: 0;
+        background: $white;
+        box-shadow: none;
+        outline: none;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 20px;
+        text-align: center;
+        @media screen and (max-width: 374px) {
+          padding: 16px 22px;
+        }
+
+        &::placeholder {
+          text-align: center;
+        }
+      }
+    }
+
+    .errorText {
+      margin: 4px;
+      padding: 0 0 1px 22px;
+      color: #fff;
+      font-weight: 500;
+      font-size: 10px;
+      line-height: 1.1em;
+    }
+  }
+
+  .timer {
+    margin: 5px 0 0;
+    border: none;
+    background-color: transparent;
+    color: $white;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    @media screen and (max-width: 767px) {
+      margin: 5px 0 32px;
+    }
+  }
+
+  .repeatBtn {
+    height: 18px;
+    margin: 5px 0 0;
+    border: none;
+    background-color: transparent;
+    color: $white;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    @media screen and (max-width: 767px) {
+      margin: 5px 0 32px;
+    }
+  }
+}
+
+.section_top {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-top: 24px;
+  padding-bottom: 22px;
+
+  @media screen and (min-width: $xs) {
+    margin-top: 0;
+  }
+
+  @media screen and (min-width: $md) {
+    flex-direction: row;
+    margin-top: 24px;
+  }
+
+  @media screen and (min-width: $lg) {
+    margin-top: 32px;
+  }
+
+  &--error {
+    padding-bottom: 9px;
+  }
+}
+
+.submitBtn button {
+  color: $dark_100 !important;
+}

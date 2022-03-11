@@ -1,0 +1,217 @@
+/* stylelint-disable declaration-no-important */
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/bg-effect';
+@import 'src/styles/variables/breakpoints';
+
+.fslightbox-container {
+  background: $white !important;
+
+  .fslightbox-slide-btn {
+    box-sizing: border-box;
+    border: 2px solid #e3e6ec;
+    border-radius: 12px;
+    background-color: $white;
+    transition: all 0.3s ease;
+
+    svg path {
+      fill: $gray1;
+      transition: fill 0.3s ease;
+    }
+  }
+
+  .fslightbox-slide-btn:hover {
+    border-color: $gray1;
+
+    svg path {
+      fill: $gray1;
+    }
+  }
+
+  .fslightbox-nav {
+    top: 8px;
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+    padding: 0 16px;
+    @include breakpoint($sm) {
+      top: 17px;
+    }
+    @include breakpoint($md) {
+      top: 32px;
+      padding: 0 40px;
+    }
+    @include breakpoint($xl2) {
+      top: 40px;
+    }
+
+    .fslightbox-toolbar {
+      position: relative;
+      display: flex;
+      justify-content: flex-end;
+      width: 100%;
+      max-width: 1280px;
+      background-color: transparent;
+      @include breakpoint($md) {
+        justify-content: flex-start;
+      }
+
+      .fslightbox-toolbar-button {
+        display: flex;
+        align-items: center;
+        width: 30px;
+        height: 30px;
+        padding: 0;
+        border-radius: 16px;
+        background-color: $dark_100;
+        @include breakpoint($md) {
+          width: auto;
+          height: auto;
+          padding: 10px 16px;
+          background: $dark_600;
+        }
+
+        &::after {
+          display: none;
+          @include breakpoint($md) {
+            content: 'Закрыть';
+            display: block;
+            margin-left: 12px;
+            color: $dark_100;
+            font-weight: 600;
+            font-size: 12px;
+          }
+        }
+
+        &:first-child {
+          display: none;
+        }
+
+        svg {
+          width: 14px;
+          height: 14px;
+
+          path {
+            fill: $gray1;
+          }
+        }
+      }
+
+      .fslightbox-toolbar-button:nth-child(1) {
+        display: none;
+      }
+
+      .fslightbox-toolbar-button:nth-child(2) {
+        display: none;
+      }
+
+      .fslightbox-toolbar-button:nth-child(3) {
+        display: none;
+      }
+
+      .fslightbox-toolbar-button:nth-child(4) {
+        display: none;
+      }
+    }
+  }
+
+  .fslightbox-slide-btn-previous-container {
+    left: 40px;
+    @include breakpoint($xl2) {
+      left: 60px;
+    }
+  }
+
+  .fslightbox-slide-btn-next-container {
+    right: 40px;
+    @include breakpoint($xl2) {
+      right: 60px;
+    }
+  }
+
+  .fslightbox-slide-btn-container {
+    @media screen and (max-width: 767px) {
+      display: none;
+    }
+
+    &:hover {
+      .fslightbox-slide-btn {
+        border-color: $gray1;
+
+        svg path {
+          fill: $gray1;
+        }
+      }
+    }
+  }
+
+  .fslightbox-slide-number-container {
+    position: absolute;
+    left: 50%;
+    color: $dark_100;
+    font-weight: 600;
+    font-size: 16px;
+    transform: translate(-50%, 0);
+    @media (max-width: 767px) {
+      display: none;
+    }
+
+    .fslightbox-slash {
+      width: auto;
+      height: auto !important;
+      background: transparent;
+      transform: none;
+
+      &::after {
+        content: 'из';
+      }
+    }
+  }
+
+  .fslightbox-source {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    width: 570px;
+    height: 321px;
+    @media screen and (min-width: 571px) {
+      border-radius: 16px;
+    }
+    @include breakpoint($lg) {
+      width: 784px;
+      height: 442px;
+    }
+    @include breakpoint($xl2) {
+      width: 960px;
+      height: 540px;
+    }
+
+    img,
+    picture {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      display: block;
+      overflow: hidden;
+      width: 100%;
+      max-width: 100%;
+      height: 100%;
+      max-height: 100%;
+      margin: auto;
+      opacity: 1;
+      transform: translateZ(0);
+
+      @media screen and (min-width: 571px) {
+        border-radius: 16px;
+      }
+
+      @include breakpoint($md) {
+        width: auto;
+        height: auto;
+      }
+    }
+  }
+}

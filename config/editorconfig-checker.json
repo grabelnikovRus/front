@@ -1,0 +1,4 @@
+{
+  "IgnoreDefaults": true,
+  "Exclude": ["bin", "node_modules", "deployment/deployment", "(min\\.js|ejs\\.t)$"]
+}

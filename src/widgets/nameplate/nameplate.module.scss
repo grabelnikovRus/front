@@ -1,0 +1,85 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/breakpoints';
+@import 'src/styles/variables/bg-effect';
+
+.nameplate {
+  border-radius: 32px;
+  color: $dark_100;
+
+  @include breakpoint($md) {
+    padding-bottom: 80px;
+    background-color: transparent;
+  }
+
+  &_wrapper {
+    padding: 24px;
+    border-radius: 32px;
+    background: $linear-gradient1;
+    @include breakpoint($md) {
+      padding: 32px;
+      background-color: none;
+    }
+
+    @include breakpoint($xl2) {
+      padding: 48px 80px;
+      background-color: none;
+    }
+  }
+
+  &_description {
+    font-size: 16px;
+    line-height: 24px;
+    @include breakpoint($xs) {
+      font-size: 20px;
+      font-family: TTNorms, sans-serif;
+      line-height: 28px;
+    }
+    @include breakpoint($md) {
+      margin-bottom: 24px;
+      font-size: 24px;
+      text-align: center;
+    }
+    @include breakpoint($xl2) {
+      font-size: 32px;
+      line-height: 38px;
+    }
+  }
+
+  &_clarification {
+    margin-top: 16px;
+    font-size: 12px;
+    line-height: 16px;
+    @include breakpoint($xs) {
+      font-size: 14px;
+      line-height: 20px;
+    }
+    @include breakpoint($md) {
+      margin-top: 24px;
+      font-size: 16px;
+      line-height: 24px;
+      text-align: center;
+    }
+    @include breakpoint($xl2) {
+      font-size: 20px;
+      font-family: TTNorms, sans-serif;
+    }
+  }
+
+  &___tradein {
+    background-color: transparent;
+
+    .nameplate_description {
+      margin: 0;
+      padding: 16px;
+      border: none;
+
+      @include breakpoint($xs) {
+        padding: 24px;
+      }
+
+      @include breakpoint($md) {
+        text-align: center;
+      }
+    }
+  }
+}

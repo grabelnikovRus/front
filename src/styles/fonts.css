@@ -1,0 +1,51 @@
+@font-face {
+  font-weight: 700;
+  font-style: normal;
+  font-family: TTNorms;
+  src: url('./fonts/tt-norms/tt-norms-bold.woff2') format('woff2'),
+    url('./fonts/tt-norms/tt-norms-bold.woff') format('woff');
+  font-display: swap;
+}
+
+@font-face {
+  font-weight: 500;
+  font-style: normal;
+  font-family: TTNorms;
+  src: url('./fonts/tt-norms/tt-norms-medium.woff2') format('woff2'),
+    url('./fonts/tt-norms/tt-norms-medium.woff') format('woff');
+  font-display: swap;
+}
+
+@font-face {
+  font-weight: 400;
+  font-style: normal;
+  font-family: TTNorms;
+  src: url('./fonts/tt-norms/tt-norms-regular.woff2') format('woff2'),
+    url('./fonts/tt-norms/tt-norms-regular.woff') format('woff');
+  font-display: swap;
+}
+
+@font-face {
+  font-weight: 600;
+  font-style: normal;
+  font-family: Inter;
+  src: url('./fonts/inter/inter-semi-bold.woff2') format('woff2'),
+    url('./fonts/inter/inter-semi-bold.woff') format('woff');
+  font-display: swap;
+}
+@font-face {
+  font-weight: 500;
+  font-style: normal;
+  font-family: Inter;
+  src: url('./fonts/inter/inter-medium.woff2') format('woff2'),
+    url('./fonts/inter/inter-medium.woff') format('woff');
+  font-display: swap;
+}
+@font-face {
+  font-weight: 400;
+  font-style: normal;
+  font-family: Inter;
+  src: url('./fonts/inter/inter-regular.woff2') format('woff2'),
+    url('./fonts/inter/inter-regular.woff') format('woff');
+  font-display: swap;
+}

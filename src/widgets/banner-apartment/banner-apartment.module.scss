@@ -1,0 +1,94 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/breakpoints';
+@import 'src/styles/variables/bg-effect';
+
+.banner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px;
+  border: 1.5px solid $blue_200;
+  border-radius: 32px;
+  background: $linear-gradient1;
+  color: $dark_100;
+
+  @include breakpoint($xs) {
+    padding: 32px;
+  }
+
+  @include breakpoint($md) {
+    padding: 32px 64px;
+  }
+
+  @include breakpoint($lg) {
+    padding: 32px 80px;
+  }
+
+  @include breakpoint($xl2) {
+    padding: 32px 24px;
+  }
+
+  &_title {
+    margin-bottom: 16px;
+    font-weight: 500;
+    font-size: 16px;
+    font-family: Inter, sans-serif;
+    line-height: 24px;
+    letter-spacing: 0;
+    text-align: left;
+    @include breakpoint($xs) {
+      font-size: 20px;
+      font-family: TTNorms, sans-serif;
+      line-height: 28px;
+    }
+    @include breakpoint($md) {
+      margin-bottom: 24px;
+      font-size: 24px;
+      text-align: center;
+    }
+    @include breakpoint($xl2) {
+      margin-bottom: 16px;
+      font-size: 20px;
+      text-align: left;
+    }
+  }
+
+  &_description {
+    margin-bottom: 24px;
+    font-size: 14px;
+    line-height: 20px;
+    text-align: left;
+    @include breakpoint($xs) {
+      margin-bottom: 32px;
+      font-size: 16px;
+      line-height: 24px;
+    }
+    @include breakpoint($md) {
+      margin-bottom: 24px;
+      text-align: center;
+    }
+    @include breakpoint($xl2) {
+      margin-bottom: 24px;
+      font-size: 16px;
+      line-height: 24px;
+      text-align: left;
+    }
+  }
+
+  &_btn {
+    background-color: $blue_100;
+
+    @include breakpoint($md) {
+      width: fit-content;
+      padding: 18px 40px;
+    }
+
+    @include breakpoint($xl2) {
+      width: 100%;
+    }
+
+    &:hover:not([disabled]) {
+      background-color: $blue_100;
+    }
+  }
+}

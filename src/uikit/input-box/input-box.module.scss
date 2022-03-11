@@ -1,0 +1,97 @@
+/* stylelint-disable declaration-no-important */
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/breakpoints';
+@import 'src/styles/variables/bg-effect';
+
+.input_box {
+  width: 100%;
+
+  &_label {
+    display: flex;
+    margin-bottom: 8px;
+    margin-left: 5px;
+    color: $white;
+    font-size: 12px;
+    line-height: 16px;
+  }
+
+  &_unit {
+    margin-left: 4px;
+    color: $dark_400;
+    font-size: 12px;
+    line-height: 16px;
+    opacity: 0.5;
+  }
+
+  &_tooltip {
+    height: 15px;
+    margin-left: 5px;
+  }
+
+  &_input {
+    display: flex;
+    flex-wrap: wrap;
+    overflow: hidden;
+    height: 56px;
+    border-radius: 70px;
+
+    &___error input {
+      color: $red_100;
+    }
+  }
+
+  &___transparent {
+    .input_box_input {
+      background: $white;
+      box-shadow: $box-shadow1;
+    }
+  }
+
+  &___opaque {
+    .input_box_input {
+      border: 1px solid $border3;
+      background-color: $white;
+    }
+
+    .input_box_label {
+      color: $dark_100;
+    }
+  }
+
+  &___colored {
+    .input_box_input {
+      background: $white;
+      box-shadow: $box-shadow1;
+
+      @include breakpoint($md) {
+        border: 1px solid $dark_500;
+        background-color: $blue_300;
+      }
+    }
+
+    .input_box_label {
+      color: $white;
+
+      @include breakpoint($md) {
+        color: $dark_100;
+      }
+    }
+  }
+
+  &___error {
+    border-radius: 28px;
+    background-color: $red_100;
+
+    .input_box_input {
+      border: 1px solid $red_100 !important;
+    }
+  }
+
+  &_error_text {
+    margin-left: 20px;
+    color: $white;
+    font-weight: 400;
+    font-size: 10px;
+    font-family: Inter, sans-serif;
+  }
+}

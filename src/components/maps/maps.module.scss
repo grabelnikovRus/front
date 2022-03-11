@@ -1,0 +1,139 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/breakpoints';
+@import 'src/styles/variables/bg-effect';
+
+.maps {
+  position: relative;
+  overflow: hidden;
+
+  &_wrapper {
+    position: relative;
+    width: 100%;
+    height: calc(100vh - 80px);
+    @media screen and (min-width: $md) {
+      height: calc(100vh - 76px);
+    }
+    @media screen and (min-width: $xl2) {
+      height: calc(100vh - 80px);
+    }
+
+    /* stylelint-disable-next-line selector-type-no-unknown */
+    & > div > ymaps {
+      overflow: hidden;
+      border-radius: 32px 32px 0 0;
+    }
+  }
+
+  &_btn_close {
+    position: absolute;
+    top: 16px;
+    right: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 117px;
+    height: 42px;
+    border: none;
+    border-radius: 16px;
+    background-color: $white;
+    box-shadow: $box-shadow1;
+    font-size: 12px;
+    line-height: 20px;
+    transform: translateX(50%);
+    @media screen and (min-width: $md) {
+      top: 32px;
+      right: 32px;
+      transform: translateX(0%);
+    }
+
+    svg {
+      width: 23px;
+      height: 23px;
+    }
+  }
+
+  &_header {
+    max-width: 288px;
+    margin: auto;
+
+    @include breakpoint($xs) {
+      max-width: 327px;
+    }
+
+    @include breakpoint($md) {
+      position: absolute;
+      top: 16px;
+      right: calc((100vw - 688px) / 2);
+    }
+
+    @include breakpoint($lg) {
+      right: calc((100vw - 776px) / 2);
+    }
+
+    @include breakpoint($xl2) {
+      right: calc((100vw - 1128px) / 2);
+    }
+  }
+}
+
+.pin {
+  &_number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 21px;
+    height: 26px;
+    margin-right: 8px;
+    padding: 5px;
+    border-radius: 6px;
+    background-color: $dark_100;
+  }
+}
+
+// TODO панель регулирования кластеризации
+// удалить после регулировки
+
+.panel {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  display: flex;
+  flex-direction: column;
+  width: 62px;
+  padding: 5px;
+  border: 1px solid $dark_100;
+  border-radius: 5px;
+  background-color: $white;
+  @include breakpoint($lg) {
+    top: 100px;
+  }
+
+  label {
+    font-size: 10px;
+  }
+
+  input {
+    width: 50px;
+    height: 30px;
+    margin-bottom: 10px;
+    padding: 2px 5px;
+    border: 1px solid $dark_100;
+    border-radius: 3px;
+    font-size: 14px;
+  }
+
+  button {
+    width: 50px;
+    height: 50px;
+    margin-top: 5px;
+  }
+}
+
+.debag_zoom {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 10px;
+  border-radius: 20px;
+  background-color: $white;
+}

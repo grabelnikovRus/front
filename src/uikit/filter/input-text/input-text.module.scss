@@ -1,0 +1,80 @@
+@import 'src/styles/variables/colors';
+
+.input_text {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0 0 0 18px;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 14px;
+
+  &::placeholder {
+    color: $dark_400;
+  }
+
+  &:disabled {
+    background: $dark_600;
+    opacity: 0.4;
+  }
+
+  &___with_text_head {
+    padding-left: 42px;
+  }
+
+  &___with_text_end {
+    padding-right: 42px;
+  }
+}
+
+.placeholder_text {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  height: 20px;
+  margin: auto 0;
+  color: $dark_400;
+  font-size: 14px;
+  line-height: 20px;
+
+  &___head {
+    left: 18px;
+
+    &:empty {
+      display: none;
+    }
+  }
+
+  &___end {
+    right: 18px;
+
+    &:empty {
+      display: none;
+    }
+  }
+}
+
+.input_container {
+  position: relative;
+  width: 100%;
+
+  &___range {
+    display: flex;
+
+    .placeholder_text {
+      display: flex;
+      align-items: center;
+      width: 24px;
+      height: 24px;
+    }
+
+    .placeholder_text___head {
+      left: 0;
+    }
+
+    .placeholder_text___end {
+      right: 0;
+    }
+  }
+}

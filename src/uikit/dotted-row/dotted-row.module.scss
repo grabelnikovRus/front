@@ -1,0 +1,17 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/breakpoints';
+
+.dot {
+  display: block;
+  align-self: center;
+  width: 4px;
+  height: 4px;
+  margin: 0 8px;
+  border-radius: 50%;
+  background-color: $dark_500;
+
+  @include breakpoint($md) {
+    width: 6px;
+    height: 6px;
+  }
+}

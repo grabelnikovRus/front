@@ -1,0 +1,69 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/breakpoints';
+
+.gallery {
+  position: fixed;
+  top: 0;
+  z-index: 3;
+  width: 100%;
+  background-color: $white;
+  @include breakpoint($md) {
+    display: none;
+  }
+
+  &_title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0;
+    padding: 16px;
+  }
+
+  &_close {
+    border: none;
+    background-color: $dark-100;
+  }
+
+  &_body {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    height: calc(100vh - 32px - 36px);
+
+    &::-webkit-scrollbar {
+      width: 7px;
+      border-radius: 4px;
+      background-color: $dark_600;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 4px;
+      background-color: $dark_100;
+    }
+  }
+
+  &_btn {
+    overflow: hidden;
+    width: 343px;
+    min-height: 343px;
+    margin: 0 auto;
+    padding: 0;
+    border: none;
+    border-radius: 16px;
+
+    &:last-child {
+      margin-bottom: 25px;
+    }
+
+    img {
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &_text {
+    width: 343px;
+    margin: 20px auto 8px;
+  }
+}

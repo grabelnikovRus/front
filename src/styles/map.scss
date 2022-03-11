@@ -1,0 +1,119 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/bg-effect';
+@import 'src/styles/variables/breakpoints';
+
+.placemark {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 72px;
+  height: 30px;
+  margin-top: -32px;
+  margin-left: -37px;
+  padding: 5px;
+  border-radius: 6px;
+  background: $blue_100;
+  color: $white;
+  font-size: 14px;
+  line-height: 20px;
+  white-space: nowrap;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 84%;
+    left: 50%;
+    width: 12px;
+    height: 12px;
+    margin-left: -8px;
+    border: 2px solid $white;
+    border-radius: 50%;
+    background-color: $dark_100;
+    box-shadow: $box-shadow5;
+    transform: translateX(25%);
+  }
+
+  &_point {
+    width: 12px;
+    height: 12px;
+    margin-top: -5px;
+    margin-left: -6px;
+    border: 2px solid $white;
+    border-radius: 50%;
+    background: $dark_100;
+    box-shadow: $box-shadow5;
+
+    &::after {
+      display: none;
+    }
+  }
+
+  &___1digit {
+    width: 112px;
+    height: 36px;
+    margin-top: -37px;
+    margin-left: -56px;
+  }
+
+  &___2digit {
+    width: 122px;
+    height: 36px;
+    margin-top: -37px;
+    margin-left: -62px;
+  }
+
+  &___3digit {
+    width: 132px;
+    height: 36px;
+    margin-top: -37px;
+    margin-left: -68px;
+  }
+
+  &___active {
+    background: $dark_100;
+
+    .placemark_number {
+      background-color: $blue_100;
+    }
+  }
+}
+
+.zoom {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 12px;
+  background-color: $dark_100;
+  cursor: pointer;
+  transform: translateY(-50%);
+
+  &_btn {
+    width: 35px;
+    height: 31px;
+    border: none;
+  }
+}
+
+#zoom-in {
+  background-image: url("data:image/svg+xml,%3Csvg width='13' height='13' viewBox='0 0 13 13' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6.5 1V12' stroke='white' stroke-width='1.5' stroke-linecap='round'/%3E%3Cpath d='M12 6.5L1 6.5' stroke='white' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E%0A");
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+#zoom-out {
+  background-image: url("data:image/svg+xml,%3Csvg width='13' height='3' viewBox='0 0 13 3' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 1.5L1 1.5' stroke='white' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E%0A");
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+:root {
+  --zoom-control-right-margin: 8px;
+  @include breakpoint($md) {
+    --zoom-control-right-margin: 24px;
+  }
+  @include breakpoint($xl) {
+    --zoom-control-right-margin: 32px;
+  }
+}

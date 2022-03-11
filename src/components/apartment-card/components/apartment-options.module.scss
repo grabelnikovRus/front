@@ -1,0 +1,252 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/breakpoints';
+@import 'src/styles/variables/bg-effect';
+
+.article {
+  width: 100%;
+  color: $dark_400;
+  font-size: 12px;
+  line-height: 16px;
+  @include breakpoint($md) {
+    order: 1;
+  }
+}
+
+.price {
+  width: 100%;
+  margin-top: 8px;
+  font-weight: 500;
+  font-size: 24px;
+  font-family: TTNorms, sans-serif;
+  line-height: 28px;
+  @include breakpoint($md) {
+    order: 2;
+    width: auto;
+    margin-top: 16px;
+    margin-right: 32px;
+    font-size: 32px;
+    line-height: 38px;
+  }
+  @include breakpoint($xl2) {
+    display: flex;
+    align-items: center;
+    margin-top: 8px;
+    margin-right: 0;
+    font-size: 24px;
+    line-height: 28px;
+  }
+
+  &___for_area {
+    display: none;
+
+    @include breakpoint($xl2) {
+      display: inline-block;
+      margin-left: 16px;
+      color: $gray4;
+      font-weight: 500;
+      font-size: 14px;
+      font-family: Inter, sans-serif;
+      line-height: 20px;
+    }
+  }
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  margin-top: 16px;
+  font-size: 12px;
+  line-height: 6px;
+  @include breakpoint($xs) {
+    font-size: 14px;
+    line-height: 20px;
+  }
+  @include breakpoint($md) {
+    order: 3;
+    margin-top: 24px;
+    font-weight: 400;
+    font-size: 24px;
+    font-family: TTNorms, sans-serif;
+    line-height: 28px;
+  }
+  @include breakpoint($xl2) {
+    margin-top: 16px;
+    font-weight: 500;
+    font-size: 14px;
+    font-family: Inter, sans-serif;
+    line-height: 20px;
+  }
+
+  &_item {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+  }
+
+  &_price {
+    @include breakpoint($md) {
+      display: none;
+    }
+  }
+}
+
+.developer {
+  display: none;
+  width: 100%;
+  color: $dark_400;
+  @include breakpoint($md) {
+    display: block;
+    order: 3;
+    font-size: 14px;
+    line-height: 20px;
+  }
+  @include breakpoint($lg) {
+    font-size: 16px;
+    line-height: 24px;
+  }
+}
+
+.address {
+  width: 100%;
+  margin-top: 8px;
+  color: $dark_400;
+  font-size: 12px;
+  line-height: 16px;
+  @include breakpoint($md) {
+    order: 3;
+    margin-top: 16px;
+    color: $dark_100;
+    font-size: 20px;
+    line-height: 28px;
+  }
+  @include breakpoint($lg) {
+    margin-top: 28px;
+  }
+  @include breakpoint($xl2) {
+    margin-top: 24px;
+  }
+}
+
+.badges {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  grid-area: badge;
+  margin-top: 16px;
+
+  @include breakpoint($md) {
+    order: 2;
+  }
+
+  @include breakpoint($xl2) {
+    order: 4;
+  }
+
+  &_price {
+    display: none;
+
+    @include breakpoint($md) {
+      display: flex;
+      align-items: center;
+      height: 36px;
+    }
+
+    @include breakpoint($xl2) {
+      display: none;
+    }
+  }
+
+  & > *:not(.badges_price) {
+    height: 32px;
+
+    @include breakpoint($md) {
+      display: flex;
+      align-items: center;
+      height: 36px;
+    }
+  }
+
+  & > *:not(:last-child) {
+    margin-right: 4px;
+    margin-bottom: 4px;
+  }
+}
+
+.disabled_sale {
+  width: 100%;
+}
+
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+
+  @include breakpoint($xl2) {
+    margin-bottom: 20px;
+  }
+
+  &___disabled_sale {
+    @include breakpoint($md) {
+      justify-content: space-between;
+    }
+
+    @include breakpoint($xl2) {
+      margin-bottom: 0;
+    }
+
+    .article {
+      order: 1;
+
+      @include breakpoint($xl2) {
+        width: auto;
+      }
+    }
+
+    .list {
+      flex-grow: 2;
+      order: 2;
+      width: auto;
+      margin-top: 8px;
+
+      @include breakpoint($md) {
+        flex-grow: 0;
+        margin-top: 0;
+      }
+
+      @include breakpoint($xl2) {
+        margin-top: 8px;
+      }
+    }
+
+    .badges {
+      order: 2;
+      margin-top: 8px;
+
+      @include breakpoint($xl2) {
+        order: 1;
+        margin-top: 0;
+      }
+    }
+
+    .disabled_sale {
+      order: 3;
+      margin-top: 16px;
+
+      @include breakpoint($md) {
+        order: 2;
+        width: auto;
+        margin-top: 0;
+      }
+
+      @include breakpoint($xl2) {
+        width: 100%;
+        margin-top: 32px;
+      }
+    }
+
+    & > *:not(.disabled_sale) {
+      opacity: 0.3;
+    }
+  }
+}

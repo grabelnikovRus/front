@@ -1,0 +1,5 @@
+import '@testing-library/jest-dom/extend-expect'
+import './fetch-mock'
+import './intersection-observer-mock'
+import './match-media-mock'
+import './next-config'

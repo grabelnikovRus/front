@@ -1,0 +1,230 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/breakpoints';
+@import 'src/styles/variables/bg-effect';
+
+.calculator {
+  padding: 24px 16px;
+  border-radius: 32px;
+  background-color: $white;
+  box-shadow: $box-shadow7;
+
+  @include breakpoint($xs) {
+    padding: 32px 24px;
+  }
+  @include breakpoint($md) {
+    padding: 32px;
+  }
+
+  &_header {
+    @include breakpoint($md) {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      margin-bottom: 24px;
+    }
+  }
+
+  &_title {
+    margin-bottom: 24px;
+    font-size: 20px;
+    font-family: TTNorms, sans-serif;
+    line-height: 28px;
+    text-align: center;
+    @include breakpoint($md) {
+      align-self: center;
+      margin: 0;
+      font-size: 24px;
+    }
+  }
+
+  &_btn_group {
+    display: flex;
+    padding: 4px;
+    border-radius: 70px;
+    background-color: $blue_300;
+    @include breakpoint($md) {
+      width: 288px;
+      margin-left: auto;
+    }
+    @include breakpoint($lg) {
+      width: 330px;
+    }
+  }
+
+  &_btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+    height: 48px;
+    border-radius: 70px;
+    color: rgba($color: $dark_100, $alpha: 80%);
+    font-size: 14px;
+    line-height: 20px;
+    cursor: pointer;
+  }
+
+  &_btn___active {
+    background-color: $white;
+    color: $dark_100;
+  }
+
+  &_price {
+    padding: 24px 0;
+    font-size: 24px;
+    font-family: TTNorms, sans-serif;
+    line-height: 28px;
+    text-align: center;
+    @include breakpoint($md) {
+      display: none;
+    }
+  }
+
+  &_container {
+    @include breakpoint($md) {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      column-gap: 48px;
+    }
+  }
+
+  &_form {
+    display: grid;
+    row-gap: 24px;
+  }
+}
+
+.inform {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 24px;
+  font-size: 12px;
+  line-height: 16px;
+  @include breakpoint($md) {
+    margin: 0;
+  }
+
+  &_text {
+    margin-top: 24px;
+    text-align: center;
+  }
+
+  &_link {
+    width: auto;
+    margin-top: 24px;
+    color: $blue_100;
+    font-weight: 700;
+    text-align: center;
+  }
+}
+
+.table {
+  display: grid;
+  row-gap: 8px;
+  width: 100%;
+  font-size: 14px;
+  font-family: Inter, sans-serif;
+  line-height: 20px;
+  @include breakpoint($md) {
+    row-gap: 16px;
+    padding: 32px 24px;
+    border: 1.5px solid $gray3;
+    border-radius: 0 0 32px 32px;
+  }
+
+  &:first-of-type {
+    display: none;
+    @include breakpoint($md) {
+      display: flex;
+      flex-direction: column;
+      row-gap: 8px;
+      align-items: center;
+      border-bottom: none;
+      border-radius: 32px 32px 0 0;
+    }
+  }
+
+  &_percent,
+  &_sum {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &_text {
+    color: $gray4;
+  }
+
+  &_price {
+    font-size: 24px;
+    font-family: TTNorms, sans-serif;
+    line-height: 28px;
+  }
+}
+
+.cash {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &_discount {
+    display: grid;
+    row-gap: 8px;
+    width: 100%;
+    margin-top: 24px;
+    padding: 24px;
+    border: 1.5px solid $blue_300;
+    border-radius: 24px;
+    background-color: $blue_200;
+
+    @include breakpoint($md) {
+      margin: 0;
+      padding: 32px;
+      border-radius: 32px;
+    }
+  }
+
+  &_price {
+    color: $gray4;
+    font-size: 16px;
+    line-height: 24px;
+    text-align: center;
+    text-decoration: line-through;
+    text-decoration-color: $red_100;
+  }
+
+  &_new_price {
+    font-size: 28px;
+    font-family: TTNorms, sans-serif;
+    line-height: 28px;
+    text-align: center;
+  }
+
+  &_percent {
+    color: $gray4;
+    font-size: 16px;
+    line-height: 24px;
+    text-align: center;
+  }
+
+  &_text {
+    margin-top: 24px;
+    font-size: 12px;
+    line-height: 16px;
+    text-align: center;
+
+    @include breakpoint($md) {
+      align-self: center;
+      width: 50%;
+    }
+  }
+
+  &_link {
+    width: auto;
+    margin-top: 24px;
+    color: $blue_100;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 16px;
+    text-align: center;
+  }
+}

@@ -1,0 +1,26 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  grid-gap: var(--spacing-20);
+
+  &_theme_primary {
+    color: var(--primary-color);
+  }
+
+  &_icon {
+    width: 40px;
+    height: 40px;
+    margin-top: 16px;
+    border: 1px dotted #000;
+  }
+
+  &_svg {
+    margin-top: 16px;
+    margin-right: 16px;
+    border: 1px dotted #000;
+  }
+
+  &_title {
+    font-size: 12px;
+  }
+}

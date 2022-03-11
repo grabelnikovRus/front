@@ -1,0 +1,94 @@
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/bg-effect';
+@import 'src/styles/variables/breakpoints';
+
+.popover {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  overflow-y: auto;
+  transition: opacity ease-in-out 200ms;
+
+  &___closed {
+    opacity: 0;
+  }
+
+  &___open {
+    opacity: 1;
+  }
+
+  &_overlay {
+    position: fixed;
+    inset: 0;
+  }
+
+  &_container {
+    position: fixed;
+    inset: 0;
+    padding: 20px;
+    background-color: $dark_100;
+    color: $white;
+
+    @include breakpoint($md) {
+      position: initial;
+      inset: initial;
+      padding: 32px 40px 40px;
+      border-radius: 48px;
+    }
+
+    @include breakpoint($lg) {
+      padding: 48px 60px 60px;
+    }
+  }
+
+  &_header {
+    margin-bottom: 24px;
+
+    @include breakpoint($xs) {
+      margin-bottom: 32px;
+    }
+
+    @include breakpoint($md) {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      margin-bottom: 0;
+    }
+
+    @include breakpoint($lg) {
+      top: 24px;
+      right: 24px;
+    }
+  }
+
+  &_body {
+    max-width: 311px;
+    margin: auto;
+  }
+
+  &_title {
+    margin-bottom: 24px;
+    color: $white;
+    font-weight: 500;
+    font-size: 24px;
+    font-family: 'TT Norms', sans-serif;
+    line-height: 28px;
+    text-align: center;
+
+    @include breakpoint($xs) {
+      font-size: 32px;
+      line-height: 38px;
+    }
+
+    @include breakpoint($lg) {
+      margin-bottom: 36px;
+      font-size: 36px;
+      line-height: 42px;
+      letter-spacing: -0.5px;
+    }
+  }
+
+  &_content {
+    color: $white;
+  }
+}

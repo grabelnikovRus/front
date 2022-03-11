@@ -1,0 +1,67 @@
+@import '../../styles/variables/colors';
+@import '../../styles/variables/breakpoints';
+@import '../../styles/variables/bg-effect';
+
+.not_found {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 108px);
+  min-height: 500px;
+  background-color: $blue_100;
+
+  &_inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    color: $white;
+    text-align: center;
+  }
+
+  &_container {
+    @media screen and (max-width: 767px) {
+      margin: 0 auto;
+    }
+
+    h1 {
+      margin: 0 0 32px;
+      font-size: 60px;
+      line-height: 64px;
+      letter-spacing: -0.5px;
+      @media screen and (max-width: 991px) {
+        font-size: 50px;
+        line-height: 56px;
+        letter-spacing: -0.5px;
+      }
+      @media screen and (max-width: 767px) {
+        margin: 0 0 24px;
+        font-size: 32px;
+        line-height: 38px;
+      }
+      @media screen and (max-width: 359px) {
+        font-size: 24px;
+        line-height: 28px;
+      }
+    }
+
+    p {
+      margin: 0 0 48px;
+      font-weight: 500;
+      font-size: 24px;
+      line-height: 28px;
+    }
+
+    a {
+      display: inline-block;
+      padding: 18px 64px;
+      border-radius: 28px;
+      background: $dark_100;
+      color: $white;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 20px;
+    }
+  }
+}

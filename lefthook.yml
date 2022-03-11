@@ -1,0 +1,31 @@
+source_dir: "config/lefthook"
+pre-commit:
+  parallel: true
+  commands:
+    eslint:
+      glob: "*.{js,jsx,ts,tsx}"
+      exclude: api|legacy
+      run: npx eslint {staged_files}
+    stylelint:
+      glob: "*.scss"
+      exclude: legacy
+      run: npx stylelint {staged_files}
+    types:
+      glob: "*.{ts,tsx}"
+      run: npx tsc --noEmit
+    ls-lint:
+      run: npx ls-lint
+    editorconfig-checker:
+      run: npx editorconfig-checker -config config/editorconfig-checker.json
+    tests:
+      glob: "*.{ts,tsx}"
+      run: npx jest --findRelatedTests {staged_files}
+
+  scripts:
+    "dotenv-linter.sh":
+      runner: bash
+
+commit-msg:
+  scripts:
+    "commitlint.sh":
+      runner: bash

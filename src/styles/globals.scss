@@ -1,0 +1,185 @@
+@import '~normalize.css';
+@import 'src/styles/variables/colors';
+@import 'src/styles/variables/breakpoints';
+/* stylelint-disable */
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  color: $dark_100;
+  font-weight: 500;
+  font-size: 16px;
+  font-family: 'Inter', sans-serif;
+  line-height: 24px;
+  &.disabled_body {
+    overflow: hidden;
+    touch-action: unset;
+  }
+}
+
+h1 {
+  margin: 0;
+  margin-bottom: 24px;
+  font-weight: 500;
+  font-size: 32px;
+  font-family: 'TTNorms', sans-serif;
+  line-height: 38px;
+  text-align: center;
+
+  @media screen and (min-width: $xs) {
+    margin-bottom: 32px;
+    font-size: 36px;
+    line-height: 42px;
+    letter-spacing: -0.5px;
+  }
+
+  @media screen and (min-width: $lg) {
+    margin-bottom: 40px;
+    font-size: 50px;
+    line-height: 56px;
+  }
+
+  @media screen and (min-width: $xl2) {
+    margin-bottom: 48px;
+    font-size: 60px;
+    line-height: 64px;
+  }
+}
+
+h2 {
+  margin: 0;
+  margin-bottom: 24px;
+  font-weight: 400;
+  font-size: 20px;
+  font-family: 'TTNorms', sans-serif;
+  line-height: 28px;
+  text-align: center;
+
+  @media screen and (min-width: $xs) {
+    margin-bottom: 32px;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 28px;
+  }
+
+  @media screen and (min-width: $md) {
+    margin-bottom: 48px;
+    font-size: 32px;
+    line-height: 38px;
+  }
+
+  @media screen and (min-width: $xl2) {
+    font-size: 50px;
+    line-height: 56px;
+    letter-spacing: -0.5px;
+  }
+}
+
+h3 {
+  margin: 0;
+  font-weight: 500;
+  font-size: 20px;
+  font-family: 'TTNorms', sans-serif;
+  line-height: 28px;
+
+  @media screen and (min-width: $xs) {
+    font-size: 24px;
+    line-height: 28px;
+  }
+
+  @media screen and (min-width: $md) {
+    font-weight: 400;
+  }
+
+  @media screen and (min-width: $xl2) {
+    font-size: 36px;
+    line-height: 42px;
+    letter-spacing: -0.5px;
+  }
+}
+
+h4 {
+  margin: 0;
+  font-weight: 500;
+  font-size: 24px;
+  font-family: 'TTNorms', sans-serif;
+  line-height: 28px;
+}
+
+h5 {
+  margin: 0;
+  font-weight: 500;
+  font-size: 20px;
+  font-family: 'TTNorms', sans-serif;
+  line-height: 28px;
+}
+
+h6 {
+  margin: 0;
+  font-weight: 500;
+  font-size: 14px;
+  font-family: 'Inter', sans-serif;
+  line-height: 20px;
+}
+
+html {
+  box-sizing: border-box;
+}
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+li {
+  list-style: none;
+}
+
+.no_scroll {
+  overflow: hidden;
+}
+
+.rpv-print__zone {
+  margin: 0;
+  padding: 0;
+
+  .rpv-print__page:first-child {
+    margin-top: -100px;
+  }
+
+  img {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+.grecaptcha-badge {
+  visibility: hidden;
+}
+
+.hidden_on_mobile {
+  display: none;
+
+  @include breakpoint($md) {
+    display: block;
+  }
+}
+
+.hidden_on_desktop {
+  display: block;
+
+  @include breakpoint($md) {
+    display: none;
+  }
+}

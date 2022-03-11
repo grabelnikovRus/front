@@ -1,0 +1,111 @@
+@import 'src/styles/variables/breakpoints';
+
+.container_col_2 {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+  width: 100%;
+
+  @include breakpoint($lg) {
+    &--change-grid-behavior {
+      flex-direction: row;
+      row-gap: 0;
+      column-gap: 16px;
+
+      & > div {
+        width: calc((100% - 16px) / 2);
+      }
+    }
+  }
+
+  @include breakpoint($xl) {
+    &--change-grid-behavior {
+      flex-direction: row;
+      row-gap: 0;
+      column-gap: 32px;
+
+      & > div {
+        width: calc((100% - 32px) / 2);
+      }
+    }
+  }
+
+  @include breakpoint($xl2) {
+    flex-direction: row;
+    row-gap: 0;
+    column-gap: 32px;
+
+    & > div {
+      width: calc((100% - 32px) / 2);
+    }
+  }
+}
+
+.container_col_3 {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+  width: 100%;
+
+  @include breakpoint($lg) {
+    &--change-grid-behavior {
+      flex-direction: row;
+      row-gap: 0;
+      column-gap: 16px;
+
+      & > div {
+        width: calc((100% - 16px - 16px) / 3);
+      }
+    }
+  }
+
+  @include breakpoint($xl) {
+    &--change-grid-behavior {
+      flex-direction: row;
+      row-gap: 0;
+      column-gap: 32px;
+
+      & > div {
+        width: calc((100% - 32px - 32px) / 3);
+      }
+    }
+  }
+
+  @include breakpoint($xl2) {
+    flex-direction: row;
+    row-gap: 0;
+    column-gap: 32px;
+
+    & > div {
+      width: calc((100% - 32px - 32px) / 3);
+    }
+  }
+}
+
+.container_col_4 {
+  display: flex;
+  column-gap: 16px;
+  @include breakpoint($sm) {
+    flex-wrap: wrap;
+    row-gap: 5px;
+    column-gap: 5px;
+  }
+  @media screen and (max-width: $sm) {
+    flex-flow: row wrap;
+    row-gap: 5px;
+    height: auto;
+    column-gap: 5px;
+  }
+  @media screen and (max-width: $xxs) {
+    row-gap: 4px;
+    column-gap: 4px;
+  }
+  @include breakpoint($md) {
+    flex-flow: row nowrap;
+    column-gap: 16px;
+  }
+
+  @include breakpoint($xl2) {
+    column-gap: 24px;
+  }
+}

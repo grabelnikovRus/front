@@ -1,0 +1,218 @@
+@import 'src/styles/variables/breakpoints';
+@import 'src/styles/variables/bg-effect';
+@import 'src/styles/variables/colors';
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 64px;
+  @include breakpoint($md) {
+    padding-bottom: 80px;
+  }
+
+  &_wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &_input {
+    width: 100%;
+    @include breakpoint($md) {
+      width: 342px;
+    }
+    @include breakpoint($lg) {
+      width: 450px;
+    }
+    @include breakpoint($xl2) {
+      width: 548px;
+    }
+  }
+
+  &_error {
+    padding: 8px 19px 0;
+    color: $red_100;
+    font-size: 12px;
+    line-height: 16px;
+  }
+
+  &_btn {
+    width: 246px;
+    margin: 0 auto;
+  }
+}
+
+.form___exchange_max {
+  margin-bottom: 64px;
+  padding-bottom: 0;
+  @include breakpoint($md) {
+    flex-direction: row;
+    margin-bottom: 80px;
+    border-radius: 32px;
+    background: $linear-gradient1;
+  }
+
+  .form {
+    &_wrapper {
+      padding: 16px;
+      @include breakpoint($xs) {
+        padding-bottom: 24px;
+      }
+      @include breakpoint($md) {
+        position: relative;
+        align-self: stretch;
+        overflow: hidden;
+        width: 50%;
+        padding: 61px 32px;
+
+        &::before {
+          content: '';
+          position: absolute;
+          top: -22px;
+          left: -37px;
+          width: 430px;
+          height: 430px;
+          border: 58px solid $white;
+          border-radius: 50%;
+          background-color: transparent;
+          opacity: 0.35;
+        }
+      }
+      @include breakpoint($lg) {
+        padding: 77px 32px;
+
+        &::before {
+          top: -25px;
+          left: -25px;
+          width: 450px;
+          height: 450px;
+          border-width: 60px;
+        }
+      }
+      @include breakpoint($xl2) {
+        padding: 67px 80px;
+
+        &::before {
+          top: -66px;
+          left: 6px;
+          width: 550px;
+          height: 550px;
+          border-width: 70px;
+        }
+      }
+    }
+
+    &_input {
+      @include breakpoint($md) {
+        width: 100%;
+      }
+    }
+
+    &_container {
+      padding: 16px;
+      border-radius: 32px;
+      background: $linear-gradient1;
+      @include breakpoint($xs) {
+        padding: 24px;
+      }
+      @include breakpoint($md) {
+        align-self: stretch;
+        width: 50%;
+        padding: 32px;
+        background: $blue_200;
+      }
+      @include breakpoint($xl2) {
+        padding: 32px 80px;
+      }
+    }
+
+    &_title {
+      margin-bottom: 16px;
+      font-size: 24px;
+      font-family: TTNorms, sans-serif;
+      line-height: 32px;
+      text-align: center;
+      @include breakpoint($md) {
+        margin-bottom: 24px;
+        font-size: 32px;
+        line-height: 38px;
+      }
+      @include breakpoint($xl2) {
+        font-size: 36px;
+        line-height: 42px;
+      }
+    }
+
+    &_subtitle {
+      font-size: 16px;
+      font-family: Inter, sans-serif;
+      line-height: 24px;
+      text-align: center;
+      @include breakpoint($md) {
+        margin-bottom: 16px;
+      }
+      @include breakpoint($xl2) {
+        margin-bottom: 32px;
+        font-size: 20px;
+        line-height: 28px;
+      }
+    }
+
+    &_description {
+      display: none;
+      @include breakpoint($md) {
+        display: block;
+        font-size: 16px;
+        font-family: Inter, sans-serif;
+        line-height: 24px;
+        text-align: center;
+      }
+    }
+
+    &_list_description {
+      display: block;
+      margin-bottom: 24px;
+      font-size: 16px;
+      font-family: Inter, sans-serif;
+      line-height: 24px;
+      text-align: center;
+      @include breakpoint($md) {
+        display: none;
+      }
+    }
+
+    &_list {
+      display: grid;
+      row-gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    &_item {
+      display: flex;
+      align-items: center;
+    }
+
+    &_number {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      margin-right: 16px;
+      border-radius: 50%;
+      background-color: $white;
+      color: $blue_100;
+      font-weight: 600;
+      font-size: 16px;
+      font-family: TTNorms, sans-serif;
+      line-height: 24px;
+    }
+
+    &_text {
+      font-size: 14px;
+      font-family: Inter, sans-serif;
+      line-height: 20px;
+    }
+  }
+}
